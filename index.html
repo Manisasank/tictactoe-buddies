@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1d6a72" />
+  <title>Tic Tac Toe Buddies — Multiplayer</title>
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #1d6a72;
+      --teal-light: #e1f5ee;
+      --teal-dark: #0f4a50;
+      --coral: #e05c3a;
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --border: #e2e6ea;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --radius: 12px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      width: 100%;
+      background: var(--teal);
+      color: #fff;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 20px; font-weight: 600; }
+    .conn-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4ade80; display: inline-block; margin-right: 6px;
+    }
+    .conn-dot.offline { background: #f87171; }
+    #conn-label { font-size: 13px; opacity: 0.9; }
+
+    main {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Screens */
+    .screen { width: 100%; display: none; flex-direction: column; gap: 14px; align-items: center; }
+    .screen.active { display: flex; }
+
+    /* Config screen */
+    .config-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+    .config-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 16px; color: var(--teal-dark); }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+    .field input {
+      width: 100%; padding: 10px 12px;
+      border: 1.5px solid var(--border); border-radius: 8px;
+      font-size: 14px; color: var(--text); outline: none;
+      transition: border-color 0.15s;
+    }
+    .field input:focus { border-color: var(--teal); }
+    .divider { text-align: center; font-size: 13px; color: var(--muted); margin: 8px 0; }
+
+    /* Lobby */
+    .lobby-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .room-code {
+      font-size: 36px; font-weight: 800; letter-spacing: 8px;
+      color: var(--teal); margin: 12px 0;
+    }
+    .lobby-card p { font-size: 13px; color: var(--muted); }
+    .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid var(--teal-light);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 12px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Game screen */
+    .scores {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .score-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .score-card.active { border-color: var(--teal); background: var(--teal-light); }
+    .score-card.you { border-color: var(--teal); }
+    .score-card .player-name { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+    .score-card .mark { font-size: 22px; font-weight: 800; }
+    .mark.x { color: var(--teal); }
+    .mark.o { color: var(--coral); }
+    .vs { display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--muted); font-weight: 600; }
+
+    .status-banner {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 20px;
+      text-align: center; font-size: 15px; font-weight: 500;
+      width: 100%; box-shadow: var(--shadow); min-height: 46px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .status-banner.win { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); }
+    .status-banner.draw { background: #fef9ec; border-color: #f59e0b; color: #92400e; }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 360px;
+    }
+    .cell {
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(36px, 10vw, 56px); font-weight: 800;
+      cursor: pointer;
+      transition: background 0.1s, transform 0.1s, border-color 0.1s;
+      box-shadow: var(--shadow);
+      user-select: none;
+    }
+    .cell:hover:not(.taken):not(.disabled) { background: var(--teal-light); border-color: var(--teal); transform: scale(1.03); }
+    .cell.taken, .cell.disabled { cursor: default; }
+    .cell.x-cell { color: var(--teal); }
+    .cell.o-cell { color: var(--coral); }
+    .cell.winning { background: var(--teal-light); border-color: var(--teal); animation: pop 0.3s ease; }
+
+    @keyframes pop {
+      0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); }
+    }
+
+    .controls { display: flex; gap: 10px; width: 100%; }
+    button {
+      flex: 1; padding: 12px; border: none;
+      border-radius: var(--radius); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s, transform 0.1s;
+    }
+    button:active { transform: scale(0.97); }
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: var(--card); color: var(--teal); border: 1.5px solid var(--teal); }
+    .btn-secondary:hover { background: var(--teal-light); }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: #1a1a2e; color: #fff; padding: 10px 20px;
+      border-radius: 99px; font-size: 14px; font-weight: 500;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>TTT Buddies — Online</h1>
+  <div>
+    <span class="conn-dot offline" id="conn-dot"></span>
+    <span id="conn-label">Connecting...</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- LOBBY SCREEN -->
+  <div class="screen" id="screen-lobby">
+    <div class="config-card">
+      <h2>🎮 Create or Join</h2>
+      <div class="field">
+        <label>Your Name</label>
+        <input id="player-name" type="text" placeholder="Enter your name" maxlength="14" value="Player" />
+      </div>
+      <button class="btn-primary" onclick="createGame()">Create New Game</button>
+      <div class="divider">— or join with a room code —</div>
+      <div class="field">
+        <label>Room Code</label>
+        <input id="join-code" type="text" placeholder="e.g. ABC123" maxlength="6" style="text-transform:uppercase;letter-spacing:3px;font-size:18px;text-align:center" />
+      </div>
+      <button class="btn-secondary" onclick="joinGame()">Join Game</button>
+    </div>
+  </div>
+
+  <!-- WAITING SCREEN -->
+  <div class="screen" id="screen-waiting">
+    <div class="lobby-card">
+      <p>Share this code with your friend:</p>
+      <div class="room-code" id="display-code">------</div>
+      <div class="spinner"></div>
+      <p>Waiting for opponent to join...</p>
+    </div>
+    <button class="btn-secondary" onclick="leaveGame()">Cancel</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div class="screen" id="screen-game">
+    <div class="scores">
+      <div class="score-card" id="card-x">
+        <div class="player-name" id="name-x">Player X</div>
+        <div class="mark x">X</div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="score-card" id="card-o">
+        <div class="player-name" id="name-o">Player O</div>
+        <div class="mark o">O</div>
+      </div>
+    </div>
+
+    <div class="status-banner" id="game-status">Waiting...</div>
+
+    <div class="board" id="board"></div>
+
+    <div class="controls">
+      <button class="btn-primary" id="btn-rematch" onclick="rematch()" style="display:none">Rematch</button>
+      <button class="btn-secondary" onclick="leaveGame()">Leave Game</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Config ───────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://daulmsvkqzpzdutmltgj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdWxtc3ZrcXpwemR1dG1sdGdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4ODEzOTksImV4cCI6MjA5ODQ1NzM5OX0.Feg2jsPTAU7J5nF7b7m12Nzv7keZNujzg619KFJi41o';
+
+let sb = null;
+let session = null;       // current game_sessions row
+let myMark = null;        // 'X' or 'O'
+let myName = '';
+let channel = null;
+let gameOver = false;
+const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+// ── Init Supabase ─────────────────────────────────────────────────────────────
+function initSupabase() {
+  try {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    setConn(true);
+    showScreen('lobby');
+    toast('Connected to Supabase!');
+  } catch (e) {
+    setConn(false);
+    toast('Connection failed: ' + e.message);
+  }
+}
+
+window.addEventListener('load', initSupabase);
+
+// ── Create game ───────────────────────────────────────────────────────────────
+async function createGame() {
+  myName = document.getElementById('player-name').value.trim() || 'Player';
+  myMark = 'X';
+  const code = Math.random().toString(36).substr(2, 6).toUpperCase();
+  const { data, error } = await sb.from('game_sessions').insert({
+    player_x: myName,
+    board: Array(9).fill(null),
+    current_turn: 'X',
+    status: 'waiting',
+    id: undefined  // let DB generate
+  }).select().single();
+
+  if (error) { toast('Error: ' + error.message); return; }
+
+  // Store a short code in a separate column or use first 6 chars of UUID
+  session = data;
+  // Use first 6 chars of UUID as room code for simplicity
+  const roomCode = data.id.replace(/-/g,'').substr(0,6).toUpperCase();
+  document.getElementById('display-code').textContent = roomCode;
+  showScreen('waiting');
+  subscribeToGame(data.id);
+}
+
+// ── Join game ─────────────────────────────────────────────────────────────────
+async function joinGame() {
+  myName = document.getElementById('player-name').value.trim() || 'Player';
+  myMark = 'O';
+  const code = document.getElementById('join-code').value.trim().toUpperCase();
+  if (code.length < 6) { toast('Enter a 6-character room code'); return; }
+
+  // Find game by first 6 chars of ID
+  const { data: rows, error } = await sb.from('game_sessions')
+    .select('*')
+    .eq('status', 'waiting')
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  if (error || !rows) { toast('Error fetching games'); return; }
+
+  const match = rows.find(r => r.id.replace(/-/g,'').substr(0,6).toUpperCase() === code);
+  if (!match) { toast('Room not found or already started'); return; }
+
+  const { data, error: e2 } = await sb.from('game_sessions')
+    .update({ player_o: myName, status: 'active' })
+    .eq('id', match.id)
+    .select().single();
+
+  if (e2) { toast('Could not join: ' + e2.message); return; }
+
+  session = data;
+  showScreen('game');
+  renderGame(session);
+  subscribeToGame(session.id);
+}
+
+// ── Subscribe to realtime updates ─────────────────────────────────────────────
+function subscribeToGame(id) {
+  if (channel) sb.removeChannel(channel);
+  channel = sb.channel('game-' + id)
+    .on('postgres_changes', {
+      event: 'UPDATE', schema: 'public',
+      table: 'game_sessions', filter: `id=eq.${id}`
+    }, payload => {
+      session = payload.new;
+      if (session.status === 'active' && document.getElementById('screen-waiting').classList.contains('active')) {
+        showScreen('game');
+      }
+      renderGame(session);
+    })
+    .subscribe();
+}
+
+// ── Make a move ───────────────────────────────────────────────────────────────
+async function play(i) {
+  if (!session || gameOver) return;
+  if (session.current_turn !== myMark) { toast("It's not your turn!"); return; }
+  if (session.board[i]) return;
+  if (session.status !== 'active') return;
+
+  const newBoard = [...session.board];
+  newBoard[i] = myMark;
+
+  const result = checkWinner(newBoard);
+  const newTurn = myMark === 'X' ? 'O' : 'X';
+
+  const update = {
+    board: newBoard,
+    current_turn: result ? session.current_turn : newTurn,
+    status: result ? 'finished' : 'active',
+    winner: result ? (result.draw ? 'draw' : myMark) : null,
+  };
+
+  await sb.from('game_sessions').update(update).eq('id', session.id);
+}
+
+// ── Render board ──────────────────────────────────────────────────────────────
+function renderGame(s) {
+  if (!s) return;
+  gameOver = s.status === 'finished';
+
+  document.getElementById('name-x').textContent = s.player_x || 'Player X';
+  document.getElementById('name-o').textContent = s.player_o || 'Waiting...';
+
+  document.getElementById('card-x').classList.toggle('active', s.current_turn === 'X' && !gameOver);
+  document.getElementById('card-o').classList.toggle('active', s.current_turn === 'O' && !gameOver);
+  document.getElementById('card-x').classList.toggle('you', myMark === 'X');
+  document.getElementById('card-o').classList.toggle('you', myMark === 'O');
+
+  const statusEl = document.getElementById('game-status');
+  const rematchBtn = document.getElementById('btn-rematch');
+
+  if (s.status === 'waiting') {
+    statusEl.textContent = 'Waiting for opponent...';
+    statusEl.className = 'status-banner';
+  } else if (s.status === 'finished') {
+    rematchBtn.style.display = 'block';
+    if (s.winner === 'draw') {
+      statusEl.textContent = "It's a draw!";
+      statusEl.className = 'status-banner draw';
+    } else {
+      const winnerName = s.winner === 'X' ? s.player_x : s.player_o;
+      statusEl.textContent = `🎉 ${winnerName} wins!`;
+      statusEl.className = 'status-banner win';
+    }
+  } else {
+    rematchBtn.style.display = 'none';
+    const turnName = s.current_turn === 'X' ? s.player_x : s.player_o;
+    const isYou = s.current_turn === myMark;
+    statusEl.textContent = isYou ? `Your turn (${myMark})` : `${turnName}'s turn...`;
+    statusEl.className = 'status-banner';
+  }
+
+  const boardEl = document.getElementById('board');
+  boardEl.innerHTML = '';
+  const result = s.status === 'finished' ? checkWinner(s.board) : null;
+  const winLine = result && result.line ? result.line : [];
+
+  s.board.forEach((val, i) => {
+    const cell = document.createElement('div');
+    const isDisabled = !!val || gameOver || s.status !== 'active' || s.current_turn !== myMark;
+    cell.className = 'cell'
+      + (val ? ' taken ' + val.toLowerCase() + '-cell' : '')
+      + (isDisabled ? ' disabled' : '')
+      + (winLine.includes(i) ? ' winning' : '');
+    cell.textContent = val || '';
+    if (!isDisabled) cell.onclick = () => play(i);
+    boardEl.appendChild(cell);
+  });
+}
+
+// ── Winner check ──────────────────────────────────────────────────────────────
+function checkWinner(board) {
+  for (const [a,b,c] of WINS) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c])
+      return { winner: board[a], line: [a,b,c] };
+  }
+  if (board.every(Boolean)) return { draw: true };
+  return null;
+}
+
+// ── Rematch ───────────────────────────────────────────────────────────────────
+async function rematch() {
+  await sb.from('game_sessions').update({
+    board: Array(9).fill(null),
+    current_turn: 'X',
+    status: 'active',
+    winner: null,
+  }).eq('id', session.id);
+  gameOver = false;
+}
+
+// ── Leave ─────────────────────────────────────────────────────────────────────
+function leaveGame() {
+  if (channel) { sb.removeChannel(channel); channel = null; }
+  session = null; myMark = null; gameOver = false;
+  showScreen('lobby');
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+}
+
+function setConn(online) {
+  document.getElementById('conn-dot').classList.toggle('offline', !online);
+  document.getElementById('conn-label').textContent = online ? 'Connected' : 'Offline';
+}
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// Join-code auto uppercase
+document.getElementById('join-code').addEventListener('input', function() {
+  this.value = this.value.toUpperCase();
+});
+</script>
+</body>
+</html>
