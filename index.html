@@ -1,500 +1,1136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1d6a72" />
-  <title>Tic Tac Toe Buddies — Multiplayer</title>
-  <link rel="manifest" href="manifest.json" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>XO Arena — Multiplayer Tic Tac Toe</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap');
 
-    :root {
-      --teal: #1d6a72;
-      --teal-light: #e1f5ee;
-      --teal-dark: #0f4a50;
-      --coral: #e05c3a;
-      --bg: #f7f8fa;
-      --card: #ffffff;
-      --border: #e2e6ea;
-      --text: #1a1a2e;
-      --muted: #6b7280;
-      --radius: 12px;
-      --shadow: 0 2px 12px rgba(0,0,0,0.08);
-    }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+:root{
+  --bg:#0a0a0f;
+  --surface:#12121a;
+  --surface2:#1a1a26;
+  --border:#ffffff12;
+  --border2:#ffffff20;
+  --accent:#7c3aed;
+  --accent2:#a855f7;
+  --accent3:#c084fc;
+  --gold:#f59e0b;
+  --green:#10b981;
+  --red:#ef4444;
+  --blue:#3b82f6;
+  --text:#f1f5f9;
+  --muted:#94a3b8;
+  --muted2:#64748b;
+  --x-color:#a855f7;
+  --o-color:#f59e0b;
+  --radius:14px;
+  --radius-sm:8px;
+}
 
-    header {
-      width: 100%;
-      background: var(--teal);
-      color: #fff;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 { font-size: 20px; font-weight: 600; }
-    .conn-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #4ade80; display: inline-block; margin-right: 6px;
-    }
-    .conn-dot.offline { background: #f87171; }
-    #conn-label { font-size: 13px; opacity: 0.9; }
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-    main {
-      width: 100%;
-      max-width: 480px;
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
+/* Animated background */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.15;animation:drift 20s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:var(--accent);top:-100px;left:-100px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:#06b6d4;bottom:-100px;right:-100px;animation-delay:-7s}
+.orb3{width:300px;height:300px;background:var(--gold);top:40%;left:40%;animation-delay:-14s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(0.95)}}
 
-    /* Screens */
-    .screen { width: 100%; display: none; flex-direction: column; gap: 14px; align-items: center; }
-    .screen.active { display: flex; }
+/* Layout */
+#app{position:relative;z-index:1;min-height:100vh}
+.page{display:none;min-height:100vh}
+.page.active{display:flex;flex-direction:column}
 
-    /* Config screen */
-    .config-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      width: 100%;
-      box-shadow: var(--shadow);
-    }
-    .config-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 16px; color: var(--teal-dark); }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
-    .field input {
-      width: 100%; padding: 10px 12px;
-      border: 1.5px solid var(--border); border-radius: 8px;
-      font-size: 14px; color: var(--text); outline: none;
-      transition: border-color 0.15s;
-    }
-    .field input:focus { border-color: var(--teal); }
-    .divider { text-align: center; font-size: 13px; color: var(--muted); margin: 8px 0; }
+/* ── HEADER ── */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;background:rgba(10,10,15,0.8)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo span{-webkit-text-fill-color:var(--gold)}
+.header-right{display:flex;align-items:center;gap:12px}
+.avatar-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;font-family:'Syne',sans-serif}
+.coins-badge{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:600}
+.coins-badge span{color:var(--gold)}
 
-    /* Lobby */
-    .lobby-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      width: 100%;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-    .room-code {
-      font-size: 36px; font-weight: 800; letter-spacing: 8px;
-      color: var(--teal); margin: 12px 0;
-    }
-    .lobby-card p { font-size: 13px; color: var(--muted); }
-    .spinner {
-      width: 24px; height: 24px;
-      border: 3px solid var(--teal-light);
-      border-top-color: var(--teal);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 12px auto;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;text-decoration:none}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.4)}
+.btn-primary:hover{box-shadow:0 6px 28px rgba(124,58,237,0.6);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border2)}
+.btn-secondary:hover{background:var(--surface);border-color:var(--accent)}
+.btn-gold{background:linear-gradient(135deg,#d97706,var(--gold));color:#000;box-shadow:0 4px 20px rgba(245,158,11,0.4)}
+.btn-danger{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.btn-lg{padding:14px 32px;font-size:16px;border-radius:var(--radius)}
+.btn-full{width:100%}
+.btn-sm{padding:8px 16px;font-size:13px}
 
-    /* Game screen */
-    .scores {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 8px;
-      width: 100%;
-    }
-    .score-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-    .score-card.active { border-color: var(--teal); background: var(--teal-light); }
-    .score-card.you { border-color: var(--teal); }
-    .score-card .player-name { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
-    .score-card .mark { font-size: 22px; font-weight: 800; }
-    .mark.x { color: var(--teal); }
-    .mark.o { color: var(--coral); }
-    .vs { display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--muted); font-weight: 600; }
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.card-glass{background:rgba(18,18,26,0.7);backdrop-filter:blur(20px);border:1px solid var(--border2);border-radius:var(--radius)}
 
-    .status-banner {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px 20px;
-      text-align: center; font-size: 15px; font-weight: 500;
-      width: 100%; box-shadow: var(--shadow); min-height: 46px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .status-banner.win { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); }
-    .status-banner.draw { background: #fef9ec; border-color: #f59e0b; color: #92400e; }
+/* ── FORMS ── */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px}
+.field input{width:100%;padding:12px 16px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--radius-sm);font-size:15px;color:var(--text);outline:none;transition:border-color 0.15s;font-family:'Inter',sans-serif}
+.field input:focus{border-color:var(--accent)}
+.field input::placeholder{color:var(--muted2)}
 
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-      max-width: 360px;
-    }
-    .cell {
-      aspect-ratio: 1;
-      background: var(--card);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      display: flex; align-items: center; justify-content: center;
-      font-size: clamp(36px, 10vw, 56px); font-weight: 800;
-      cursor: pointer;
-      transition: background 0.1s, transform 0.1s, border-color 0.1s;
-      box-shadow: var(--shadow);
-      user-select: none;
-    }
-    .cell:hover:not(.taken):not(.disabled) { background: var(--teal-light); border-color: var(--teal); transform: scale(1.03); }
-    .cell.taken, .cell.disabled { cursor: default; }
-    .cell.x-cell { color: var(--teal); }
-    .cell.o-cell { color: var(--coral); }
-    .cell.winning { background: var(--teal-light); border-color: var(--teal); animation: pop 0.3s ease; }
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
+.toast{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:12px 20px;border-radius:99px;font-size:14px;font-weight:500;opacity:0;transform:translateY(20px);transition:all 0.3s;white-space:nowrap;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{border-color:var(--green);color:var(--green)}
+.toast.error{border-color:var(--red);color:var(--red)}
 
-    @keyframes pop {
-      0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); }
-    }
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.active{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:32px;width:100%;max-width:420px;position:relative}
+.modal h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:24px}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--surface2);border:none;color:var(--muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center}
 
-    .controls { display: flex; gap: 10px; width: 100%; }
-    button {
-      flex: 1; padding: 12px; border: none;
-      border-radius: var(--radius); font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: opacity 0.15s, transform 0.1s;
-    }
-    button:active { transform: scale(0.97); }
-    .btn-primary { background: var(--teal); color: #fff; }
-    .btn-primary:hover { opacity: 0.9; }
-    .btn-secondary { background: var(--card); color: var(--teal); border: 1.5px solid var(--teal); }
-    .btn-secondary:hover { background: var(--teal-light); }
+/* ══════════════════════════════════════
+   AUTH PAGE
+══════════════════════════════════════ */
+#page-auth{align-items:center;justify-content:center;padding:24px}
+.auth-box{width:100%;max-width:400px}
+.auth-logo{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.auth-logo span{-webkit-text-fill-color:var(--gold)}
+.auth-tagline{text-align:center;color:var(--muted);font-size:14px;margin-bottom:32px}
+.auth-tabs{display:flex;background:var(--surface2);border-radius:var(--radius-sm);padding:4px;margin-bottom:24px}
+.auth-tab{flex:1;padding:10px;text-align:center;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;color:var(--muted);transition:all 0.2s}
+.auth-tab.active{background:var(--accent);color:#fff}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.divider{display:flex;align-items:center;gap:12px;color:var(--muted2);font-size:13px;margin:20px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.guest-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border:1.5px dashed var(--border2);border-radius:var(--radius-sm);cursor:pointer;color:var(--muted);font-size:14px;font-weight:500;transition:all 0.2s;background:none}
+.guest-btn:hover{border-color:var(--accent);color:var(--accent)}
 
-    .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: #1a1a2e; color: #fff; padding: 10px 20px;
-      border-radius: 99px; font-size: 14px; font-weight: 500;
-      opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 100;
-      white-space: nowrap;
-    }
-    .toast.show { opacity: 1; }
-  </style>
+/* ══════════════════════════════════════
+   HOME PAGE
+══════════════════════════════════════ */
+#page-home{padding-bottom:80px}
+.home-hero{padding:40px 24px 24px;text-align:center}
+.home-hero h1{font-family:'Syne',sans-serif;font-size:clamp(28px,6vw,42px);font-weight:800;line-height:1.1;margin-bottom:12px}
+.home-hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.home-hero p{color:var(--muted);font-size:15px;max-width:380px;margin:0 auto 28px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px 24px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;text-align:center}
+.stat-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--accent2)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px}
+
+.section{padding:0 16px 24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
+
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.mode-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),transparent);opacity:0;transition:opacity 0.2s}
+.mode-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.mode-card:hover::before{opacity:0.08}
+.mode-card.ai::before{background:linear-gradient(135deg,var(--gold),transparent)}
+.mode-card.ai:hover{border-color:var(--gold)}
+.mode-icon{font-size:28px;margin-bottom:10px}
+.mode-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+.mode-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.mode-badge{position:absolute;top:10px;right:10px;background:var(--gold);color:#000;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px}
+
+/* ══════════════════════════════════════
+   LEADERBOARD PAGE
+══════════════════════════════════════ */
+#page-leaderboard{padding-bottom:80px}
+.lb-header{padding:24px 16px 16px}
+.lb-header h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin-bottom:4px}
+.lb-tabs{display:flex;gap:8px;padding:0 16px 20px;overflow-x:auto}
+.lb-tab{padding:8px 20px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);color:var(--muted);white-space:nowrap;transition:all 0.2s;background:none}
+.lb-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.lb-list{padding:0 16px}
+.lb-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;transition:all 0.2s}
+.lb-item.me{border-color:var(--accent);background:rgba(124,58,237,0.08)}
+.lb-rank{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;width:28px;text-align:center;color:var(--muted2)}
+.lb-rank.gold{color:var(--gold)}
+.lb-rank.silver{color:#94a3b8}
+.lb-rank.bronze{color:#cd7c2f}
+.lb-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
+.lb-info{flex:1}
+.lb-name{font-weight:600;font-size:15px}
+.lb-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.lb-score{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--accent2)}
+
+/* ══════════════════════════════════════
+   PROFILE / DASHBOARD PAGE
+══════════════════════════════════════ */
+#page-profile{padding-bottom:80px}
+.profile-hero{padding:32px 16px 24px;text-align:center}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;font-family:'Syne',sans-serif;margin:0 auto 16px;border:3px solid var(--accent)}
+.profile-name{font-family:'Syne',sans-serif;font-size:24px;font-weight:800}
+.profile-level{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border2);border-radius:99px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--accent2);margin-top:8px}
+.xp-bar-wrap{padding:0 16px 24px}
+.xp-bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.xp-bar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width 1s ease}
+.achievement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.achievement{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;opacity:0.4}
+.achievement.unlocked{opacity:1;border-color:var(--gold)}
+.achievement-icon{font-size:24px;margin-bottom:6px}
+.achievement-name{font-size:11px;font-weight:600;color:var(--muted)}
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px}
+.history-result{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.history-result.win{background:rgba(16,185,129,0.15);color:var(--green);border:1.5px solid var(--green)}
+.history-result.loss{background:rgba(239,68,68,0.15);color:var(--red);border:1.5px solid var(--red)}
+.history-result.draw{background:rgba(148,163,184,0.15);color:var(--muted);border:1.5px solid var(--muted)}
+.history-info{flex:1}
+.history-opp{font-size:14px;font-weight:600}
+.history-date{font-size:12px;color:var(--muted);margin-top:2px}
+.history-pts{font-size:13px;font-weight:700}
+.history-pts.plus{color:var(--green)}
+.history-pts.minus{color:var(--red)}
+
+/* ══════════════════════════════════════
+   GAME PAGE
+══════════════════════════════════════ */
+#page-game{padding-bottom:32px}
+.game-header{padding:16px;display:flex;align-items:center;justify-content:space-between}
+.game-back{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all 0.2s}
+.game-back:hover{color:var(--text);border-color:var(--accent)}
+.game-mode-badge{background:var(--surface2);border:1px solid var(--border2);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--muted)}
+
+.players-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;padding:0 16px 16px;align-items:center}
+.player-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px;text-align:center;transition:all 0.3s}
+.player-card.active{border-color:var(--accent);box-shadow:0 0 20px rgba(124,58,237,0.2)}
+.player-card.active-o{border-color:var(--gold);box-shadow:0 0 20px rgba(245,158,11,0.2)}
+.player-symbol{font-size:28px;font-weight:900;font-family:'Syne',sans-serif;line-height:1}
+.player-symbol.x{color:var(--x-color)}
+.player-symbol.o{color:var(--o-color)}
+.player-name-sm{font-size:12px;color:var(--muted);margin-top:4px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vs-badge{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--muted2);text-align:center}
+
+.status-bar{margin:0 16px 16px;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);text-align:center;font-size:15px;font-weight:600;min-height:50px;display:flex;align-items:center;justify-content:center;transition:all 0.3s}
+.status-bar.win-x{border-color:var(--x-color);background:rgba(168,85,247,0.08);color:var(--x-color)}
+.status-bar.win-o{border-color:var(--o-color);background:rgba(245,158,11,0.08);color:var(--o-color)}
+.status-bar.draw{border-color:var(--muted);background:rgba(148,163,184,0.08);color:var(--muted)}
+
+.board-wrap{display:flex;justify-content:center;padding:0 16px 20px}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:360px}
+.cell{aspect-ratio:1;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:clamp(40px,12vw,60px);font-weight:900;font-family:'Syne',sans-serif;cursor:pointer;transition:all 0.15s;user-select:none;position:relative;overflow:hidden}
+.cell::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),transparent);opacity:0;transition:opacity 0.2s}
+.cell:hover:not(.taken):not(.disabled)::before{opacity:0.1}
+.cell:hover:not(.taken):not(.disabled){border-color:var(--accent);transform:scale(1.04)}
+.cell.taken,.cell.disabled{cursor:default}
+.cell.x-cell{color:var(--x-color)}
+.cell.o-cell{color:var(--o-color)}
+.cell.winning{animation:win-pulse 0.5s ease forwards}
+.cell.winning.x-cell{background:rgba(168,85,247,0.12);border-color:var(--x-color)}
+.cell.winning.o-cell{background:rgba(245,158,11,0.12);border-color:var(--o-color)}
+@keyframes win-pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1.05)}}
+.cell-enter{animation:cell-pop 0.2s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes cell-pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+
+.game-controls{padding:0 16px;display:flex;gap:10px}
+
+/* Room code display */
+.room-code-display{text-align:center;padding:32px 16px}
+.room-code-label{font-size:13px;color:var(--muted);margin-bottom:12px}
+.room-code-val{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:12px;background:linear-gradient(135deg,var(--accent2),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.room-code-copy{margin-top:16px}
+.waiting-spinner{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-size:14px;margin-top:16px}
+.spinner{width:18px;height:18px;border:2.5px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px 8px;cursor:pointer;transition:all 0.15s;border:none;background:none;color:var(--muted2)}
+.nav-item.active{color:var(--accent2)}
+.nav-icon{font-size:22px;line-height:1;margin-bottom:4px}
+.nav-label{font-size:10px;font-weight:600}
+
+/* ══════════════════════════════════════
+   AI DIFFICULTY MODAL
+══════════════════════════════════════ */
+.diff-grid{display:grid;gap:10px}
+.diff-option{padding:16px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--radius);cursor:pointer;transition:all 0.2s}
+.diff-option:hover{border-color:var(--accent);background:rgba(124,58,237,0.08)}
+.diff-option h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+.diff-option p{font-size:12px;color:var(--muted)}
+.diff-option.easy:hover{border-color:var(--green)}
+.diff-option.medium:hover{border-color:var(--gold)}
+.diff-option.hard:hover{border-color:var(--red)}
+
+/* Online lobby modal */
+.lobby-options{display:flex;flex-direction:column;gap:10px}
+.lobby-opt{padding:20px;background:var(--surface2);border:1.5px solid var(--border2);border-radius:var(--radius);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:14px}
+.lobby-opt:hover{border-color:var(--accent)}
+.lobby-opt-icon{font-size:28px}
+.lobby-opt-text h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+.lobby-opt-text p{font-size:12px;color:var(--muted);margin-top:2px}
+.join-input-row{display:flex;gap:8px;margin-top:16px}
+.join-input-row input{flex:1}
+.join-input-row .btn{flex-shrink:0}
+
+/* Score popups */
+.score-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:var(--surface);border:2px solid var(--accent);border-radius:24px;padding:40px;text-align:center;z-index:600;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);min-width:280px}
+.score-popup.show{transform:translate(-50%,-50%) scale(1)}
+.score-popup .emoji{font-size:64px;display:block;margin-bottom:16px;animation:bounce-in 0.5s 0.3s both}
+@keyframes bounce-in{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.score-popup h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;margin-bottom:8px}
+.score-popup .pts-gain{font-size:20px;font-weight:700;color:var(--green);margin-bottom:20px}
+.score-popup.loss{border-color:var(--red)}
+.score-popup.draw{border-color:var(--muted)}
+
+/* Help/Tips */
+.tips-list{display:flex;flex-direction:column;gap:10px}
+.tip-item{display:flex;align-items:flex-start;gap:12px;padding:14px;background:var(--surface2);border-radius:var(--radius-sm)}
+.tip-icon{font-size:20px;flex-shrink:0}
+.tip-text{font-size:13px;color:var(--muted);line-height:1.5}
+.tip-text strong{color:var(--text)}
+
+/* Responsive */
+@media(min-width:600px){
+  .mode-grid{grid-template-columns:repeat(4,1fr)}
+  .board{max-width:400px}
+  .stats-row{grid-template-columns:repeat(3,1fr)}
+}
+</style>
 </head>
 <body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
 
-<header>
-  <h1>TTT Buddies — Online</h1>
-  <div>
-    <span class="conn-dot offline" id="conn-dot"></span>
-    <span id="conn-label">Connecting...</span>
-  </div>
-</header>
+<div id="app">
 
-<main>
-
-  <!-- LOBBY SCREEN -->
-  <div class="screen" id="screen-lobby">
-    <div class="config-card">
-      <h2>🎮 Create or Join</h2>
-      <div class="field">
-        <label>Your Name</label>
-        <input id="player-name" type="text" placeholder="Enter your name" maxlength="14" value="Player" />
-      </div>
-      <button class="btn-primary" onclick="createGame()">Create New Game</button>
-      <div class="divider">— or join with a room code —</div>
-      <div class="field">
-        <label>Room Code</label>
-        <input id="join-code" type="text" placeholder="e.g. ABC123" maxlength="6" style="text-transform:uppercase;letter-spacing:3px;font-size:18px;text-align:center" />
-      </div>
-      <button class="btn-secondary" onclick="joinGame()">Join Game</button>
-    </div>
-  </div>
-
-  <!-- WAITING SCREEN -->
-  <div class="screen" id="screen-waiting">
-    <div class="lobby-card">
-      <p>Share this code with your friend:</p>
-      <div class="room-code" id="display-code">------</div>
-      <div class="spinner"></div>
-      <p>Waiting for opponent to join...</p>
-    </div>
-    <button class="btn-secondary" onclick="leaveGame()">Cancel</button>
-  </div>
-
-  <!-- GAME SCREEN -->
-  <div class="screen" id="screen-game">
-    <div class="scores">
-      <div class="score-card" id="card-x">
-        <div class="player-name" id="name-x">Player X</div>
-        <div class="mark x">X</div>
-      </div>
-      <div class="vs">VS</div>
-      <div class="score-card" id="card-o">
-        <div class="player-name" id="name-o">Player O</div>
-        <div class="mark o">O</div>
+<!-- ══ AUTH PAGE ══ -->
+<div class="page active" id="page-auth">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="auth-box">
+      <div class="auth-logo">XO<span>★</span>Arena</div>
+      <p class="auth-tagline">Multiplayer Tic Tac Toe — compete, rank up, conquer.</p>
+      <div class="card-glass" style="padding:24px">
+        <div class="auth-tabs">
+          <div class="auth-tab active" onclick="switchAuthTab('login')">Sign In</div>
+          <div class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</div>
+        </div>
+        <div class="auth-form active" id="form-login">
+          <div class="field"><label>Username</label><input id="login-name" type="text" placeholder="Your username" maxlength="16"/></div>
+          <div class="field"><label>Password</label><input id="login-pass" type="password" placeholder="••••••••"/></div>
+          <button class="btn btn-primary btn-full btn-lg" onclick="doLogin()">Sign In →</button>
+        </div>
+        <div class="auth-form" id="form-signup">
+          <div class="field"><label>Username</label><input id="signup-name" type="text" placeholder="Choose a username" maxlength="16"/></div>
+          <div class="field"><label>Password</label><input id="signup-pass" type="password" placeholder="At least 6 characters"/></div>
+          <button class="btn btn-primary btn-full btn-lg" onclick="doSignup()">Create Account →</button>
+        </div>
+        <div class="divider">or</div>
+        <div class="guest-btn" onclick="doGuest()">👤 Continue as Guest</div>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="status-banner" id="game-status">Waiting...</div>
-
-    <div class="board" id="board"></div>
-
-    <div class="controls">
-      <button class="btn-primary" id="btn-rematch" onclick="rematch()" style="display:none">Rematch</button>
-      <button class="btn-secondary" onclick="leaveGame()">Leave Game</button>
+<!-- ══ HOME PAGE ══ -->
+<div class="page" id="page-home">
+  <div class="header">
+    <div class="logo">XO<span>★</span>Arena</div>
+    <div class="header-right">
+      <div class="coins-badge">🪙 <span id="hdr-coins">0</span></div>
+      <button class="avatar-btn" onclick="goPage('profile')" id="hdr-avatar">?</button>
     </div>
   </div>
+  <div style="flex:1;overflow-y:auto">
+    <div class="home-hero">
+      <h1>Ready to play,<br/><em id="hero-name">Player</em>?</h1>
+      <p>Challenge friends online, beat the AI, or climb the global leaderboard.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary btn-lg" onclick="openOnlineModal()">🌐 Play Online</button>
+        <button class="btn btn-secondary btn-lg" onclick="openAIModal()">🤖 vs AI</button>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val" id="stat-wins">0</div><div class="stat-label">Wins</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-wr">0%</div><div class="stat-label">Win Rate</div></div>
+      <div class="stat-card"><div class="stat-val" id="stat-pts" style="color:var(--gold)">0</div><div class="stat-label">World Points</div></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">Game Modes</div></div>
+      <div class="mode-grid">
+        <div class="mode-card" onclick="openOnlineModal()">
+          <div class="mode-icon">🌐</div>
+          <div class="mode-title">Online</div>
+          <div class="mode-desc">Play with friends using a room code</div>
+        </div>
+        <div class="mode-card ai" onclick="openAIModal()">
+          <div class="mode-icon">🤖</div>
+          <div class="mode-title">vs AI</div>
+          <div class="mode-desc">Challenge the computer</div>
+          <div class="mode-badge">3 levels</div>
+        </div>
+        <div class="mode-card" onclick="startLocal()">
+          <div class="mode-icon">👥</div>
+          <div class="mode-title">Local</div>
+          <div class="mode-desc">Pass & play on this device</div>
+        </div>
+        <div class="mode-card" onclick="goPage('leaderboard')">
+          <div class="mode-icon">🏆</div>
+          <div class="mode-title">Rankings</div>
+          <div class="mode-desc">Global leaderboard</div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">💡 How to Earn Points</div></div>
+      <div class="tips-list">
+        <div class="tip-item"><div class="tip-icon">🏆</div><div class="tip-text"><strong>Win online games</strong> — earn +30 World Points per win</div></div>
+        <div class="tip-item"><div class="tip-icon">🤖</div><div class="tip-text"><strong>Beat Hard AI</strong> — earn +15 points, +10 for Medium</div></div>
+        <div class="tip-item"><div class="tip-icon">⚡</div><div class="tip-text"><strong>Win streaks</strong> — bonus multiplier after 3 wins in a row</div></div>
+        <div class="tip-item"><div class="tip-icon">🎯</div><div class="tip-text"><strong>Climb ranks</strong> — Bronze → Silver → Gold → Diamond</div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
-</main>
+<!-- ══ LEADERBOARD PAGE ══ -->
+<div class="page" id="page-leaderboard">
+  <div class="header">
+    <div class="logo">XO<span>★</span>Arena</div>
+    <div class="coins-badge">🪙 <span id="hdr-coins2">0</span></div>
+  </div>
+  <div style="flex:1;overflow-y:auto">
+    <div class="lb-header">
+      <h2>🏆 Leaderboard</h2>
+      <p style="color:var(--muted);font-size:13px">Top players by World Points</p>
+    </div>
+    <div class="lb-tabs">
+      <div class="lb-tab active" onclick="switchLbTab('points',this)">World Points</div>
+      <div class="lb-tab" onclick="switchLbTab('wins',this)">Total Wins</div>
+      <div class="lb-tab" onclick="switchLbTab('streak',this)">Win Streak</div>
+    </div>
+    <div class="lb-list" id="lb-list"><div style="text-align:center;padding:40px;color:var(--muted)">Loading...</div></div>
+  </div>
+</div>
 
-<div class="toast" id="toast"></div>
+<!-- ══ PROFILE PAGE ══ -->
+<div class="page" id="page-profile">
+  <div class="header">
+    <div class="logo">XO<span>★</span>Arena</div>
+    <button class="btn btn-sm btn-danger" onclick="doLogout()">Sign Out</button>
+  </div>
+  <div style="flex:1;overflow-y:auto">
+    <div class="profile-hero">
+      <div class="profile-avatar" id="prof-avatar">?</div>
+      <div class="profile-name" id="prof-name">Player</div>
+      <div class="profile-level" id="prof-level">🥉 Bronze</div>
+    </div>
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-label"><span id="xp-label">0 XP</span><span id="xp-next">100 XP to next level</span></div>
+      <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-val" id="prof-wins">0</div><div class="stat-label">Wins</div></div>
+      <div class="stat-card"><div class="stat-val" id="prof-losses">0</div><div class="stat-label">Losses</div></div>
+      <div class="stat-card"><div class="stat-val" id="prof-draws">0</div><div class="stat-label">Draws</div></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">🏅 Achievements</div></div>
+      <div class="achievement-grid" id="achievements-grid"></div>
+    </div>
+    <div class="section">
+      <div class="section-header"><div class="section-title">📋 Recent Games</div></div>
+      <div id="history-list"><div style="text-align:center;padding:24px;color:var(--muted)">No games yet</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GAME PAGE ══ -->
+<div class="page" id="page-game">
+  <div class="game-header">
+    <button class="game-back" onclick="leaveGame()">← Leave</button>
+    <div class="game-mode-badge" id="game-mode-badge">Online</div>
+  </div>
+  <div class="players-row">
+    <div class="player-card" id="card-x">
+      <div class="player-symbol x">X</div>
+      <div class="player-name-sm" id="name-x">Player X</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="player-card" id="card-o">
+      <div class="player-symbol o">O</div>
+      <div class="player-name-sm" id="name-o">Player O</div>
+    </div>
+  </div>
+  <div class="status-bar" id="game-status">Waiting...</div>
+  <div class="board-wrap"><div class="board" id="board"></div></div>
+  <!-- Waiting for opponent -->
+  <div id="waiting-section" style="display:none">
+    <div class="room-code-display">
+      <div class="room-code-label">Share this room code with your friend</div>
+      <div class="room-code-val" id="display-code">------</div>
+      <div class="room-code-copy">
+        <button class="btn btn-secondary" onclick="copyRoomCode()">📋 Copy Code</button>
+      </div>
+      <div class="waiting-spinner"><div class="spinner"></div> Waiting for opponent...</div>
+    </div>
+  </div>
+  <div class="game-controls" id="game-controls" style="display:none">
+    <button class="btn btn-primary" id="btn-rematch" onclick="rematch()" style="display:none">🔄 Rematch</button>
+    <button class="btn btn-secondary" onclick="leaveGame()">Leave</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<!-- Bottom Nav (hidden on auth/game pages) -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none">
+  <button class="nav-item active" onclick="goPage('home')" data-page="home"><div class="nav-icon">🏠</div><div class="nav-label">Home</div></button>
+  <button class="nav-item" onclick="openOnlineModal()" data-page="play"><div class="nav-icon">🎮</div><div class="nav-label">Play</div></button>
+  <button class="nav-item" onclick="goPage('leaderboard')" data-page="leaderboard"><div class="nav-icon">🏆</div><div class="nav-label">Ranks</div></button>
+  <button class="nav-item" onclick="goPage('profile')" data-page="profile"><div class="nav-icon">👤</div><div class="nav-label">Profile</div></button>
+</nav>
+
+<!-- MODALS -->
+<!-- AI Difficulty Modal -->
+<div class="modal-overlay" id="modal-ai">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-ai')">✕</button>
+    <h2>🤖 vs AI</h2>
+    <p>Choose your difficulty</p>
+    <div class="diff-grid">
+      <div class="diff-option easy" onclick="startAI('easy')"><h3>😊 Easy</h3><p>Perfect for beginners. AI plays randomly.</p></div>
+      <div class="diff-option medium" onclick="startAI('medium')"><h3>🧠 Medium</h3><p>AI mixes smart and random moves. +10 pts on win.</p></div>
+      <div class="diff-option hard" onclick="startAI('hard')"><h3>💀 Hard</h3><p>Unbeatable minimax AI. +15 pts if you win!</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Online Modal -->
+<div class="modal-overlay" id="modal-online">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal-online')">✕</button>
+    <h2>🌐 Play Online</h2>
+    <p>Create a room or join a friend</p>
+    <div class="lobby-options">
+      <div class="lobby-opt" onclick="createOnlineGame()">
+        <div class="lobby-opt-icon">➕</div>
+        <div class="lobby-opt-text"><h3>Create Room</h3><p>Get a code to share with a friend</p></div>
+      </div>
+    </div>
+    <div style="margin-top:16px">
+      <div class="field"><label>Or join with a code</label></div>
+      <div class="join-input-row">
+        <input id="join-code" type="text" placeholder="ABC123" maxlength="6" style="text-transform:uppercase;letter-spacing:3px;font-size:18px;text-align:center"/>
+        <button class="btn btn-primary" onclick="joinOnlineGame()">Join</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Result Popup -->
+<div class="score-popup" id="result-popup">
+  <span class="emoji" id="result-emoji">🎉</span>
+  <h2 id="result-title">You Win!</h2>
+  <div class="pts-gain" id="result-pts">+30 World Points</div>
+  <div style="display:flex;gap:10px;justify-content:center">
+    <button class="btn btn-primary" id="result-rematch-btn" onclick="rematch();closeResultPopup()">🔄 Rematch</button>
+    <button class="btn btn-secondary" onclick="leaveGame();closeResultPopup()">🏠 Home</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container"><div class="toast" id="toast"></div></div>
 
 <script>
-// ── Config ───────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════════════
 const SUPABASE_URL = 'https://daulmsvkqzpzdutmltgj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdWxtc3ZrcXpwemR1dG1sdGdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4ODEzOTksImV4cCI6MjA5ODQ1NzM5OX0.Feg2jsPTAU7J5nF7b7m12Nzv7keZNujzg619KFJi41o';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRhdWxtc3ZrcXpwemR1dG1sdGdqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4ODEzOTksImV4cCI6MjA5ODQ1NzM5OX0.Feg2jsPTAU7J5nF7b7m12Nzv7keZNujzg619KFJi41o';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let sb = null;
-let session = null;       // current game_sessions row
-let myMark = null;        // 'X' or 'O'
-let myName = '';
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let currentUser = null; // { id, username, wins, losses, draws, points, streak, xp, isGuest }
+let gameState = null;   // current game
+let myMark = null;
+let gameMode = null;    // 'online'|'ai'|'local'
+let aiDifficulty = 'medium';
 let channel = null;
 let gameOver = false;
+let currentStreak = 0;
+let lbMode = 'points';
 const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-// ── Init Supabase ─────────────────────────────────────────────────────────────
-function initSupabase() {
+const ACHIEVEMENTS = [
+  {id:'first_win',icon:'🥇',name:'First Win',desc:'Win your first game'},
+  {id:'ai_easy',icon:'🤖',name:'AI Slayer',desc:'Beat Easy AI'},
+  {id:'ai_hard',icon:'💀',name:'Terminator',desc:'Beat Hard AI'},
+  {id:'streak3',icon:'🔥',name:'On Fire',desc:'Win 3 in a row'},
+  {id:'streak5',icon:'⚡',name:'Unstoppable',desc:'Win 5 in a row'},
+  {id:'games10',icon:'🎮',name:'Veteran',desc:'Play 10 games'},
+  {id:'games50',icon:'🏟️',name:'Arena Legend',desc:'Play 50 games'},
+  {id:'draw',icon:'🤝',name:'Peacemaker',desc:'Draw a game'},
+  {id:'points100',icon:'💎',name:'Point Hoarder',desc:'Earn 100 World Points'},
+];
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
+  document.getElementById('form-login').classList.toggle('active', tab==='login');
+  document.getElementById('form-signup').classList.toggle('active', tab==='signup');
+}
+
+async function doSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const pass = document.getElementById('signup-pass').value;
+  if (!name || name.length < 2) { toast('Username must be at least 2 characters','error'); return; }
+  if (pass.length < 6) { toast('Password must be at least 6 characters','error'); return; }
   try {
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    setConn(true);
-    showScreen('lobby');
-    toast('Connected to Supabase!');
-  } catch (e) {
-    setConn(false);
-    toast('Connection failed: ' + e.message);
+    // Check if username taken
+    const {data:existing} = await sb.from('users').select('id').eq('username',name).single();
+    if (existing) { toast('Username taken, try another','error'); return; }
+    // Hash password (simple, not production-grade)
+    const hash = btoa(pass + name + 'xoarena_salt');
+    const {data,error} = await sb.from('users').insert({username:name,password_hash:hash,wins:0,losses:0,draws:0,points:0,streak:0,xp:0,achievements:[]}).select().single();
+    if (error) throw error;
+    loginUser(data);
+    toast('Account created! Welcome to XO Arena 🎉','success');
+  } catch(e) { toast('Sign up failed: '+e.message,'error'); }
+}
+
+async function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if (!name || !pass) { toast('Enter username and password','error'); return; }
+  try {
+    const hash = btoa(pass + name + 'xoarena_salt');
+    const {data,error} = await sb.from('users').select('*').eq('username',name).eq('password_hash',hash).single();
+    if (error || !data) { toast('Wrong username or password','error'); return; }
+    loginUser(data);
+    toast('Welcome back, '+name+'! 👋','success');
+  } catch(e) { toast('Login failed: '+e.message,'error'); }
+}
+
+function doGuest() {
+  const id = 'guest_'+Math.random().toString(36).substr(2,8);
+  currentUser = {id,username:'Guest_'+id.substr(6),wins:0,losses:0,draws:0,points:0,streak:0,xp:0,achievements:[],isGuest:true};
+  currentStreak = 0;
+  afterLogin();
+}
+
+function loginUser(data) {
+  currentUser = {...data, isGuest:false};
+  currentStreak = data.streak || 0;
+  afterLogin();
+}
+
+function afterLogin() {
+  updateHeaderUI();
+  goPage('home');
+  document.getElementById('bottom-nav').style.display = 'flex';
+}
+
+async function doLogout() {
+  currentUser = null;
+  gameOver = false;
+  if (channel) { sb.removeChannel(channel); channel=null; }
+  document.getElementById('bottom-nav').style.display = 'none';
+  goPage('auth');
+  toast('Signed out','success');
+}
+
+function updateHeaderUI() {
+  if (!currentUser) return;
+  const initials = currentUser.username.substr(0,2).toUpperCase();
+  document.getElementById('hdr-avatar').textContent = initials;
+  document.getElementById('hdr-coins').textContent = currentUser.points || 0;
+  document.getElementById('hdr-coins2').textContent = currentUser.points || 0;
+  document.getElementById('hero-name').textContent = currentUser.username;
+  document.getElementById('stat-wins').textContent = currentUser.wins || 0;
+  const total = (currentUser.wins||0)+(currentUser.losses||0);
+  document.getElementById('stat-wr').textContent = total ? Math.round((currentUser.wins||0)/total*100)+'%' : '0%';
+  document.getElementById('stat-pts').textContent = currentUser.points || 0;
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page===name));
+  if (name==='leaderboard') loadLeaderboard();
+  if (name==='profile') loadProfile();
+  if (name==='home') updateHeaderUI();
+}
+
+// ═══════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════
+function openAIModal() { document.getElementById('modal-ai').classList.add('active'); }
+function openOnlineModal() { document.getElementById('modal-online').classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ═══════════════════════════════════════════════
+// GAME — LOCAL (PASS & PLAY)
+// ═══════════════════════════════════════════════
+function startLocal() {
+  gameMode = 'local';
+  myMark = 'X';
+  gameOver = false;
+  gameState = {board:Array(9).fill(null),current_turn:'X',status:'active',player_x:currentUser.username,player_o:'Player 2',winner:null};
+  document.getElementById('game-mode-badge').textContent = '👥 Local';
+  document.getElementById('waiting-section').style.display='none';
+  document.getElementById('game-controls').style.display='flex';
+  document.getElementById('btn-rematch').style.display='none';
+  goPage('game');
+  renderGame(gameState);
+}
+
+// ═══════════════════════════════════════════════
+// GAME — AI
+// ═══════════════════════════════════════════════
+function startAI(diff) {
+  aiDifficulty = diff;
+  closeModal('modal-ai');
+  gameMode = 'ai';
+  myMark = 'X';
+  gameOver = false;
+  const diffLabel = {easy:'😊 Easy AI',medium:'🧠 Medium AI',hard:'💀 Hard AI'}[diff];
+  gameState = {board:Array(9).fill(null),current_turn:'X',status:'active',player_x:currentUser.username,player_o:diffLabel,winner:null};
+  document.getElementById('game-mode-badge').textContent = '🤖 vs AI';
+  document.getElementById('waiting-section').style.display='none';
+  document.getElementById('game-controls').style.display='flex';
+  document.getElementById('btn-rematch').style.display='none';
+  goPage('game');
+  renderGame(gameState);
+}
+
+function aiMove(board, diff) {
+  const empty = board.map((v,i)=>v?-1:i).filter(i=>i>=0);
+  if (empty.length===0) return -1;
+  if (diff==='easy') return empty[Math.floor(Math.random()*empty.length)];
+  if (diff==='medium') return Math.random()<0.5 ? minimaxBest(board,'O') : empty[Math.floor(Math.random()*empty.length)];
+  return minimaxBest(board,'O');
+}
+
+function minimaxBest(board, mark) {
+  let best=-Infinity, bestIdx=-1;
+  board.forEach((v,i)=>{
+    if(v) return;
+    board[i]=mark;
+    const score=minimax(board,0,false,mark);
+    board[i]=null;
+    if(score>best){best=score;bestIdx=i;}
+  });
+  return bestIdx;
+}
+
+function minimax(board, depth, isMax, aiMark) {
+  const opp = aiMark==='O'?'X':'O';
+  const w=checkWinner(board);
+  if(w){
+    if(w.winner===aiMark) return 10-depth;
+    if(w.winner) return depth-10;
+    return 0;
+  }
+  if(board.every(Boolean)) return 0;
+  if(isMax){
+    let best=-Infinity;
+    board.forEach((v,i)=>{if(!v){board[i]=aiMark;best=Math.max(best,minimax(board,depth+1,false,aiMark));board[i]=null;}});
+    return best;
+  } else {
+    let best=Infinity;
+    board.forEach((v,i)=>{if(!v){board[i]=opp;best=Math.min(best,minimax(board,depth+1,true,aiMark));board[i]=null;}});
+    return best;
   }
 }
 
-window.addEventListener('load', initSupabase);
-
-// ── Create game ───────────────────────────────────────────────────────────────
-async function createGame() {
-  myName = document.getElementById('player-name').value.trim() || 'Player';
+// ═══════════════════════════════════════════════
+// GAME — ONLINE (SUPABASE)
+// ═══════════════════════════════════════════════
+async function createOnlineGame() {
+  closeModal('modal-online');
+  gameMode = 'online';
   myMark = 'X';
-  const code = Math.random().toString(36).substr(2, 6).toUpperCase();
-  const { data, error } = await sb.from('game_sessions').insert({
-    player_x: myName,
-    board: Array(9).fill(null),
-    current_turn: 'X',
-    status: 'waiting',
-    id: undefined  // let DB generate
-  }).select().single();
-
-  if (error) { toast('Error: ' + error.message); return; }
-
-  // Store a short code in a separate column or use first 6 chars of UUID
-  session = data;
-  // Use first 6 chars of UUID as room code for simplicity
-  const roomCode = data.id.replace(/-/g,'').substr(0,6).toUpperCase();
-  document.getElementById('display-code').textContent = roomCode;
-  showScreen('waiting');
-  subscribeToGame(data.id);
+  gameOver = false;
+  try {
+    const {data,error} = await sb.from('game_sessions').insert({
+      player_x: currentUser.username,
+      board: Array(9).fill(null),
+      current_turn: 'X',
+      status: 'waiting'
+    }).select().single();
+    if (error) throw error;
+    gameState = data;
+    const roomCode = data.id.replace(/-/g,'').substr(0,6).toUpperCase();
+    document.getElementById('display-code').textContent = roomCode;
+    document.getElementById('game-mode-badge').textContent = '🌐 Online';
+    document.getElementById('waiting-section').style.display='block';
+    document.getElementById('game-controls').style.display='none';
+    goPage('game');
+    renderGame(gameState);
+    subscribeToGame(data.id);
+  } catch(e) { toast('Error: '+e.message,'error'); }
 }
 
-// ── Join game ─────────────────────────────────────────────────────────────────
-async function joinGame() {
-  myName = document.getElementById('player-name').value.trim() || 'Player';
-  myMark = 'O';
+async function joinOnlineGame() {
   const code = document.getElementById('join-code').value.trim().toUpperCase();
-  if (code.length < 6) { toast('Enter a 6-character room code'); return; }
-
-  // Find game by first 6 chars of ID
-  const { data: rows, error } = await sb.from('game_sessions')
-    .select('*')
-    .eq('status', 'waiting')
-    .order('created_at', { ascending: false })
-    .limit(20);
-
-  if (error || !rows) { toast('Error fetching games'); return; }
-
-  const match = rows.find(r => r.id.replace(/-/g,'').substr(0,6).toUpperCase() === code);
-  if (!match) { toast('Room not found or already started'); return; }
-
-  const { data, error: e2 } = await sb.from('game_sessions')
-    .update({ player_o: myName, status: 'active' })
-    .eq('id', match.id)
-    .select().single();
-
-  if (e2) { toast('Could not join: ' + e2.message); return; }
-
-  session = data;
-  showScreen('game');
-  renderGame(session);
-  subscribeToGame(session.id);
+  if (code.length !== 6) { toast('Enter a 6-character code','error'); return; }
+  closeModal('modal-online');
+  gameMode = 'online';
+  myMark = 'O';
+  gameOver = false;
+  try {
+    const {data:rows,error} = await sb.from('game_sessions').select('*').eq('status','waiting').order('created_at',{ascending:false}).limit(20);
+    if (error) throw error;
+    const match = rows.find(r => r.id.replace(/-/g,'').substr(0,6).toUpperCase()===code);
+    if (!match) { toast('Room not found or already started','error'); return; }
+    const {data,error:e2} = await sb.from('game_sessions').update({player_o:currentUser.username,status:'active'}).eq('id',match.id).select().single();
+    if (e2) throw e2;
+    gameState = data;
+    document.getElementById('game-mode-badge').textContent = '🌐 Online';
+    document.getElementById('waiting-section').style.display='none';
+    document.getElementById('game-controls').style.display='flex';
+    document.getElementById('btn-rematch').style.display='none';
+    goPage('game');
+    renderGame(gameState);
+    subscribeToGame(data.id);
+  } catch(e) { toast(e.message,'error'); }
 }
 
-// ── Subscribe to realtime updates ─────────────────────────────────────────────
 function subscribeToGame(id) {
   if (channel) sb.removeChannel(channel);
-  channel = sb.channel('game-' + id)
-    .on('postgres_changes', {
-      event: 'UPDATE', schema: 'public',
-      table: 'game_sessions', filter: `id=eq.${id}`
-    }, payload => {
-      session = payload.new;
-      if (session.status === 'active' && document.getElementById('screen-waiting').classList.contains('active')) {
-        showScreen('game');
+  channel = sb.channel('game-'+id)
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'game_sessions',filter:`id=eq.${id}`},payload=>{
+      gameState = payload.new;
+      if (gameState.status==='active' && document.getElementById('waiting-section').style.display!=='none') {
+        document.getElementById('waiting-section').style.display='none';
+        document.getElementById('game-controls').style.display='flex';
       }
-      renderGame(session);
-    })
-    .subscribe();
+      renderGame(gameState);
+      if (gameState.status==='finished') handleGameEnd(gameState);
+    }).subscribe();
 }
 
-// ── Make a move ───────────────────────────────────────────────────────────────
+function copyRoomCode() {
+  const code = document.getElementById('display-code').textContent;
+  navigator.clipboard?.writeText(code).then(()=>toast('Room code copied! 📋','success')).catch(()=>toast('Code: '+code));
+}
+
+// ═══════════════════════════════════════════════
+// PLAY
+// ═══════════════════════════════════════════════
 async function play(i) {
-  if (!session || gameOver) return;
-  if (session.current_turn !== myMark) { toast("It's not your turn!"); return; }
-  if (session.board[i]) return;
-  if (session.status !== 'active') return;
+  if (!gameState || gameOver) return;
+  if (gameState.board[i]) return;
+  if (gameState.status !== 'active') return;
 
-  const newBoard = [...session.board];
-  newBoard[i] = myMark;
+  if (gameMode === 'online' && gameState.current_turn !== myMark) { toast("It's not your turn!"); return; }
+  if (gameMode === 'local') myMark = gameState.current_turn;
 
+  const newBoard = [...gameState.board];
+  newBoard[i] = gameState.current_turn;
   const result = checkWinner(newBoard);
-  const newTurn = myMark === 'X' ? 'O' : 'X';
-
+  const newTurn = gameState.current_turn==='X' ? 'O' : 'X';
   const update = {
     board: newBoard,
-    current_turn: result ? session.current_turn : newTurn,
+    current_turn: result ? gameState.current_turn : newTurn,
     status: result ? 'finished' : 'active',
-    winner: result ? (result.draw ? 'draw' : myMark) : null,
+    winner: result ? (result.draw?'draw':gameState.current_turn) : null,
   };
 
-  await sb.from('game_sessions').update(update).eq('id', session.id);
+  if (gameMode === 'online') {
+    await sb.from('game_sessions').update(update).eq('id',gameState.id);
+  } else {
+    gameState = {...gameState,...update};
+    renderGame(gameState);
+    if (gameState.status==='finished') {
+      handleGameEnd(gameState);
+    } else if (gameMode==='ai' && gameState.current_turn==='O') {
+      setTimeout(()=>doAIMove(),500);
+    }
+  }
 }
 
-// ── Render board ──────────────────────────────────────────────────────────────
+function doAIMove() {
+  if (!gameState || gameOver || gameState.status!=='active') return;
+  const idx = aiMove([...gameState.board], aiDifficulty);
+  if (idx===-1) return;
+  play(idx);
+}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
 function renderGame(s) {
   if (!s) return;
-  gameOver = s.status === 'finished';
-
+  gameOver = s.status==='finished';
   document.getElementById('name-x').textContent = s.player_x || 'Player X';
-  document.getElementById('name-o').textContent = s.player_o || 'Waiting...';
-
-  document.getElementById('card-x').classList.toggle('active', s.current_turn === 'X' && !gameOver);
-  document.getElementById('card-o').classList.toggle('active', s.current_turn === 'O' && !gameOver);
-  document.getElementById('card-x').classList.toggle('you', myMark === 'X');
-  document.getElementById('card-o').classList.toggle('you', myMark === 'O');
-
+  document.getElementById('name-o').textContent = s.player_o || (gameMode==='online'?'Waiting...':'Player O');
+  const cardX = document.getElementById('card-x');
+  const cardO = document.getElementById('card-o');
+  cardX.classList.remove('active','active-o');
+  cardO.classList.remove('active','active-o');
+  if (!gameOver && s.status==='active') {
+    if (s.current_turn==='X') cardX.classList.add('active');
+    else cardO.classList.add('active-o');
+  }
   const statusEl = document.getElementById('game-status');
-  const rematchBtn = document.getElementById('btn-rematch');
-
-  if (s.status === 'waiting') {
+  statusEl.className = 'status-bar';
+  if (s.status==='waiting') {
     statusEl.textContent = 'Waiting for opponent...';
-    statusEl.className = 'status-banner';
-  } else if (s.status === 'finished') {
-    rematchBtn.style.display = 'block';
-    if (s.winner === 'draw') {
-      statusEl.textContent = "It's a draw!";
-      statusEl.className = 'status-banner draw';
-    } else {
-      const winnerName = s.winner === 'X' ? s.player_x : s.player_o;
-      statusEl.textContent = `🎉 ${winnerName} wins!`;
-      statusEl.className = 'status-banner win';
+  } else if (s.status==='finished') {
+    document.getElementById('btn-rematch').style.display='block';
+    if (s.winner==='draw') { statusEl.textContent="It's a draw! 🤝"; statusEl.classList.add('draw'); }
+    else {
+      const wName = s.winner==='X'?s.player_x:s.player_o;
+      statusEl.textContent=`🎉 ${wName} wins!`;
+      statusEl.classList.add(s.winner==='X'?'win-x':'win-o');
     }
   } else {
-    rematchBtn.style.display = 'none';
-    const turnName = s.current_turn === 'X' ? s.player_x : s.player_o;
-    const isYou = s.current_turn === myMark;
-    statusEl.textContent = isYou ? `Your turn (${myMark})` : `${turnName}'s turn...`;
-    statusEl.className = 'status-banner';
+    const isYou = gameMode==='local' || s.current_turn===myMark;
+    const turnName = s.current_turn==='X'?s.player_x:s.player_o;
+    statusEl.textContent = isYou ? `Your turn (${s.current_turn})` : `${turnName}'s turn...`;
   }
-
   const boardEl = document.getElementById('board');
-  boardEl.innerHTML = '';
-  const result = s.status === 'finished' ? checkWinner(s.board) : null;
-  const winLine = result && result.line ? result.line : [];
-
-  s.board.forEach((val, i) => {
+  const result = s.status==='finished' ? checkWinner(s.board) : null;
+  const winLine = result?.line || [];
+  boardEl.innerHTML='';
+  s.board.forEach((val,i)=>{
     const cell = document.createElement('div');
-    const isDisabled = !!val || gameOver || s.status !== 'active' || s.current_turn !== myMark;
-    cell.className = 'cell'
-      + (val ? ' taken ' + val.toLowerCase() + '-cell' : '')
-      + (isDisabled ? ' disabled' : '')
-      + (winLine.includes(i) ? ' winning' : '');
-    cell.textContent = val || '';
-    if (!isDisabled) cell.onclick = () => play(i);
+    const isMine = gameMode==='local' || s.current_turn===myMark;
+    const isDisabled = !!val || gameOver || s.status!=='active' || (!isMine && gameMode!=='local');
+    cell.className = 'cell'+(val?' taken '+val.toLowerCase()+'-cell':'')+(isDisabled?' disabled':'')+(winLine.includes(i)?' winning':'');
+    if (val) { cell.textContent=val; cell.classList.add('cell-enter'); }
+    if (!isDisabled) cell.onclick=()=>play(i);
     boardEl.appendChild(cell);
   });
 }
 
-// ── Winner check ──────────────────────────────────────────────────────────────
 function checkWinner(board) {
   for (const [a,b,c] of WINS) {
-    if (board[a] && board[a] === board[b] && board[a] === board[c])
-      return { winner: board[a], line: [a,b,c] };
+    if (board[a] && board[a]===board[b] && board[a]===board[c]) return {winner:board[a],line:[a,b,c]};
   }
-  if (board.every(Boolean)) return { draw: true };
+  if (board.every(Boolean)) return {draw:true};
   return null;
 }
 
-// ── Rematch ───────────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// GAME END & SCORING
+// ═══════════════════════════════════════════════
+async function handleGameEnd(s) {
+  if (currentUser.isGuest || gameMode==='local') {
+    showResultPopup(s, 0);
+    return;
+  }
+  let outcome, pts = 0;
+  const myName = currentUser.username;
+  if (s.winner==='draw') { outcome='draw'; pts=5; }
+  else if ((s.winner==='X'&&s.player_x===myName)||(s.winner==='O'&&s.player_o===myName)) {
+    outcome='win';
+    if (gameMode==='ai') pts = aiDifficulty==='hard'?15:aiDifficulty==='medium'?10:5;
+    else pts=30;
+    currentStreak++;
+    if (currentStreak>=3) pts += 10; // streak bonus
+  } else {
+    outcome='loss'; pts=-5; currentStreak=0;
+  }
+  const updates = {
+    wins: (currentUser.wins||0)+(outcome==='win'?1:0),
+    losses: (currentUser.losses||0)+(outcome==='loss'?1:0),
+    draws: (currentUser.draws||0)+(outcome==='draw'?1:0),
+    points: Math.max(0,(currentUser.points||0)+pts),
+    streak: currentStreak,
+    xp: (currentUser.xp||0)+Math.abs(pts)+5,
+  };
+  // Check achievements
+  const achs = [...(currentUser.achievements||[])];
+  if (outcome==='win' && updates.wins===1) achs.push('first_win');
+  if (outcome==='win' && gameMode==='ai' && aiDifficulty==='easy' && !achs.includes('ai_easy')) achs.push('ai_easy');
+  if (outcome==='win' && gameMode==='ai' && aiDifficulty==='hard' && !achs.includes('ai_hard')) achs.push('ai_hard');
+  if (currentStreak>=3 && !achs.includes('streak3')) achs.push('streak3');
+  if (currentStreak>=5 && !achs.includes('streak5')) achs.push('streak5');
+  if (outcome==='draw' && !achs.includes('draw')) achs.push('draw');
+  if (updates.points>=100 && !achs.includes('points100')) achs.push('points100');
+  const totalGames=(updates.wins+updates.losses+updates.draws);
+  if (totalGames>=10 && !achs.includes('games10')) achs.push('games10');
+  if (totalGames>=50 && !achs.includes('games50')) achs.push('games50');
+  updates.achievements = achs;
+  // Save history entry
+  const histEntry={opponent:outcome==='win'?(s.winner==='X'?s.player_o:s.player_x):(s.winner==='X'?s.player_x:s.player_o),result:outcome,pts,date:new Date().toISOString(),mode:gameMode};
+  const history = JSON.parse(localStorage.getItem('xo_history_'+currentUser.id)||'[]');
+  history.unshift(histEntry); if(history.length>20) history.pop();
+  localStorage.setItem('xo_history_'+currentUser.id, JSON.stringify(history));
+  // Update DB
+  try {
+    await sb.from('users').update(updates).eq('id',currentUser.id);
+    currentUser = {...currentUser,...updates};
+    updateHeaderUI();
+  } catch(e) { console.error(e); }
+  showResultPopup(s, pts);
+}
+
+function showResultPopup(s, pts) {
+  const popup = document.getElementById('result-popup');
+  const myName = currentUser.username;
+  let emoji, title, ptsText;
+  if (s.winner==='draw') { emoji='🤝'; title="It's a Draw!"; ptsText=pts>0?`+${pts} World Points`:''; popup.className='score-popup draw'; }
+  else if ((s.winner==='X'&&(s.player_x===myName||gameMode==='ai'&&myMark==='X'))||(s.winner==='O'&&s.player_o===myName)) {
+    emoji='🎉'; title='You Win!'; ptsText=pts>0?`+${pts} World Points`:''; popup.className='score-popup';
+    currentStreak>=3&&(ptsText+=` 🔥 Streak x${currentStreak}!`);
+  } else {
+    emoji='😔'; title='You Lost'; ptsText=pts<0?`${pts} Points`:''; popup.className='score-popup loss';
+  }
+  document.getElementById('result-emoji').textContent=emoji;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-pts').textContent=ptsText;
+  document.getElementById('result-rematch-btn').style.display = gameMode==='online'?'block':'block';
+  popup.classList.add('show');
+}
+
+function closeResultPopup() { document.getElementById('result-popup').classList.remove('show'); }
+
 async function rematch() {
-  await sb.from('game_sessions').update({
-    board: Array(9).fill(null),
-    current_turn: 'X',
-    status: 'active',
-    winner: null,
-  }).eq('id', session.id);
   gameOver = false;
+  document.getElementById('btn-rematch').style.display='none';
+  if (gameMode==='online') {
+    await sb.from('game_sessions').update({board:Array(9).fill(null),current_turn:'X',status:'active',winner:null}).eq('id',gameState.id);
+  } else {
+    gameState={...gameState,board:Array(9).fill(null),current_turn:'X',status:'active',winner:null};
+    renderGame(gameState);
+  }
 }
 
-// ── Leave ─────────────────────────────────────────────────────────────────────
 function leaveGame() {
-  if (channel) { sb.removeChannel(channel); channel = null; }
-  session = null; myMark = null; gameOver = false;
-  showScreen('lobby');
+  if (channel) { sb.removeChannel(channel); channel=null; }
+  gameState=null; myMark=null; gameOver=false;
+  closeResultPopup();
+  goPage('home');
 }
 
-// ── UI helpers ────────────────────────────────────────────────────────────────
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
+// ═══════════════════════════════════════════════
+// LEADERBOARD
+// ═══════════════════════════════════════════════
+async function loadLeaderboard() {
+  const el = document.getElementById('lb-list');
+  el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div class="spinner" style="margin:0 auto 12px"></div>Loading...</div>';
+  try {
+    const col = lbMode==='points'?'points':lbMode==='wins'?'wins':'streak';
+    const {data,error} = await sb.from('users').select('id,username,points,wins,losses,draws,streak,achievements').order(col,{ascending:false}).limit(50);
+    if (error) throw error;
+    if (!data||data.length===0) { el.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)">No players yet. Be the first!</div>'; return; }
+    const colors=['#f59e0b','#94a3b8','#cd7c2f'];
+    el.innerHTML = data.map((p,idx)=>{
+      const isMe = currentUser && p.id===currentUser.id;
+      const rankClass = idx===0?'gold':idx===1?'silver':idx===2?'bronze':'';
+      const bgColor = colors[idx]||'#7c3aed';
+      const initials = p.username.substr(0,2).toUpperCase();
+      const val = lbMode==='points'?p.points:lbMode==='wins'?p.wins:p.streak;
+      const valLabel = lbMode==='points'?'pts':lbMode==='wins'?'W':' streak';
+      const total=(p.wins||0)+(p.losses||0);
+      const wr=total?Math.round((p.wins||0)/total*100):0;
+      return `<div class="lb-item${isMe?' me':''}">
+        <div class="lb-rank ${rankClass}">${idx<3?['🥇','🥈','🥉'][idx]:idx+1}</div>
+        <div class="lb-avatar" style="background:linear-gradient(135deg,${bgColor}88,${bgColor}44)">${initials}</div>
+        <div class="lb-info">
+          <div class="lb-name">${p.username}${isMe?' <span style="font-size:11px;color:var(--accent2)">(you)</span>':''}</div>
+          <div class="lb-sub">${p.wins||0}W · ${p.losses||0}L · ${wr}% WR</div>
+        </div>
+        <div class="lb-score">${val||0}${valLabel}</div>
+      </div>`;
+    }).join('');
+  } catch(e) { el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--red)">Could not load leaderboard</div>`; }
 }
 
-function setConn(online) {
-  document.getElementById('conn-dot').classList.toggle('offline', !online);
-  document.getElementById('conn-label').textContent = online ? 'Connected' : 'Offline';
+function switchLbTab(mode, el) {
+  lbMode = mode;
+  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  loadLeaderboard();
 }
 
+// ═══════════════════════════════════════════════
+// PROFILE
+// ═══════════════════════════════════════════════
+function getLevel(pts) {
+  if (pts>=500) return {name:'💎 Diamond',next:1000};
+  if (pts>=200) return {name:'🥇 Gold',next:500};
+  if (pts>=75) return {name:'🥈 Silver',next:200};
+  return {name:'🥉 Bronze',next:75};
+}
+
+function loadProfile() {
+  if (!currentUser) return;
+  const u = currentUser;
+  const initials = u.username.substr(0,2).toUpperCase();
+  document.getElementById('prof-avatar').textContent = initials;
+  document.getElementById('prof-name').textContent = u.username;
+  const lvl = getLevel(u.points||0);
+  document.getElementById('prof-level').textContent = lvl.name;
+  document.getElementById('prof-wins').textContent = u.wins||0;
+  document.getElementById('prof-losses').textContent = u.losses||0;
+  document.getElementById('prof-draws').textContent = u.draws||0;
+  // XP bar
+  const xp = u.xp||0;
+  const xpLevel = Math.floor(xp/100);
+  const xpInLevel = xp%100;
+  document.getElementById('xp-label').textContent = `Level ${xpLevel+1} · ${xp} XP`;
+  document.getElementById('xp-next').textContent = `${100-xpInLevel} XP to next level`;
+  document.getElementById('xp-fill').style.width = xpInLevel+'%';
+  // Achievements
+  const achs = u.achievements||[];
+  document.getElementById('achievements-grid').innerHTML = ACHIEVEMENTS.map(a=>`
+    <div class="achievement${achs.includes(a.id)?' unlocked':''}">
+      <div class="achievement-icon">${a.icon}</div>
+      <div class="achievement-name">${a.name}</div>
+    </div>`).join('');
+  // History
+  const history = JSON.parse(localStorage.getItem('xo_history_'+u.id)||'[]');
+  const histEl = document.getElementById('history-list');
+  if (!history.length) { histEl.innerHTML='<div style="text-align:center;padding:24px;color:var(--muted)">No games yet — start playing!</div>'; return; }
+  histEl.innerHTML = history.slice(0,10).map(h=>{
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return `<div class="history-item">
+      <div class="history-result ${h.result}">${h.result==='win'?'W':h.result==='loss'?'L':'D'}</div>
+      <div class="history-info">
+        <div class="history-opp">vs ${h.opponent} <span style="font-size:11px;color:var(--muted2)">${h.mode}</span></div>
+        <div class="history-date">${dateStr}</div>
+      </div>
+      <div class="history-pts ${h.pts>=0?'plus':'minus'}">${h.pts>=0?'+':''}${h.pts} pts</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
 let toastTimer;
-function toast(msg) {
+function toast(msg, type='') {
   const el = document.getElementById('toast');
   el.textContent = msg;
-  el.classList.add('show');
+  el.className = 'toast show'+(type?' '+type:'');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 3000);
 }
 
-// Join-code auto uppercase
-document.getElementById('join-code').addEventListener('input', function() {
-  this.value = this.value.toUpperCase();
-});
+// Close modals on overlay click
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('active')}));
+document.getElementById('join-code').addEventListener('input',function(){this.value=this.value.toUpperCase();});
 </script>
 </body>
 </html>
