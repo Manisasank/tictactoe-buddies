@@ -28,3 +28,8 @@ git clone [https://github.com/Manisasank/tictactoe-buddies.git](https://github.c
 cd tictactoe-buddies
 
 # 3. Open index.html in your browser or run via Live Server
+
+'''
+
+#Author 
+- Y Mani Shasank 
