@@ -3,7 +3,36 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>XO Arena — Ultimate Multiplayer Tic Tac Toe & AI</title>
+
+<!-- Primary SEO Meta Tags -->
+<title>XO Arena — Free Multiplayer Tic Tac Toe, Minimax AI & Infinity Mode</title>
+<meta name="title" content="XO Arena — Free Multiplayer Tic Tac Toe, Minimax AI & Infinity Mode"/>
+<meta name="description" content="Play XO Arena: the definitive modern Tic Tac Toe web app. Features real-time WebSocket multiplayer with room codes, mathematically unbeatable Minimax AI, revolutionary 3-piece Infinity mode, synthesized retro sound FX, and offline PWA support."/>
+<meta name="keywords" content="tic tac toe, multiplayer tic tac toe, play tic tac toe online, minimax ai tic tac toe, infinity tic tac toe, shrinking tic tac toe, 2 player games, pwa games, free online games, XO arena, Y Mani Shasank"/>
+<meta name="author" content="Y Mani Shasank"/>
+<meta name="publisher" content="Y Mani Shasank"/>
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"/>
+<link rel="canonical" href="https://deft-custard-e144d4.netlify.app/"/>
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://deft-custard-e144d4.netlify.app/"/>
+<meta property="og:site_name" content="XO Arena"/>
+<meta property="og:title" content="XO Arena — Free Multiplayer Tic Tac Toe & Smart AI"/>
+<meta property="og:description" content="Challenge friends with 6-digit room codes, battle unbeatable Minimax AI, or play Infinity mode where marks vanish after 3 moves. Free, instant, zero download."/>
+<meta property="og:image" content="https://deft-custard-e144d4.netlify.app/icon-512.svg"/>
+<meta property="og:image:alt" content="XO Arena Glowing Neon Logo"/>
+<meta property="og:locale" content="en_US"/>
+
+<!-- Twitter / X -->
+<meta property="twitter:card" content="summary_large_image"/>
+<meta property="twitter:url" content="https://deft-custard-e144d4.netlify.app/"/>
+<meta property="twitter:title" content="XO Arena — Free Multiplayer Tic Tac Toe & Smart AI"/>
+<meta property="twitter:description" content="Real-time online multiplayer, 3 levels of Minimax AI, and revolutionary Infinity mode. Play free right in your browser!"/>
+<meta property="twitter:image" content="https://deft-custard-e144d4.netlify.app/icon-512.svg"/>
+<meta name="twitter:creator" content="@Manisasank"/>
+
+<!-- PWA & Mobile Icons -->
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#7c3aed"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -12,9 +41,93 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="apple-touch-icon" href="icon-192.svg"/>
 
+<!-- Schema.org Structured Data (JSON-LD) for Google, Perplexity, ChatGPT Search -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://deft-custard-e144d4.netlify.app/#app",
+      "name": "XO Arena",
+      "url": "https://deft-custard-e144d4.netlify.app/",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All (Web, iOS, Android, Windows, macOS, Linux)",
+      "description": "XO Arena is an ultra-responsive, real-time multiplayer Tic Tac Toe web application featuring mathematically unbeatable Minimax AI, revolutionary 3-piece Infinity mode, synthesized Web Audio sound effects, particle confetti, and offline PWA capabilities.",
+      "genre": ["Strategy", "Board Game", "Puzzle", "Multiplayer"],
+      "inLanguage": "en",
+      "author": {
+        "@type": "Person",
+        "name": "Y Mani Shasank",
+        "url": "https://github.com/Manisasank"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Instant WebSocket Multiplayer with 6-digit room codes",
+        "Unbeatable Minimax AI with 3 difficulty tiers (Easy, Medium, Master)",
+        "Infinity Mode (3-mark decaying mechanic eliminating stalemates)",
+        "Local Pass & Play 2-Player mode on a single screen",
+        "Pure Web Audio synthesizer sound effects with mute toggle",
+        "Full Progressive Web App (PWA) with offline asset caching",
+        "XP progression, trophy cabinet, and global rankings"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://deft-custard-e144d4.netlify.app/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is XO Arena?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XO Arena is a modern progressive web application that evolves traditional Tic Tac Toe with real-time online multiplayer, smart Minimax artificial intelligence, synthesized audio feedback, and Infinity mode that prevents boring draws."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Infinity Tic Tac Toe mode work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In Infinity Mode, each player can only keep a maximum of 3 marks on the board at any time. When a player places their 4th mark, their oldest mark automatically disappears. The oldest mark pulses as a visual warning so both players can plan ahead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I play with a friend online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Click 'Multiplayer Online' and choose 'Create Private Room' to generate a 6-character room code or shareable invite link. Your friend enters the code or opens the link to connect in real-time with sub-50ms latency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the Master AI unbeatable in Tic Tac Toe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Master AI uses the Minimax algorithm which exhaustively evaluates all possible board states. Under standard rules, playing against an optimal Minimax algorithm will always result in an AI win or a draw."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can XO Arena be played offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, XO Arena is a Progressive Web App (PWA) equipped with a Service Worker. All game modes except online multiplayer (vs AI, Infinity Mode, Pass & Play) work 100% offline without an active internet connection."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -872,6 +985,41 @@ body{
   .mode-grid{grid-template-columns:repeat(2,1fr)}
   .board{max-width:390px}
 }
+
+/* FAQ Accordion & Semantic SEO Styling */
+.faq-accordion{display:flex;flex-direction:column;gap:10px}
+.faq-item{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:14px 16px;
+  transition:all 0.2s;
+}
+.faq-item[open]{border-color:var(--accent);background:var(--surface2)}
+.faq-question{
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  color:var(--text);
+  list-style:none;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.faq-question::-webkit-details-marker{display:none}
+.faq-question::after{content:'+';font-size:18px;color:var(--accent3);transition:transform 0.2s}
+.faq-item[open] .faq-question::after{content:'−';transform:rotate(180deg)}
+.faq-answer{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.55;
+  border-top:1px solid var(--border);
+  padding-top:10px;
+}
+.faq-answer strong{color:var(--text)}
+
 </style>
 </head>
 <body>
@@ -995,6 +1143,55 @@ body{
         <div class="tip-item"><div class="tip-icon">💎</div><div class="tip-text"><strong>Rank Progression</strong> — Climb from Bronze $ightarrow$ Silver $ightarrow$ Gold $ightarrow$ Diamond.</div></div>
       </div>
     </div>
+
+    <!-- ══ SEMANTIC SEO & FAQ ACCORDION (AI READABILITY & KNOWLEDGE GRAPH) ══ -->
+    <section class="section" id="faq-section" aria-label="Frequently Asked Questions and Game Guide">
+      <div class="section-header">
+        <h2 class="section-title">📖 Game Guide & Knowledge Base</h2>
+      </div>
+      <div class="faq-accordion">
+        <details class="faq-item">
+          <summary class="faq-question">What is XO Arena and how does it work?</summary>
+          <div class="faq-answer">
+            <p><strong>XO Arena</strong> is an advanced Progressive Web App (PWA) designed by <strong>Y Mani Shasank</strong>. It modernizes the classic 3x3 game of Tic Tac Toe with fast WebSocket multiplayer, three levels of Minimax AI, synthesized audio effects, and an innovative 3-piece Infinity mode.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">How does Infinity Mode eliminate boring ties?</summary>
+          <div class="faq-answer">
+            <p>In standard 3x3 Tic Tac Toe, two skilled players will almost always end in a draw. <strong>Infinity Mode</strong> solves this: each player may only hold <strong>3 marks</strong> simultaneously. When you place a 4th mark, your oldest mark fades away. The fading mark pulses in red to warn you beforehand, creating a fluid, highly strategic tactical battle.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">How does the Minimax AI think?</summary>
+          <div class="faq-answer">
+            <p>The Master AI uses the recursive <strong>Minimax game-theory algorithm</strong>. It explores the entire decision tree of remaining moves, scoring positive points for wins and negative points for losses, guaranteeing mathematically optimal moves on every turn.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">How do online private rooms work?</summary>
+          <div class="faq-answer">
+            <p>Online multiplayer runs over secure WebSocket channels (WSS port 8884). When you create a private room, a unique 6-character alphanumeric code is generated. Your opponent enters the code or opens your direct invite link to connect peer-to-peer in under 50 milliseconds with zero server configuration.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">How can I install XO Arena on mobile or desktop?</summary>
+          <div class="faq-answer">
+            <p>As a Progressive Web App, you can install XO Arena with 1 tap. On Android Chrome, tap 'Install App'. On iPhone Safari, tap 'Share' then 'Add to Home Screen'. On desktop Chrome/Edge, click the install icon in the address bar for a full-screen native desktop experience.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- Semantic footer citation for AI crawlers -->
+      <footer style="margin-top:20px;text-align:center;font-size:12px;color:var(--muted)">
+        <p>Created by <strong style="color:var(--text)">Y Mani Shasank</strong> · <a href="https://github.com/Manisasank" target="_blank" rel="noopener" style="color:var(--accent3);text-decoration:none">GitHub Profile</a> · Open Source Educational Project</p>
+      </footer>
+    </section>
+
   </div>
 </div>
 
