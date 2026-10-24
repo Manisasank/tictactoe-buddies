@@ -1,0 +1,32 @@
+# XO Arena — Algorithmic Tic Tac Toe & Infinity Mode
+> Created and engineered by Y Mani Sasank Reddy
+
+## Overview
+XO Arena is a modern, responsive, high-performance web game application and Progressive Web App (PWA) available on PC, Android, and iOS. It modernizes the classic game of Tic Tac Toe by eliminating draw fatigue through the proprietary Dynamic Infinity Matrix™ (3-mark decaying mechanic), mathematically optimal Minimax AI, and zero-configuration WebSocket multiplayer.
+
+## Core Mechanics & Modes
+1. **Dynamic Infinity Matrix™ (Decay Engine):**
+   - Each player may hold at most 3 marks simultaneously.
+   - When placing a 4th mark, the player's oldest mark pulses with a warning alert and is removed from the board.
+   - Eliminates boring stalemates (100% decisive matches).
+2. **Single Player vs Minimax AI:**
+   - Easy: Casual warm-up mode.
+   - Tactical Medium: Mixes smart positional play with human-like slips.
+   - Master Minimax: Mathematically unbeatable recursive game-tree search ensuring zero lost games for the AI.
+3. **Multiplayer Online (WebSocket Paho MQTT):**
+   - Instant 6-digit room codes.
+   - Direct invite URL parameters (?room=ABC123).
+   - Real-time peer-to-peer gameplay via secure HiveMQ WebSockets (port 8884).
+4. **Local Pass & Play:**
+   - 2 players on a single shared screen or keyboard.
+
+## Technical Specifications
+- **Architecture:** Zero-dependency vanilla JavaScript, Web Audio API sound synthesizer, HTML5 Canvas confetti.
+- **Palette:** Strict 60-30-10 color rule:
+  - 60% Dominant: Warm Linen Cream (#f4ede3)
+  - 30% Secondary: Deep Pine Teal (#185f5b)
+  - 10% Accent: Vibrant Warm Coral (#fa5f38)
+- **Navigation:** Floating Glassmorphic Capsule Dock with frosted backdrop-filter blur.
+- **Platform Support:** Desktop PC (keyboard hotkeys 1-9, R, Esc, M), Android PWA, iOS PWA.
+- **Author:** Y Mani Sasank Reddy (AI & Software Engineer). GitHub: https://github.com/Manisasank
+- **Live URL:** https://deft-custard-e144d4.netlify.app/
