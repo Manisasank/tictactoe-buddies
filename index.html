@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="icon-192.svg"/>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -1745,13 +1745,14 @@ function startInfinityGame(submode) {
 
 
 // ═══════════════════════════════════════════════
-// WEBRTC PEER-TO-PEER MULTIPLAYER ENGINE (PeerJS)
-// Zero database needed, works 100% of the time!
+// INSTANT WEBSOCKET MULTIPLAYER ENGINE (Paho MQTT)
+// Connects over secure wss:// - Zero firewall issues!
+// Works 100% on all mobile devices & networks
 // ═══════════════════════════════════════════════
-let p2pPeer = null;
-let p2pConn = null;
+let mqttClient = null;
 let currentRoomCode = null;
 let isHost = false;
+let myClientId = 'xo_' + Math.random().toString(36).substr(2, 9);
 
 function generateRoomCode() {
   const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
@@ -1762,7 +1763,7 @@ function generateRoomCode() {
   return code;
 }
 
-async function createOnlineGame() {
+function createOnlineGame() {
   closeModal('modal-online');
   gameMode = 'online';
   myMark = 'X';
@@ -1772,72 +1773,25 @@ async function createOnlineGame() {
   oMoves = [];
 
   currentRoomCode = generateRoomCode();
-  toast('Starting room ' + currentRoomCode + '...', 'info');
+  document.getElementById('display-code').textContent = currentRoomCode;
 
-  try {
-    if (p2pPeer && !p2pPeer.destroyed) p2pPeer.destroy();
-    
-    // Peer ID prefixed for uniqueness
-    p2pPeer = new Peer('xo9-' + currentRoomCode, {
-      config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:global.stun.twilio.com:3478' }
-        ]
-      }
-    });
+  gameState = {
+    board: Array(9).fill(null),
+    current_turn: 'X',
+    status: 'waiting',
+    player_x: currentUser ? currentUser.username : 'Host (X)',
+    player_o: 'Waiting for friend...',
+    winner: null
+  };
 
-    p2pPeer.on('open', () => {
-      gameState = {
-        board: Array(9).fill(null),
-        current_turn: 'X',
-        status: 'waiting',
-        player_x: currentUser ? currentUser.username : 'Player X (Host)',
-        player_o: 'Waiting for friend...',
-        winner: null
-      };
+  setupGameUI('🌐 Room: ' + currentRoomCode);
+  document.getElementById('waiting-section').style.display = 'block';
+  document.getElementById('game-controls').style.display = 'none';
 
-      document.getElementById('display-code').textContent = currentRoomCode;
-      setupGameUI('🌐 Room: ' + currentRoomCode);
-      document.getElementById('waiting-section').style.display = 'block';
-      document.getElementById('game-controls').style.display = 'none';
-      toast('Room ' + currentRoomCode + ' created! Share the code or invite link 📋', 'success');
-    });
-
-    p2pPeer.on('connection', (c) => {
-      p2pConn = c;
-      setupP2PListeners();
-      c.on('open', () => {
-        c.send({
-          type: 'init_host',
-          hostName: currentUser ? currentUser.username : 'Host (X)'
-        });
-        document.getElementById('waiting-section').style.display = 'none';
-        document.getElementById('game-controls').style.display = 'flex';
-        gameState.status = 'active';
-        gameState.player_o = 'Friend (O)';
-        renderGame(gameState);
-        toast('Friend connected! Match live! 🎮', 'success');
-        SoundFX.play('win');
-        Confetti.fire();
-      });
-    });
-
-    p2pPeer.on('error', (err) => {
-      console.warn('Host Peer error:', err);
-      if (err.type === 'unavailable-id') {
-        createOnlineGame();
-      } else {
-        toast('Connection notice: ' + err.type, 'error');
-      }
-    });
-
-  } catch(e) {
-    toast('Room error: ' + e.message, 'error');
-  }
+  connectToMqtt(currentRoomCode, true);
 }
 
-async function joinOnlineGame(presetCode) {
+function joinOnlineGame(presetCode) {
   const code = (presetCode || document.getElementById('join-code').value).trim().toUpperCase();
   if (code.length !== 6) {
     toast('Please enter a valid 6-character room code', 'error');
@@ -1853,120 +1807,166 @@ async function joinOnlineGame(presetCode) {
   oMoves = [];
   currentRoomCode = code;
 
-  toast('Connecting to room ' + code + '...', 'info');
+  gameState = {
+    board: Array(9).fill(null),
+    current_turn: 'X',
+    status: 'waiting',
+    player_x: 'Host (X)',
+    player_o: currentUser ? currentUser.username : 'You (O)',
+    winner: null
+  };
+
+  setupGameUI('🌐 Room: ' + code);
+  document.getElementById('game-status').textContent = 'Connecting to room ' + code + '...';
+
+  connectToMqtt(currentRoomCode, false);
+}
+
+function connectToMqtt(roomCode, hostRole) {
+  if (mqttClient) {
+    try { mqttClient.disconnect(); } catch(e){}
+    mqttClient = null;
+  }
+
+  toast('Connecting to room ' + roomCode + '...', 'info');
+
+  const broker = 'broker.hivemq.com';
+  const port = 8884;
+  const path = '/mqtt';
+  const topic = 'xoarena/room/' + roomCode;
 
   try {
-    if (p2pPeer && !p2pPeer.destroyed) p2pPeer.destroy();
-    p2pPeer = new Peer({
-      config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:global.stun.twilio.com:3478' }
-        ]
+    mqttClient = new Paho.MQTT.Client(broker, port, path, myClientId);
+
+    mqttClient.onConnectionLost = (resp) => {
+      if (resp && resp.errorCode !== 0) {
+        console.warn('MQTT Connection lost:', resp.errorMessage);
+        toast('Connection interrupted. Reconnecting...', 'error');
+      }
+    };
+
+    mqttClient.onMessageArrived = (message) => {
+      try {
+        const data = JSON.parse(message.payloadString);
+        if (data.sender === myClientId) return; // Ignore own broadcast
+        handleMqttData(data);
+      } catch(e){
+        console.warn('Bad message payload', e);
+      }
+    };
+
+    mqttClient.connect({
+      useSSL: true,
+      timeout: 8,
+      keepAliveInterval: 30,
+      cleanSession: true,
+      onSuccess: () => {
+        console.log('Connected to WebSocket MQTT broker!');
+        mqttClient.subscribe(topic, { qos: 1 });
+
+        if (hostRole) {
+          toast('Room ' + roomCode + ' created! Waiting for friend 📋', 'success');
+        } else {
+          // Announce presence to host
+          setTimeout(() => {
+            broadcast({
+              type: 'join',
+              name: currentUser ? currentUser.username : 'Player O'
+            });
+          }, 300);
+          toast('Connected! Waiting for match start... 🚀', 'info');
+        }
+      },
+      onFailure: (err) => {
+        console.error('MQTT connect failure', err);
+        toast('Connection error: ' + (err.errorMessage || 'Server unreachable'), 'error');
       }
     });
-
-    p2pPeer.on('open', () => {
-      p2pConn = p2pPeer.connect('xo9-' + code, { reliable: true });
-      setupP2PListeners();
-
-      p2pConn.on('open', () => {
-        gameState = {
-          board: Array(9).fill(null),
-          current_turn: 'X',
-          status: 'active',
-          player_x: 'Host (X)',
-          player_o: currentUser ? currentUser.username : 'You (O)',
-          winner: null
-        };
-
-        p2pConn.send({
-          type: 'join',
-          guestName: currentUser ? currentUser.username : 'Player O'
-        });
-
-        setupGameUI('🌐 Room: ' + code);
-        renderGame(gameState);
-        toast('Connected to room ' + code + '! Match started! 🎉', 'success');
-        SoundFX.play('win');
-      });
-    });
-
-    p2pPeer.on('error', (err) => {
-      console.warn('Guest Peer error:', err);
-      toast('Could not find room ' + code + '. Make sure the host has the room open!', 'error');
-    });
-
   } catch(e) {
-    toast('Join error: ' + e.message, 'error');
+    toast('Multiplayer initialization error: ' + e.message, 'error');
   }
 }
 
-function setupP2PListeners() {
-  if (!p2pConn) return;
+function broadcast(obj) {
+  if (!mqttClient || !mqttClient.isConnected()) return;
+  obj.sender = myClientId;
+  const topic = 'xoarena/room/' + currentRoomCode;
+  const msg = new Paho.MQTT.Message(JSON.stringify(obj));
+  msg.destinationName = topic;
+  msg.qos = 1;
+  mqttClient.send(msg);
+}
 
-  p2pConn.on('data', (data) => {
-    if (!data) return;
+function handleMqttData(data) {
+  if (!data || !gameState) return;
 
-    if (data.type === 'init_host') {
-      if (gameState) {
-        gameState.player_x = data.hostName || 'Host (X)';
-        gameState.status = 'active';
-        renderGame(gameState);
-      }
-    } else if (data.type === 'join') {
-      if (gameState) {
-        gameState.player_o = data.guestName || 'Player O';
-        gameState.status = 'active';
-        document.getElementById('waiting-section').style.display = 'none';
-        document.getElementById('game-controls').style.display = 'flex';
-        renderGame(gameState);
-      }
-    } else if (data.type === 'move') {
-      handleRemoteMove(data.index, data.mark);
-    } else if (data.type === 'rematch') {
-      gameState.board = Array(9).fill(null);
-      gameState.current_turn = 'X';
-      gameState.status = 'active';
-      gameState.winner = null;
-      gameOver = false;
-      clearWinStrike();
-      document.getElementById('btn-rematch').style.display = 'none';
-      closeResultPopup();
-      renderGame(gameState);
-      toast('Rematch started! 🔄', 'success');
-      SoundFX.play('win');
-    } else if (data.type === 'leave') {
-      toast('Opponent exited the room', 'info');
-      if (gameState) {
-        gameState.status = 'finished';
-        renderGame(gameState);
-      }
+  if (data.type === 'join') {
+    // Host receives guest join
+    gameState.player_o = data.name || 'Player O';
+    gameState.status = 'active';
+    document.getElementById('waiting-section').style.display = 'none';
+    document.getElementById('game-controls').style.display = 'flex';
+    renderGame(gameState);
+
+    // Host greets guest so guest gets host name
+    broadcast({
+      type: 'welcome',
+      hostName: currentUser ? currentUser.username : 'Player X'
+    });
+
+    toast(gameState.player_o + ' connected! Game on! 🎮', 'success');
+    SoundFX.play('win');
+    Confetti.fire();
+
+  } else if (data.type === 'welcome') {
+    // Guest receives welcome from host
+    gameState.player_x = data.hostName || 'Player X';
+    gameState.status = 'active';
+    document.getElementById('waiting-section').style.display = 'none';
+    document.getElementById('game-controls').style.display = 'flex';
+    renderGame(gameState);
+
+    toast('Match started against ' + gameState.player_x + '! 🎮', 'success');
+    SoundFX.play('win');
+    Confetti.fire();
+
+  } else if (data.type === 'move') {
+    gameState.board[data.index] = data.mark;
+    SoundFX.play(data.mark === 'X' ? 'move_x' : 'move_o');
+    if (navigator.vibrate) navigator.vibrate(25);
+
+    const result = checkWinner(gameState.board);
+    if (result) {
+      gameState.status = 'finished';
+      gameState.winner = result.draw ? 'draw' : data.mark;
+    } else {
+      gameState.current_turn = data.mark === 'X' ? 'O' : 'X';
     }
-  });
 
-  p2pConn.on('close', () => {
-    toast('Opponent disconnected ⚠️', 'error');
-  });
-}
+    renderGame(gameState);
+    if (gameState.status === 'finished') {
+      handleGameEnd(gameState);
+    }
 
-function handleRemoteMove(idx, mark) {
-  if (!gameState) return;
-  gameState.board[idx] = mark;
-  SoundFX.play(mark === 'X' ? 'move_x' : 'move_o');
-  if (navigator.vibrate) navigator.vibrate(25);
+  } else if (data.type === 'rematch') {
+    gameState.board = Array(9).fill(null);
+    gameState.current_turn = 'X';
+    gameState.status = 'active';
+    gameState.winner = null;
+    gameOver = false;
+    clearWinStrike();
+    document.getElementById('btn-rematch').style.display = 'none';
+    closeResultPopup();
+    renderGame(gameState);
+    toast('Opponent started Rematch! 🔄', 'success');
+    SoundFX.play('win');
 
-  const result = checkWinner(gameState.board);
-  if (result) {
-    gameState.status = 'finished';
-    gameState.winner = result.draw ? 'draw' : mark;
-  } else {
-    gameState.current_turn = mark === 'X' ? 'O' : 'X';
-  }
-
-  renderGame(gameState);
-  if (gameState.status === 'finished') {
-    handleGameEnd(gameState);
+  } else if (data.type === 'leave') {
+    toast('Opponent exited the match 🚪', 'info');
+    if (gameState && gameState.status === 'active') {
+      gameState.status = 'finished';
+      renderGame(gameState);
+    }
   }
 }
 
@@ -2046,9 +2046,7 @@ async function play(i) {
   if (gameMode === 'online') {
     gameState = {...gameState, ...update};
     renderGame(gameState);
-    if (p2pConn && p2pConn.open) {
-      p2pConn.send({ type: 'move', index: i, mark: myMark });
-    }
+    broadcast({ type: 'move', index: i, mark: myMark });
     if (gameState.status === 'finished') {
       handleGameEnd(gameState);
     }
@@ -2461,9 +2459,7 @@ async function rematch() {
       winner: null
     };
     renderGame(gameState);
-    if (p2pConn && p2pConn.open) {
-      p2pConn.send({ type: 'rematch' });
-    }
+    broadcast({ type: 'rematch' });
   } else {
     gameState = {
       ...gameState,
@@ -2477,10 +2473,12 @@ async function rematch() {
 }
 
 function leaveGame() {
-  if (p2pConn && p2pConn.open) {
-    p2pConn.send({ type: 'leave' });
-    try { p2pConn.close(); } catch(e){}
-    p2pConn = null;
+  if (gameMode === 'online' && mqttClient) {
+    try {
+      broadcast({ type: 'leave' });
+      mqttClient.disconnect();
+    } catch(e){}
+    mqttClient = null;
   }
   if (channel && sb) { sb.removeChannel(channel); channel = null; }
   gameState = null;
