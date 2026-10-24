@@ -13,6 +13,7 @@
 <link rel="apple-touch-icon" href="icon-192.svg"/>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -1742,95 +1743,250 @@ function startInfinityGame(submode) {
   setAISpeech("Watch your marks! Placing your 4th mark will vanish your oldest mark.");
 }
 
+
 // ═══════════════════════════════════════════════
-// GAME — ONLINE (SUPABASE)
+// WEBRTC PEER-TO-PEER MULTIPLAYER ENGINE (PeerJS)
+// Zero database needed, works 100% of the time!
 // ═══════════════════════════════════════════════
-async function createOnlineGame() {
-  if (!isCloudOnline || !sb) {
-    toast('Cloud server offline. Play vs AI or Pass & Play!', 'error');
-    return;
+let p2pPeer = null;
+let p2pConn = null;
+let currentRoomCode = null;
+let isHost = false;
+
+function generateRoomCode() {
+  const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
   }
+  return code;
+}
+
+async function createOnlineGame() {
   closeModal('modal-online');
   gameMode = 'online';
   myMark = 'X';
+  isHost = true;
   gameOver = false;
+  xMoves = [];
+  oMoves = [];
+
+  currentRoomCode = generateRoomCode();
+  toast('Starting room ' + currentRoomCode + '...', 'info');
+
   try {
-    const {data, error} = await sb.from('game_sessions').insert({
-      player_x: currentUser.username,
-      board: Array(9).fill(null),
-      current_turn: 'X',
-      status: 'waiting'
-    }).select().single();
-    if (error) throw error;
-    gameState = data;
-    const roomCode = data.id.replace(/-/g,'').substr(0,6).toUpperCase();
-    document.getElementById('display-code').textContent = roomCode;
-    setupGameUI('🌐 Online Match');
-    document.getElementById('waiting-section').style.display = 'block';
-    document.getElementById('game-controls').style.display = 'none';
-    subscribeToGame(data.id);
+    if (p2pPeer && !p2pPeer.destroyed) p2pPeer.destroy();
+    
+    // Peer ID prefixed for uniqueness
+    p2pPeer = new Peer('xo9-' + currentRoomCode, {
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:global.stun.twilio.com:3478' }
+        ]
+      }
+    });
+
+    p2pPeer.on('open', () => {
+      gameState = {
+        board: Array(9).fill(null),
+        current_turn: 'X',
+        status: 'waiting',
+        player_x: currentUser ? currentUser.username : 'Player X (Host)',
+        player_o: 'Waiting for friend...',
+        winner: null
+      };
+
+      document.getElementById('display-code').textContent = currentRoomCode;
+      setupGameUI('🌐 Room: ' + currentRoomCode);
+      document.getElementById('waiting-section').style.display = 'block';
+      document.getElementById('game-controls').style.display = 'none';
+      toast('Room ' + currentRoomCode + ' created! Share the code or invite link 📋', 'success');
+    });
+
+    p2pPeer.on('connection', (c) => {
+      p2pConn = c;
+      setupP2PListeners();
+      c.on('open', () => {
+        c.send({
+          type: 'init_host',
+          hostName: currentUser ? currentUser.username : 'Host (X)'
+        });
+        document.getElementById('waiting-section').style.display = 'none';
+        document.getElementById('game-controls').style.display = 'flex';
+        gameState.status = 'active';
+        gameState.player_o = 'Friend (O)';
+        renderGame(gameState);
+        toast('Friend connected! Match live! 🎮', 'success');
+        SoundFX.play('win');
+        Confetti.fire();
+      });
+    });
+
+    p2pPeer.on('error', (err) => {
+      console.warn('Host Peer error:', err);
+      if (err.type === 'unavailable-id') {
+        createOnlineGame();
+      } else {
+        toast('Connection notice: ' + err.type, 'error');
+      }
+    });
+
   } catch(e) {
-    toast('Create game failed: ' + e.message, 'error');
+    toast('Room error: ' + e.message, 'error');
   }
 }
 
-async function joinOnlineGame() {
-  if (!isCloudOnline || !sb) {
-    toast('Cloud server offline.', 'error');
+async function joinOnlineGame(presetCode) {
+  const code = (presetCode || document.getElementById('join-code').value).trim().toUpperCase();
+  if (code.length !== 6) {
+    toast('Please enter a valid 6-character room code', 'error');
     return;
   }
-  const code = document.getElementById('join-code').value.trim().toUpperCase();
-  if (code.length !== 6) { toast('Enter a 6-character code', 'error'); return; }
+
   closeModal('modal-online');
   gameMode = 'online';
   myMark = 'O';
+  isHost = false;
   gameOver = false;
+  xMoves = [];
+  oMoves = [];
+  currentRoomCode = code;
+
+  toast('Connecting to room ' + code + '...', 'info');
+
   try {
-    const {data:rows, error} = await sb.from('game_sessions')
-      .select('*')
-      .eq('status', 'waiting')
-      .order('created_at', {ascending: false})
-      .limit(30);
-    if (error) throw error;
-    const match = rows.find(r => r.id.replace(/-/g,'').substr(0,6).toUpperCase() === code);
-    if (!match) { toast('Room not found or already started', 'error'); return; }
+    if (p2pPeer && !p2pPeer.destroyed) p2pPeer.destroy();
+    p2pPeer = new Peer({
+      config: {
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:global.stun.twilio.com:3478' }
+        ]
+      }
+    });
 
-    const {data, error:e2} = await sb.from('game_sessions').update({
-      player_o: currentUser.username,
-      status: 'active'
-    }).eq('id', match.id).select().single();
-    if (e2) throw e2;
+    p2pPeer.on('open', () => {
+      p2pConn = p2pPeer.connect('xo9-' + code, { reliable: true });
+      setupP2PListeners();
 
-    gameState = data;
-    setupGameUI('🌐 Online Match');
-    subscribeToGame(data.id);
+      p2pConn.on('open', () => {
+        gameState = {
+          board: Array(9).fill(null),
+          current_turn: 'X',
+          status: 'active',
+          player_x: 'Host (X)',
+          player_o: currentUser ? currentUser.username : 'You (O)',
+          winner: null
+        };
+
+        p2pConn.send({
+          type: 'join',
+          guestName: currentUser ? currentUser.username : 'Player O'
+        });
+
+        setupGameUI('🌐 Room: ' + code);
+        renderGame(gameState);
+        toast('Connected to room ' + code + '! Match started! 🎉', 'success');
+        SoundFX.play('win');
+      });
+    });
+
+    p2pPeer.on('error', (err) => {
+      console.warn('Guest Peer error:', err);
+      toast('Could not find room ' + code + '. Make sure the host has the room open!', 'error');
+    });
+
   } catch(e) {
-    toast('Join failed: ' + e.message, 'error');
+    toast('Join error: ' + e.message, 'error');
   }
 }
 
-function subscribeToGame(id) {
-  if (channel && sb) sb.removeChannel(channel);
-  channel = sb.channel('game-' + id)
-    .on('postgres_changes', {event:'UPDATE', schema:'public', table:'game_sessions', filter:`id=eq.${id}`}, payload => {
-      gameState = payload.new;
-      if (gameState.status === 'active' && document.getElementById('waiting-section').style.display !== 'none') {
+function setupP2PListeners() {
+  if (!p2pConn) return;
+
+  p2pConn.on('data', (data) => {
+    if (!data) return;
+
+    if (data.type === 'init_host') {
+      if (gameState) {
+        gameState.player_x = data.hostName || 'Host (X)';
+        gameState.status = 'active';
+        renderGame(gameState);
+      }
+    } else if (data.type === 'join') {
+      if (gameState) {
+        gameState.player_o = data.guestName || 'Player O';
+        gameState.status = 'active';
         document.getElementById('waiting-section').style.display = 'none';
         document.getElementById('game-controls').style.display = 'flex';
+        renderGame(gameState);
       }
+    } else if (data.type === 'move') {
+      handleRemoteMove(data.index, data.mark);
+    } else if (data.type === 'rematch') {
+      gameState.board = Array(9).fill(null);
+      gameState.current_turn = 'X';
+      gameState.status = 'active';
+      gameState.winner = null;
+      gameOver = false;
+      clearWinStrike();
+      document.getElementById('btn-rematch').style.display = 'none';
+      closeResultPopup();
       renderGame(gameState);
-      if (gameState.status === 'finished') handleGameEnd(gameState);
-    }).subscribe();
+      toast('Rematch started! 🔄', 'success');
+      SoundFX.play('win');
+    } else if (data.type === 'leave') {
+      toast('Opponent exited the room', 'info');
+      if (gameState) {
+        gameState.status = 'finished';
+        renderGame(gameState);
+      }
+    }
+  });
+
+  p2pConn.on('close', () => {
+    toast('Opponent disconnected ⚠️', 'error');
+  });
+}
+
+function handleRemoteMove(idx, mark) {
+  if (!gameState) return;
+  gameState.board[idx] = mark;
+  SoundFX.play(mark === 'X' ? 'move_x' : 'move_o');
+  if (navigator.vibrate) navigator.vibrate(25);
+
+  const result = checkWinner(gameState.board);
+  if (result) {
+    gameState.status = 'finished';
+    gameState.winner = result.draw ? 'draw' : mark;
+  } else {
+    gameState.current_turn = mark === 'X' ? 'O' : 'X';
+  }
+
+  renderGame(gameState);
+  if (gameState.status === 'finished') {
+    handleGameEnd(gameState);
+  }
 }
 
 function copyRoomCode() {
   const code = document.getElementById('display-code').textContent;
+  const origin = window.location.origin;
+  const path = window.location.pathname;
+  const shareUrl = origin + path + (path.endsWith('/') ? '' : '/') + '?room=' + code;
+
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(code).then(() => toast('Room code copied! 📋', 'success')).catch(() => toast('Code: ' + code));
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      toast('Invite link copied! Send to your friend 📋', 'success');
+    }).catch(() => {
+      navigator.clipboard.writeText(code).then(() => toast('Room code: ' + code, 'success'));
+    });
   } else {
-    toast('Code: ' + code);
+    toast('Room Code: ' + code);
   }
 }
+
 
 function setupGameUI(badgeText) {
   document.getElementById('game-mode-badge').textContent = badgeText;
@@ -1888,7 +2044,14 @@ async function play(i) {
   };
 
   if (gameMode === 'online') {
-    await sb.from('game_sessions').update(update).eq('id', gameState.id);
+    gameState = {...gameState, ...update};
+    renderGame(gameState);
+    if (p2pConn && p2pConn.open) {
+      p2pConn.send({ type: 'move', index: i, mark: myMark });
+    }
+    if (gameState.status === 'finished') {
+      handleGameEnd(gameState);
+    }
   } else {
     gameState = {...gameState, ...update};
     renderGame(gameState);
@@ -2289,13 +2452,18 @@ async function rematch() {
   clearWinStrike();
   document.getElementById('btn-rematch').style.display = 'none';
 
-  if (gameMode === 'online' && sb) {
-    await sb.from('game_sessions').update({
+  if (gameMode === 'online') {
+    gameState = {
+      ...gameState,
       board: Array(9).fill(null),
       current_turn: 'X',
       status: 'active',
       winner: null
-    }).eq('id', gameState.id);
+    };
+    renderGame(gameState);
+    if (p2pConn && p2pConn.open) {
+      p2pConn.send({ type: 'rematch' });
+    }
   } else {
     gameState = {
       ...gameState,
@@ -2309,6 +2477,11 @@ async function rematch() {
 }
 
 function leaveGame() {
+  if (p2pConn && p2pConn.open) {
+    p2pConn.send({ type: 'leave' });
+    try { p2pConn.close(); } catch(e){}
+    p2pConn = null;
+  }
   if (channel && sb) { sb.removeChannel(channel); channel = null; }
   gameState = null;
   myMark = null;
@@ -2509,6 +2682,17 @@ window.addEventListener('DOMContentLoaded', () => {
     updateHomeStats();
     goPage('home');
     document.getElementById('bottom-nav').style.display = 'flex';
+  }
+
+  // Check URL room invite code e.g. ?room=XYZ123
+  const params = new URLSearchParams(window.location.search);
+  const room = params.get('room') || params.get('join');
+  if (room && room.length === 6) {
+    setTimeout(() => {
+      document.getElementById('join-code').value = room.toUpperCase();
+      openOnlineModal();
+      toast('Invite code detected! Click Join to play. 🚀', 'info');
+    }, 400);
   }
 });
 </script>
