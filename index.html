@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
 <!-- Primary SEO Meta Tags -->
-<title>XO Arena — Free Multiplayer Tic Tac Toe by Y Mani Sasank Reddy</title>
-<meta name="title" content="XO Arena — Free Multiplayer Tic Tac Toe by Y Mani Sasank Reddy"/>
-<meta name="description" content="Play XO Arena: the modern Tic Tac Toe web app built by Y Mani Sasank Reddy. Real-time WebSocket multiplayer with room codes, unbeatable Minimax AI, 3-piece Infinity mode, customizable profiles with photo upload, and offline PWA support."/>
+<title>XO Arena — Multiplayer Tic Tac Toe & Infinity Mode</title>
+<meta name="title" content="XO Arena — Multiplayer Tic Tac Toe & Infinity Mode"/>
+<meta name="description" content="Play XO Arena: modern Tic Tac Toe web app built by Y Mani Sasank Reddy. Real-time WebSocket multiplayer with room codes, unbeatable Minimax AI, 3-piece Infinity mode, customizable profiles with photo upload, floating glass capsule dock, and offline PWA support."/>
 <meta name="keywords" content="tic tac toe, multiplayer tic tac toe, play tic tac toe online, minimax ai tic tac toe, infinity tic tac toe, pwa games, free online games, XO arena, Y Mani Sasank Reddy"/>
 <meta name="author" content="Y Mani Sasank Reddy"/>
 <meta name="publisher" content="Y Mani Sasank Reddy"/>
@@ -18,16 +18,16 @@
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://deft-custard-e144d4.netlify.app/"/>
 <meta property="og:site_name" content="XO Arena"/>
-<meta property="og:title" content="XO Arena — Free Multiplayer Tic Tac Toe by Y Mani Sasank Reddy"/>
+<meta property="og:title" content="XO Arena — Multiplayer Tic Tac Toe & Infinity Mode"/>
 <meta property="og:description" content="Challenge friends with 6-digit room codes, battle unbeatable Minimax AI, or play Infinity mode where marks vanish after 3 moves. Free, instant, zero download."/>
 <meta property="og:image" content="https://deft-custard-e144d4.netlify.app/icon-512.svg"/>
-<meta property="og:image:alt" content="XO Arena Logo by Y Mani Sasank Reddy"/>
+<meta property="og:image:alt" content="XO Arena Logo"/>
 <meta property="og:locale" content="en_US"/>
 
 <!-- Twitter / X -->
 <meta property="twitter:card" content="summary_large_image"/>
 <meta property="twitter:url" content="https://deft-custard-e144d4.netlify.app/"/>
-<meta property="twitter:title" content="XO Arena — Free Multiplayer Tic Tac Toe by Y Mani Sasank Reddy"/>
+<meta property="twitter:title" content="XO Arena — Multiplayer Tic Tac Toe & Infinity Mode"/>
 <meta property="twitter:description" content="Real-time online multiplayer, 3 levels of Minimax AI, and revolutionary Infinity mode. Play free right in your browser!"/>
 <meta property="twitter:image" content="https://deft-custard-e144d4.netlify.app/icon-512.svg"/>
 <meta name="twitter:creator" content="@Manisasank"/>
@@ -53,7 +53,7 @@
       "url": "https://deft-custard-e144d4.netlify.app/",
       "applicationCategory": "GameApplication",
       "operatingSystem": "All (Web, iOS, Android, Windows, macOS, Linux)",
-      "description": "XO Arena is an ultra-responsive, real-time multiplayer Tic Tac Toe web application created by Y Mani Sasank Reddy featuring mathematically unbeatable Minimax AI, revolutionary 3-piece Infinity mode, profile customizations with photo uploads, synthesized sound effects, and offline PWA capabilities.",
+      "description": "XO Arena is an ultra-responsive, real-time multiplayer Tic Tac Toe web application created by Y Mani Sasank Reddy featuring mathematically unbeatable Minimax AI, revolutionary 3-piece Infinity mode, profile customizations with photo uploads, glass capsule navigation dock, synthesized sound effects, and offline PWA capabilities.",
       "genre": ["Strategy", "Board Game", "Puzzle", "Multiplayer"],
       "inLanguage": "en",
       "author": {
@@ -68,6 +68,7 @@
       },
       "featureList": [
         "Instant WebSocket Multiplayer with 6-digit room codes",
+        "Floating Glassmorphic Capsule Dock Navigation",
         "Unbeatable Minimax AI with 3 difficulty tiers (Easy, Medium, Master)",
         "Infinity Mode (3-mark decaying mechanic eliminating stalemates)",
         "Local Pass & Play 2-Player mode on a single screen",
@@ -85,7 +86,7 @@
           "name": "What is XO Arena?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "XO Arena is a modern progressive web application built by Y Mani Sasank Reddy that evolves traditional Tic Tac Toe with real-time online multiplayer, smart Minimax artificial intelligence, synthesized audio feedback, and Infinity mode that prevents boring draws."
+            "text": "XO Arena is a modern progressive web application built by Y Mani Sasank Reddy that evolves traditional Tic Tac Toe with real-time online multiplayer, smart Minimax artificial intelligence, synthesized audio feedback, floating glass capsule dock, and Infinity mode that prevents boring draws."
           }
         },
         {
@@ -124,7 +125,7 @@
    10% Accent:    #fa5f38 (Vibrant Warm Coral - CTAs, Badges)
    ═══════════════════════════════════════════════ */
 :root {
-  /* 60% Dominant (Page background & surfaces) */
+  /* 60% Dominant */
   --bg-dominant: #f4ede3;
   --bg-card: #ffffff;
   --bg-surface: #ede4d6;
@@ -135,7 +136,7 @@
   --border: rgba(24, 95, 91, 0.14);
   --border-strong: rgba(24, 95, 91, 0.28);
 
-  /* 30% Secondary (Header, Nav, Containers, Structure) */
+  /* 30% Secondary */
   --teal-primary: #185f5b;
   --teal-dark: #124845;
   --teal-deep: #0d3835;
@@ -144,7 +145,7 @@
   --teal-tint-hover: rgba(24, 95, 91, 0.15);
   --teal-text: #ffffff;
 
-  /* 10% Accent (CTA Buttons, Active States, Highlights) */
+  /* 10% Accent */
   --coral-accent: #fa5f38;
   --coral-hover: #e64e28;
   --coral-active: #cf431e;
@@ -191,11 +192,11 @@ html, body {
   flex-direction: column;
   overflow: hidden;
   background: var(--bg-dominant);
-  box-shadow: 0 0 40px rgba(20, 53, 51, 0.12);
+  box-shadow: 0 0 45px rgba(20, 53, 51, 0.15);
 }
 
 /* ═══════════════════════════════════════════════
-   BUTTONS & CONTROLS (10% CORAL & 30% TEAL)
+   BUTTONS & CONTROLS
    ═══════════════════════════════════════════════ */
 .btn {
   display: inline-flex;
@@ -216,7 +217,6 @@ html, body {
 }
 .btn:active { transform: scale(0.97); }
 
-/* Primary CTA = 10% Vibrant Coral */
 .btn-accent {
   background: var(--coral-accent);
   color: #ffffff;
@@ -227,7 +227,6 @@ html, body {
   box-shadow: 0 6px 18px var(--coral-glow);
 }
 
-/* Secondary CTA = 30% Pine Teal */
 .btn-secondary {
   background: var(--teal-primary);
   color: #ffffff;
@@ -261,7 +260,7 @@ html, body {
 .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: var(--radius-sm); }
 
 /* ═══════════════════════════════════════════════
-   PAGES SYSTEM
+   PAGES SYSTEM & SCROLL CONTAINERS
    ═══════════════════════════════════════════════ */
 .page {
   position: absolute;
@@ -281,6 +280,13 @@ html, body {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+.scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 96px; /* Clearance for Floating Glass Capsule Dock */
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ═══════════════════════════════════════════════
@@ -373,7 +379,7 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════
-   AUTH SCREEN (LOGIN & SIGNUP)
+   AUTH SCREEN (LOGIN & SIGNUP - ZERO HARDCODING)
    ═══════════════════════════════════════════════ */
 .auth-container {
   flex: 1;
@@ -554,9 +560,9 @@ html, body {
 
 .home-hero h1 {
   font-family: 'Syne', sans-serif;
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-main);
   margin-bottom: 8px;
 }
@@ -989,56 +995,75 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════
-   30% TEAL BOTTOM NAVIGATION DOCK
+   FLOATING GLASS CAPSULE DOCK
    ═══════════════════════════════════════════════ */
 .bottom-nav {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: var(--teal-primary);
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 440px;
+  height: 64px;
+  background: rgba(24, 95, 91, 0.82);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px; /* Floating Glass Capsule Dock Shape */
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 8px 12px;
-  box-shadow: 0 -4px 16px rgba(20, 53, 51, 0.1);
+  justify-content: space-between;
+  padding: 6px 10px;
+  box-shadow: 0 16px 38px rgba(13, 56, 53, 0.38),
+              0 4px 12px rgba(0, 0, 0, 0.12),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.45),
+              inset 0 -1px 1px rgba(0, 0, 0, 0.15);
   z-index: 100;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-item {
   flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  background: none;
+  justify-content: center;
+  gap: 2px;
+  background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  padding: 4px 0;
-  transition: all 0.2s;
+  padding: 4px 6px;
+  border-radius: 999px;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   outline: none;
+  position: relative;
 }
-.nav-item:hover, .nav-item.active {
+.nav-item:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+.nav-item.active {
+  color: #ffffff;
+  background: var(--coral-accent);
+  box-shadow: 0 4px 16px var(--coral-glow);
+  transform: translateY(-2px);
 }
 .nav-item.active .nav-icon {
-  background: var(--coral-accent);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px var(--coral-glow);
+  transform: scale(1.1);
 }
 .nav-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  transition: all 0.2s;
+  font-size: 18px;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nav-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1146,7 +1171,7 @@ html, body {
 /* Toast */
 .toast-container {
   position: fixed;
-  bottom: 74px;
+  bottom: 88px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
@@ -1194,14 +1219,14 @@ html, body {
 <div id="app">
 
   <!-- ═══════════════════════════════════════════════
-       AUTH PAGE (SIGN IN & CREATE ACCOUNT)
+       AUTH PAGE (CLEAN INPUTS - NO HARDCODED CREDS)
        ═══════════════════════════════════════════════ -->
   <div class="page active" id="page-auth">
     <div class="auth-container">
       <div class="auth-box">
-        <div class="auth-badge">OFFICIAL TOURNAMENT ARENA</div>
+        <div class="auth-badge">TOURNAMENT EDITION</div>
         <h1 class="auth-title">XO<span>★</span>Arena</h1>
-        <p class="auth-subtitle">Created by <strong>Y Mani Sasank Reddy</strong></p>
+        <p class="auth-subtitle">Crafted by <strong>Y Mani Sasank Reddy</strong></p>
 
         <div class="auth-card">
           <div class="auth-tabs">
@@ -1209,32 +1234,32 @@ html, body {
             <div class="auth-tab" onclick="switchAuthTab('signup')">Create Account</div>
           </div>
 
-          <!-- Sign In Form -->
+          <!-- Sign In Form: Clean placeholders, zero pre-filled values -->
           <div class="auth-form active" id="form-login">
             <div class="form-group">
               <label>Username</label>
-              <input class="form-input" id="login-name" type="text" placeholder="Enter username" value="Y Mani Sasank Reddy"/>
+              <input class="form-input" id="login-name" type="text" placeholder="Enter your username" autocomplete="username"/>
             </div>
             <div class="form-group">
               <label>Password</label>
               <div class="input-wrap">
-                <input class="form-input" id="login-pass" type="password" placeholder="••••••••" value="123456"/>
+                <input class="form-input" id="login-pass" type="password" placeholder="Enter your password" autocomplete="current-password"/>
                 <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('login-pass', this)" title="Show/Hide Password">👁️</button>
               </div>
             </div>
             <button class="btn btn-accent btn-full btn-lg" onclick="doLogin()">Sign In →</button>
           </div>
 
-          <!-- Create Account Form -->
+          <!-- Create Account Form: Clean placeholders, zero pre-filled values -->
           <div class="auth-form" id="form-signup">
             <div class="form-group">
               <label>Choose Username</label>
-              <input class="form-input" id="signup-name" type="text" placeholder="Your name (e.g. Y Mani Sasank Reddy)" maxlength="24"/>
+              <input class="form-input" id="signup-name" type="text" placeholder="Choose a unique username" maxlength="24" autocomplete="username"/>
             </div>
             <div class="form-group">
               <label>Create Password</label>
               <div class="input-wrap">
-                <input class="form-input" id="signup-pass" type="password" placeholder="At least 6 characters"/>
+                <input class="form-input" id="signup-pass" type="password" placeholder="Choose password (min 6 chars)" autocomplete="new-password"/>
                 <button type="button" class="pass-toggle-btn" onclick="togglePassVisibility('signup-pass', this)" title="Show/Hide Password">👁️</button>
               </div>
             </div>
@@ -1243,8 +1268,9 @@ html, body {
 
           <div class="divider">or</div>
 
+          <!-- Clean instant guest play -->
           <div class="quick-guest-btn" onclick="doGuest()">
-            ⚡ Instant Play as <strong>Y Mani Sasank Reddy</strong>
+            ⚡ Instant Guest Play
           </div>
         </div>
       </div>
@@ -1262,15 +1288,15 @@ html, body {
         <button class="icon-btn" id="btn-sound-toggle" onclick="toggleSound()" aria-label="Toggle Audio">🔊</button>
         <div class="coins-badge">🪙 <span id="hdr-coins">20</span></div>
         <div class="avatar-thumbnail" onclick="goPage('profile')" id="hdr-avatar" title="View Profile">
-          <span id="hdr-avatar-text">YM</span>
+          <span id="hdr-avatar-text">XP</span>
         </div>
       </div>
     </header>
 
-    <main style="flex:1;overflow-y:auto">
+    <main class="scroll-body">
       <div class="home-hero">
         <div class="creator-tag">Crafted by <strong>Y Mani Sasank Reddy</strong> <span>★</span></div>
-        <h1>Welcome Back,<br/><em id="hero-name">Y Mani Sasank Reddy</em>!</h1>
+        <h1>Welcome Back,<br/><em id="hero-name">Tactician</em>!</h1>
         <p>Challenge friends online with room codes, battle Minimax AI, or experience 3-piece Infinity mode.</p>
         <div class="hero-actions">
           <button class="btn btn-accent btn-lg" onclick="openAIModal()">🤖 vs AI</button>
@@ -1325,7 +1351,7 @@ html, body {
           <details class="faq-item">
             <summary class="faq-question">What is XO Arena and who developed it?</summary>
             <div class="faq-answer">
-              <p><strong>XO Arena</strong> is an advanced Progressive Web App (PWA) designed and developed by <strong>Y Mani Sasank Reddy</strong>. It modernizes the classic game of Tic Tac Toe with fast WebSocket multiplayer, three levels of Minimax AI, synthesized audio effects, and an innovative 3-piece Infinity mode.</p>
+              <p><strong>XO Arena</strong> is an advanced Progressive Web App (PWA) designed and developed by <strong>Y Mani Sasank Reddy</strong>. It modernizes the classic game of Tic Tac Toe with fast WebSocket multiplayer, three levels of Minimax AI, synthesized audio effects, a floating glass capsule dock, and an innovative 3-piece Infinity mode.</p>
             </div>
           </details>
 
@@ -1367,18 +1393,18 @@ html, body {
       <button class="btn btn-sm btn-ghost" style="color:#ffffff;background:rgba(255,255,255,0.18)" onclick="doLogout()">Sign Out</button>
     </header>
 
-    <main style="flex:1;overflow-y:auto;padding:20px">
+    <main class="scroll-body" style="padding:20px;padding-bottom:96px">
       <!-- Profile Card -->
       <div class="profile-card">
         <div class="profile-photo-wrap">
           <div class="profile-avatar-large" id="prof-avatar-large">
-            <span id="prof-avatar-text">YM</span>
+            <span id="prof-avatar-text">XP</span>
           </div>
           <div class="photo-edit-btn" onclick="openEditProfileModal()" title="Edit Profile & Photo">✏️</div>
         </div>
 
-        <h2 class="profile-name" id="prof-name">Y Mani Sasank Reddy</h2>
-        <p class="profile-bio" id="prof-bio">Grandmaster Tactician 🎮</p>
+        <h2 class="profile-name" id="prof-name">Tactician</h2>
+        <p class="profile-bio" id="prof-bio">Grandmaster Strategist 🎮</p>
         <div class="profile-rank-badge" id="prof-level">🥉 Bronze Champion</div>
 
         <div style="margin-top:16px;display:flex;gap:10px;justify-content:center">
@@ -1410,7 +1436,7 @@ html, body {
       <div class="logo" onclick="goPage('home')">XO<span>★</span>Arena</div>
       <div class="coins-badge">🪙 <span id="hdr-coins2">20</span></div>
     </header>
-    <main style="flex:1;overflow-y:auto;padding:20px">
+    <main class="scroll-body" style="padding:20px;padding-bottom:96px">
       <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px">🏆 Tournament Rankings</h2>
       <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Top tacticians & win streaks</p>
       <div id="lb-list"></div>
@@ -1470,13 +1496,25 @@ html, body {
 </div><!-- /app -->
 
 <!-- ═══════════════════════════════════════════════
-     30% TEAL BOTTOM NAVIGATION DOCK
+     FLOATING GLASS CAPSULE DOCK
      ═══════════════════════════════════════════════ -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none">
-  <button class="nav-item active" onclick="goPage('home')" data-page="home"><div class="nav-icon">🏠</div><div>Home</div></button>
-  <button class="nav-item" onclick="openAIModal()" data-page="play"><div class="nav-icon">🎮</div><div>Play</div></button>
-  <button class="nav-item" onclick="goPage('leaderboard')" data-page="leaderboard"><div class="nav-icon">🏆</div><div>Ranks</div></button>
-  <button class="nav-item" onclick="goPage('profile')" data-page="profile"><div class="nav-icon">👤</div><div>Profile</div></button>
+  <button class="nav-item active" onclick="goPage('home')" data-page="home">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">Home</div>
+  </button>
+  <button class="nav-item" onclick="openAIModal()" data-page="play">
+    <div class="nav-icon">🎮</div>
+    <div class="nav-label">Play</div>
+  </button>
+  <button class="nav-item" onclick="goPage('leaderboard')" data-page="leaderboard">
+    <div class="nav-icon">🏆</div>
+    <div class="nav-label">Ranks</div>
+  </button>
+  <button class="nav-item" onclick="goPage('profile')" data-page="profile">
+    <div class="nav-icon">👤</div>
+    <div class="nav-label">Profile</div>
+  </button>
 </nav>
 
 <!-- ═══════════════════════════════════════════════
@@ -1493,7 +1531,7 @@ html, body {
     <!-- Interactive Avatar Preview Circle -->
     <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:16px">
       <div id="edit-avatar-preview" class="profile-avatar-large" style="width:84px;height:84px;font-size:32px;cursor:pointer;position:relative" onclick="document.getElementById('edit-avatar-file').click()" title="Click to choose photo from device">
-        <span id="edit-avatar-preview-content">YM</span>
+        <span id="edit-avatar-preview-content">XP</span>
         <div style="position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--coral-accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;border:2px solid #fff">📷</div>
       </div>
       <div style="font-size:11px;color:var(--text-muted);margin-top:6px">Tap photo to choose from device</div>
@@ -1502,12 +1540,12 @@ html, body {
 
     <div class="form-group" style="margin-bottom:14px">
       <label>Display Name</label>
-      <input class="form-input" id="edit-profile-name" type="text" placeholder="Your name"/>
+      <input class="form-input" id="edit-profile-name" type="text" placeholder="Your name or gamer tag"/>
     </div>
 
     <div class="form-group" style="margin-bottom:14px">
       <label>Custom Tagline / Bio</label>
-      <input class="form-input" id="edit-profile-bio" type="text" placeholder="Grandmaster Tactician 🎮"/>
+      <input class="form-input" id="edit-profile-bio" type="text" placeholder="Grandmaster Strategist 🎮"/>
     </div>
 
     <div class="form-group" style="margin-bottom:6px">
@@ -1606,6 +1644,16 @@ html, body {
 <div class="toast-container"><div class="toast" id="toast"></div></div>
 
 <script>
+// ═══════════════════════════════════════════════
+// UTILITIES & SECURITY
+// ═══════════════════════════════════════════════
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[tag] || tag));
+}
+
 // ═══════════════════════════════════════════════
 // SOUND EFFECTS ENGINE (Web Audio API)
 // ═══════════════════════════════════════════════
@@ -1760,9 +1808,9 @@ const Confetti = (() => {
 })();
 
 // ═══════════════════════════════════════════════
-// USER PROFILE STATE (DEFAULT: Y MANI SASANK REDDY)
+// USER PROFILE & MULTI-ACCOUNT MANAGEMENT
 // ═══════════════════════════════════════════════
-const DEFAULT_NAME = 'Y Mani Sasank Reddy';
+const DEFAULT_FALLBACK_NAME = 'Guest Tactician';
 let currentUser = null;
 let gameState = null;
 let myMark = 'X';
@@ -1783,38 +1831,45 @@ const WINS = [
   [0,4,8],[2,4,6]
 ];
 
+function getAccountsMap() {
+  try {
+    return JSON.parse(localStorage.getItem('xo_accounts') || '{}');
+  } catch(e) {
+    return {};
+  }
+}
+
+function saveAccount(acc) {
+  if (!acc || !acc.username) return;
+  const accounts = getAccountsMap();
+  accounts[acc.username.toLowerCase()] = acc;
+  localStorage.setItem('xo_accounts', JSON.stringify(accounts));
+}
+
 function getStoredUser() {
   const stored = localStorage.getItem('xo_user_profile');
   if (stored) {
     try { return JSON.parse(stored); } catch(e){}
   }
-  const defaultUser = {
-    id: 'user_' + Date.now(),
-    username: DEFAULT_NAME,
-    bio: 'Grandmaster Tactician 🎮',
-    photoUrl: null,
-    avatarIcon: 'YM',
-    wins: 0, losses: 0, draws: 0, points: 20, streak: 0,
-    isGuest: false
-  };
-  saveStoredUser(defaultUser);
-  return defaultUser;
+  return null;
 }
 
 function saveStoredUser(u) {
+  if (!u) return;
   localStorage.setItem('xo_user_profile', JSON.stringify(u));
+  saveAccount(u);
 }
 
 function updateProfileUI() {
   if (!currentUser) return;
-  const name = currentUser.username || DEFAULT_NAME;
-  const bio = currentUser.bio || 'Grandmaster Tactician 🎮';
+  const name = currentUser.username || DEFAULT_FALLBACK_NAME;
+  const bio = currentUser.bio || 'Grandmaster Strategist 🎮';
   const pts = currentUser.points || 20;
 
   // Header Avatar
   const hdrAvatar = document.getElementById('hdr-avatar');
   if (currentUser.photoUrl) {
-    hdrAvatar.innerHTML = `<img src="${currentUser.photoUrl}" alt="${name}"/>`;
+    hdrAvatar.innerHTML = `<img src="${currentUser.photoUrl}" alt="${escapeHTML(name)}"/>`;
   } else {
     hdrAvatar.innerHTML = `<span>${currentUser.avatarIcon || name.substr(0,2).toUpperCase()}</span>`;
   }
@@ -1822,7 +1877,7 @@ function updateProfileUI() {
   // Profile Card
   const profAvatar = document.getElementById('prof-avatar-large');
   if (currentUser.photoUrl) {
-    profAvatar.innerHTML = `<img src="${currentUser.photoUrl}" alt="${name}"/>`;
+    profAvatar.innerHTML = `<img src="${currentUser.photoUrl}" alt="${escapeHTML(name)}"/>`;
   } else {
     profAvatar.innerHTML = `<span>${currentUser.avatarIcon || name.substr(0,2).toUpperCase()}</span>`;
   }
@@ -1851,10 +1906,11 @@ function updateProfileUI() {
 // EDIT PROFILE & PHOTO UPLOAD
 // ═══════════════════════════════════════════════
 function openEditProfileModal() {
-  document.getElementById('edit-profile-name').value = currentUser.username || DEFAULT_NAME;
+  if (!currentUser) return;
+  document.getElementById('edit-profile-name').value = currentUser.username || '';
   document.getElementById('edit-profile-bio').value = currentUser.bio || '';
   tempPhotoUrl = currentUser.photoUrl;
-  tempSelectedAvatar = currentUser.avatarIcon || 'YM';
+  tempSelectedAvatar = currentUser.avatarIcon || currentUser.username.substr(0,2).toUpperCase();
   updateEditModalPreview();
   document.getElementById('modal-edit-profile').classList.add('active');
 }
@@ -1866,7 +1922,7 @@ function updateEditModalPreview() {
     preview.innerHTML = `<img src="${tempPhotoUrl}" alt="Preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%"/>`;
     if (removeBtn) removeBtn.style.display = 'inline-block';
   } else {
-    preview.innerHTML = `<span>${tempSelectedAvatar || 'YM'}</span>`;
+    preview.innerHTML = `<span>${tempSelectedAvatar || 'XP'}</span>`;
     if (removeBtn) removeBtn.style.display = 'none';
   }
 }
@@ -1924,7 +1980,7 @@ function saveProfileChanges() {
   const newBio = document.getElementById('edit-profile-bio').value.trim();
 
   if (newName) currentUser.username = newName;
-  currentUser.bio = newBio || 'Grandmaster Tactician 🎮';
+  currentUser.bio = newBio || 'Grandmaster Strategist 🎮';
   currentUser.photoUrl = tempPhotoUrl;
   currentUser.avatarIcon = tempSelectedAvatar;
 
@@ -1935,7 +1991,7 @@ function saveProfileChanges() {
 }
 
 // ═══════════════════════════════════════════════
-// AUTH ACTIONS
+// AUTH ACTIONS (SENIOR DEVELOPER IMPLEMENTATION)
 // ═══════════════════════════════════════════════
 function switchAuthTab(tab) {
   document.querySelectorAll('.auth-tab').forEach((t, i) => {
@@ -1958,25 +2014,66 @@ function togglePassVisibility(inputId, btn) {
 
 function doLogin() {
   const name = document.getElementById('login-name').value.trim();
-  if (!name) { toast('Please enter a username', 'error'); return; }
-  currentUser = getStoredUser();
-  currentUser.username = name;
-  currentUser.isGuest = false;
+  const pass = document.getElementById('login-pass').value;
+
+  if (!name) { toast('Please enter your username', 'error'); return; }
+  if (!pass) { toast('Please enter your password', 'error'); return; }
+
+  const accounts = getAccountsMap();
+  const acc = accounts[name.toLowerCase()];
+
+  if (acc) {
+    if (acc.password && acc.password !== pass) {
+      toast('Incorrect password. Please try again.', 'error');
+      return;
+    }
+    currentUser = acc;
+  } else {
+    // Register new account seamlessly
+    currentUser = {
+      id: 'usr_' + Date.now(),
+      username: name,
+      password: pass,
+      bio: 'Grandmaster Strategist 🎮',
+      photoUrl: null,
+      avatarIcon: name.substr(0, 2).toUpperCase(),
+      wins: 0, losses: 0, draws: 0, points: 20, streak: 0,
+      isGuest: false
+    };
+  }
+
   saveStoredUser(currentUser);
   localStorage.setItem('xo_is_authenticated', 'true');
   afterLogin();
-  toast('Welcome back, ' + name + '! 👋', 'success');
+  toast('Welcome back, ' + currentUser.username + '! 👋', 'success');
 }
 
 function doSignup() {
   const name = document.getElementById('signup-name').value.trim();
   const pass = document.getElementById('signup-pass').value;
+
   if (!name || name.length < 2) { toast('Username must be at least 2 characters', 'error'); return; }
   if (pass.length < 6) { toast('Password must be at least 6 characters', 'error'); return; }
 
-  currentUser = getStoredUser();
-  currentUser.username = name;
-  currentUser.isGuest = false;
+  const accounts = getAccountsMap();
+  if (accounts[name.toLowerCase()]) {
+    toast('Account already exists! Please Sign In.', 'error');
+    switchAuthTab('login');
+    document.getElementById('login-name').value = name;
+    return;
+  }
+
+  currentUser = {
+    id: 'usr_' + Date.now(),
+    username: name,
+    password: pass,
+    bio: 'Grandmaster Strategist 🎮',
+    photoUrl: null,
+    avatarIcon: name.substr(0, 2).toUpperCase(),
+    wins: 0, losses: 0, draws: 0, points: 20, streak: 0,
+    isGuest: false
+  };
+
   saveStoredUser(currentUser);
   localStorage.setItem('xo_is_authenticated', 'true');
   afterLogin();
@@ -1984,13 +2081,23 @@ function doSignup() {
 }
 
 function doGuest() {
-  currentUser = getStoredUser();
-  currentUser.username = DEFAULT_NAME;
-  currentUser.isGuest = true;
+  const randomTag = Math.floor(100 + Math.random() * 900);
+  const guestName = 'Tactician #' + randomTag;
+
+  currentUser = {
+    id: 'guest_' + Date.now(),
+    username: guestName,
+    bio: 'Casual Arena Contender ⚡',
+    photoUrl: null,
+    avatarIcon: '🎯',
+    wins: 0, losses: 0, draws: 0, points: 20, streak: 0,
+    isGuest: true
+  };
+
   saveStoredUser(currentUser);
   localStorage.setItem('xo_is_authenticated', 'true');
   afterLogin();
-  toast('Playing as ' + DEFAULT_NAME + ' ⚡', 'success');
+  toast('Playing as ' + guestName + ' ⚡', 'success');
 }
 
 function afterLogin() {
@@ -2002,6 +2109,11 @@ function afterLogin() {
 function doLogout() {
   localStorage.removeItem('xo_is_authenticated');
   document.getElementById('bottom-nav').style.display = 'none';
+  // Clear input fields for next user
+  document.getElementById('login-name').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('signup-name').value = '';
+  document.getElementById('signup-pass').value = '';
   goPage('auth');
   toast('Signed out successfully! 👋');
 }
@@ -2544,14 +2656,12 @@ function makeAIMove() {
   if (aiDifficulty === 'easy') {
     chosen = available[Math.floor(Math.random() * available.length)];
   } else if (aiDifficulty === 'medium') {
-    // 50% minimax optimal, 50% random
     if (Math.random() < 0.55) {
       chosen = getBestMinimaxMove(gameState.board, 'O');
     } else {
       chosen = available[Math.floor(Math.random() * available.length)];
     }
   } else {
-    // Hard / Master: Unbeatable Minimax
     chosen = getBestMinimaxMove(gameState.board, 'O');
   }
 
@@ -2618,7 +2728,7 @@ function makeInfinityAIMove() {
   const available = gameState.board.map((v, i) => v === null ? i : null).filter(v => v !== null);
   if (available.length === 0) return;
 
-  // Check immediate winning move
+  // 1. Immediate winning move
   for (let idx of available) {
     const testBoard = [...gameState.board];
     if (oMoves.length >= 3) testBoard[oMoves[0]] = null;
@@ -2629,7 +2739,7 @@ function makeInfinityAIMove() {
     }
   }
 
-  // Block opponent's winning move
+  // 2. Block opponent's winning move
   for (let idx of available) {
     const testBoard = [...gameState.board];
     testBoard[idx] = 'X';
@@ -2639,7 +2749,7 @@ function makeInfinityAIMove() {
     }
   }
 
-  // Prefer center or corners
+  // 3. Prefer center or corners
   const prefs = [4, 0, 2, 6, 8, 1, 3, 5, 7];
   for (let p of prefs) {
     if (available.includes(p)) {
@@ -2811,8 +2921,8 @@ function renderMatchHistory() {
     list.innerHTML = history.map(item => `
       <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg-subtle);border-radius:var(--radius-sm);margin-bottom:6px;border:1px solid var(--border)">
         <div>
-          <span style="font-weight:700;font-size:13px;color:${item.outcome === 'win' ? 'var(--teal-primary)' : item.outcome === 'loss' ? 'var(--coral-accent)' : 'var(--text-muted)'}">${item.desc}</span>
-          <div style="font-size:11px;color:var(--text-muted)">${item.date}</div>
+          <span style="font-weight:700;font-size:13px;color:${item.outcome === 'win' ? 'var(--teal-primary)' : item.outcome === 'loss' ? 'var(--coral-accent)' : 'var(--text-muted)'}">${escapeHTML(item.desc)}</span>
+          <div style="font-size:11px;color:var(--text-muted)">${escapeHTML(item.date)}</div>
         </div>
         <span style="font-size:16px">${item.outcome === 'win' ? '🏆' : item.outcome === 'loss' ? '💔' : '🤝'}</span>
       </div>
@@ -2822,7 +2932,7 @@ function renderMatchHistory() {
 
 function loadLeaderboard() {
   const el = document.getElementById('lb-list');
-  const guest = currentUser || getStoredUser();
+  const guest = currentUser || { username: 'Guest', points: 20, wins: 0 };
   const rankData = [
     {username: guest.username, points: guest.points || 20, wins: guest.wins || 0, isYou: true},
     {username: 'GrandMaster_XO', points: 340, wins: 28},
@@ -2838,7 +2948,7 @@ function loadLeaderboard() {
       <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;box-shadow:var(--shadow-sm)">
         <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:16px;width:24px;text-align:center">${rankBadge}</div>
         <div style="flex:1">
-          <div style="font-weight:700;font-size:14px;color:var(--text-main)">${p.username} ${p.isYou ? '<span style="font-size:11px;color:var(--coral-accent)">(You)</span>' : ''}</div>
+          <div style="font-weight:700;font-size:14px;color:var(--text-main)">${escapeHTML(p.username)} ${p.isYou ? '<span style="font-size:11px;color:var(--coral-accent)">(You)</span>' : ''}</div>
           <div style="font-size:11px;color:var(--text-muted)">${p.wins} Wins · Tournament Record</div>
         </div>
         <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;color:var(--teal-primary)">${p.points} pts</div>
@@ -2877,17 +2987,20 @@ if ('serviceWorker' in navigator) {
 // Startup
 window.addEventListener('DOMContentLoaded', () => {
   currentUser = getStoredUser();
-  updateProfileUI();
 
   // Check URL room code ?room=ABC123
   const params = new URLSearchParams(window.location.search);
   const room = params.get('room') || params.get('join');
 
   const isAuth = localStorage.getItem('xo_is_authenticated');
-  if (isAuth === 'true' || room) {
-    afterLogin();
+  if ((isAuth === 'true' && currentUser) || room) {
+    if (!currentUser && room) {
+      doGuest(); // auto-guest if joining directly via room link
+    } else {
+      afterLogin();
+    }
   } else {
-    // Show Auth screen first
+    // Show Auth screen first with empty inputs
     goPage('auth');
     document.getElementById('bottom-nav').style.display = 'none';
   }
