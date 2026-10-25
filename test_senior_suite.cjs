@@ -22,7 +22,7 @@ function assert(condition, testName, details = '') {
 }
 
 // 1. READ REPO FILES
-const repoDir = 'C:\\Users\\ymani\\tictactoe-buddies';
+const repoDir = __dirname;
 const htmlPath = path.join(repoDir, 'index.html');
 const robotsPath = path.join(repoDir, 'robots.txt');
 const sitemapPath = path.join(repoDir, 'sitemap.xml');
