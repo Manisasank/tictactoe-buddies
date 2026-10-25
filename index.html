@@ -1666,6 +1666,210 @@ body {
   100% { opacity: 0; transform: translateY(-10px); }
 }
 
+/* ----------------------------------------------------
+   AI ORACLE WIN PROBABILITY GAUGE
+   ---------------------------------------------------- */
+.oracle-container {
+  margin-bottom: 20px;
+  background: #090d16;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.oracle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.oracle-bar-track {
+  height: 6px;
+  background: rgba(255, 59, 92, 0.3);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.oracle-bar-fill-x {
+  height: 100%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 50%;
+}
+
+.oracle-bar-fill-o {
+  height: 100%;
+  background: var(--neon-coral);
+  box-shadow: 0 0 10px var(--neon-coral-glow);
+  flex: 1;
+}
+
+/* Blitz Timer Bar */
+.blitz-timer-container {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 14px;
+  display: none;
+}
+
+.blitz-timer-bar {
+  height: 100%;
+  background: var(--neon-lime);
+  width: 100%;
+  box-shadow: 0 0 8px var(--neon-lime-glow);
+  transition: width 0.1s linear, background-color 0.2s;
+}
+
+/* Temporal Foresight Holographic Ghost Preview */
+.grid-cell.ghost-x::after {
+  content: "X";
+  color: var(--neon-cyan);
+  opacity: 0.35;
+  filter: blur(0.5px);
+  position: absolute;
+}
+
+.grid-cell.ghost-o::after {
+  content: "O";
+  color: var(--neon-coral);
+  opacity: 0.35;
+  filter: blur(0.5px);
+  position: absolute;
+}
+
+/* Critical Danger Highlight on Oldest Piece */
+.grid-cell.critical-danger-fade {
+  border-color: #ff3b5c !important;
+  box-shadow: inset 0 0 20px rgba(255, 59, 92, 0.7), 0 0 25px rgba(255, 59, 92, 0.8) !important;
+  animation: dangerPulse 0.4s infinite alternate ease-in-out !important;
+}
+
+@keyframes dangerPulse {
+  0% { transform: scale(0.98); opacity: 0.7; }
+  100% { transform: scale(1.02); opacity: 1; }
+}
+
+/* Move Quality Floating Badge */
+.move-eval-badge {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  animation: floatUpFade 1.8s forwards;
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.move-eval-badge.brilliant {
+  background: #ffcc00;
+  color: #080b11;
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.8);
+}
+
+.move-eval-badge.great {
+  background: var(--neon-lime);
+  color: #080b11;
+  box-shadow: 0 0 16px var(--neon-lime-glow);
+}
+
+.move-eval-badge.blunder {
+  background: var(--neon-coral);
+  color: #ffffff;
+  box-shadow: 0 0 16px var(--neon-coral-glow);
+}
+
+@keyframes floatUpFade {
+  0% { opacity: 0; transform: translate(-50%, 6px); }
+  20% { opacity: 1; transform: translate(-50%, -6px); }
+  75% { opacity: 1; transform: translate(-50%, -10px); }
+  100% { opacity: 0; transform: translate(-50%, -18px); }
+}
+
+/* Tactical Move History Tape */
+.history-tape-container {
+  margin-top: 18px;
+  background: #090d16;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.history-tape-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+}
+
+.history-chips-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.history-chip {
+  background: #121826;
+  border: 1px solid var(--border-subtle);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.history-chip.chip-x { border-color: rgba(0, 240, 255, 0.4); color: var(--neon-cyan); }
+.history-chip.chip-o { border-color: rgba(255, 59, 92, 0.4); color: var(--neon-coral); }
+.history-chip.faded { opacity: 0.6; text-decoration: line-through; }
+
+/* Competitive Elo Rank Pill */
+.elo-rank-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(204, 255, 0, 0.08);
+  border: 1px solid rgba(204, 255, 0, 0.25);
+  color: var(--neon-lime);
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
 /* Responsive Breakpoints */
 @media (max-width: 900px) {
   .hero-grid-layout, .why-infinity-layout, .faq-layout {
@@ -1736,6 +1940,7 @@ body {
       <div class="user-profile-chip" onclick="openProfileModal()" title="View or edit your profile">
         <span class="user-chip-avatar" id="nav-user-avatar">👤</span>
         <span id="nav-user-name">Guest</span>
+        <span class="elo-rank-pill" id="nav-elo-pill">1200 ELO</span>
       </div>
     </div>
   </div>
@@ -1982,6 +2187,23 @@ body {
           <button class="btn-control active" id="ai-master-btn" onclick="setAIDifficulty('master')">Master (Minimax)</button>
         </div>
 
+        <!-- AI Oracle Live Win Probability Gauge & Blitz Timer -->
+        <div class="oracle-container">
+          <div class="oracle-header">
+            <span class="text-cyan"><span id="oracle-label-x">Tactician</span>: <strong id="oracle-val-x">50%</strong></span>
+            <span style="color: var(--neon-lime);">⚡ AI TACTICAL ORACLE</span>
+            <span class="text-coral"><strong id="oracle-val-o">50%</strong> :<span id="oracle-label-o">Minimax AI</span></span>
+          </div>
+          <div class="oracle-bar-track">
+            <div class="oracle-bar-fill-x" id="oracle-bar-fill-x"></div>
+            <div class="oracle-bar-fill-o"></div>
+          </div>
+        </div>
+
+        <div class="blitz-timer-container" id="blitz-timer-container">
+          <div class="blitz-timer-bar" id="blitz-timer-bar"></div>
+        </div>
+
         <!-- Scoreboard -->
         <div class="arena-scoreboard">
           <div class="player-card active-turn-x" id="player-x-card">
@@ -1992,6 +2214,7 @@ body {
                 <span class="text-cyan font-display" style="font-size: 1.1rem;">X</span>
               </div>
               <div class="player-mark-count" id="player-x-marks">Marks: 0/3</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;" id="player-x-elo">ELO: 1200</div>
             </div>
             <div class="player-score text-cyan" id="player-x-score">0</div>
           </div>
@@ -2006,6 +2229,7 @@ body {
                 <span class="text-coral font-display" style="font-size: 1.1rem;">O</span>
               </div>
               <div class="player-mark-count" id="player-o-marks">Marks: 0/3</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 2px;" id="player-o-elo">ELO: 1500</div>
             </div>
             <div class="player-score text-coral" id="player-o-score">0</div>
           </div>
@@ -2017,32 +2241,49 @@ body {
         <!-- 3x3 Arena Battle Grid -->
         <div class="game-grid-container">
           <div class="game-grid" id="game-board">
-            <!-- 9 Interactive Cells -->
-            <div class="grid-cell" data-index="0" onclick="makeMove(0)"></div>
-            <div class="grid-cell" data-index="1" onclick="makeMove(1)"></div>
-            <div class="grid-cell" data-index="2" onclick="makeMove(2)"></div>
-            <div class="grid-cell" data-index="3" onclick="makeMove(3)"></div>
-            <div class="grid-cell" data-index="4" onclick="makeMove(4)"></div>
-            <div class="grid-cell" data-index="5" onclick="makeMove(5)"></div>
-            <div class="grid-cell" data-index="6" onclick="makeMove(6)"></div>
-            <div class="grid-cell" data-index="7" onclick="makeMove(7)"></div>
-            <div class="grid-cell" data-index="8" onclick="makeMove(8)"></div>
+            <!-- 9 Interactive Cells with Temporal Foresight Hover -->
+            <div class="grid-cell" data-index="0" onclick="makeMove(0)" onmouseenter="handleCellHover(0)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="1" onclick="makeMove(1)" onmouseenter="handleCellHover(1)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="2" onclick="makeMove(2)" onmouseenter="handleCellHover(2)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="3" onclick="makeMove(3)" onmouseenter="handleCellHover(3)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="4" onclick="makeMove(4)" onmouseenter="handleCellHover(4)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="5" onclick="makeMove(5)" onmouseenter="handleCellHover(5)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="6" onclick="makeMove(6)" onmouseenter="handleCellHover(6)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="7" onclick="makeMove(7)" onmouseenter="handleCellHover(7)" onmouseleave="handleCellLeave()"></div>
+            <div class="grid-cell" data-index="8" onclick="makeMove(8)" onmouseenter="handleCellHover(8)" onmouseleave="handleCellLeave()"></div>
+          </div>
+        </div>
+
+        <!-- Tactical Move History Tape -->
+        <div class="history-tape-container">
+          <div class="history-tape-header">
+            <span>Tactical Move Tape</span>
+            <span id="temporal-foresight-hint" style="color: var(--neon-lime);">● Temporal Foresight Active</span>
+          </div>
+          <div class="history-chips-row" id="history-chips-row">
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Match starting... Place first mark.</span>
           </div>
         </div>
 
         <!-- In-Game Controls Bar -->
-        <div class="game-controls">
+        <div class="game-controls" style="margin-top: 20px;">
           <button class="btn-control" onclick="resetBoard()" title="Reset current round (Key R)">
             🔄 New Round
+          </button>
+          <button class="btn-control" id="blitz-toggle-btn" onclick="toggleBlitzMode()" title="Toggle Blitz Timer (Key B)">
+            ⚡ Blitz: OFF
           </button>
           <button class="btn-control" id="audio-toggle-btn" onclick="toggleMute()" title="Mute/Unmute Audio (Key M)">
             🔊 Sound: ON
           </button>
+          <button class="btn-control" onclick="openModal('modal-settings')" title="Audio, Blitz &amp; Tactician Settings">
+            ⚙️ Settings
+          </button>
+          <button class="btn-control" onclick="openModal('modal-hotkeys')" title="Keyboard Shortcuts Cheat Sheet">
+            ⌨️ Hotkeys
+          </button>
           <button class="btn-control" onclick="openShareModal()" title="Share Room or Invite Link">
             🔗 Share Link
-          </button>
-          <button class="btn-control" onclick="scrollToElement('hero')" title="Back to Hero">
-            ⬆ Top
           </button>
         </div>
 
@@ -2403,6 +2644,72 @@ body {
   </div>
 </div>
 
+<!-- Settings Modal -->
+<div class="modal-overlay" id="modal-settings">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-settings')">&times;</button>
+    <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 20px;">Arena Settings</h3>
+
+    <div style="margin-bottom: 18px;">
+      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Blitz Speed-Chess Timer:</label>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-control active" id="blitz-opt-off" onclick="setBlitzDuration(0)">Off</button>
+        <button class="btn-control" id="blitz-opt-5" onclick="setBlitzDuration(5)">5s Speed</button>
+        <button class="btn-control" id="blitz-opt-10" onclick="setBlitzDuration(10)">10s Standard</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 18px;">
+      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Mobile Haptic Vibrations:</label>
+      <button class="btn-control" id="setting-haptics-btn" onclick="toggleHaptics()">Haptics: ENABLED</button>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Audio Synthesizer Engine:</label>
+      <button class="btn-control" onclick="toggleMute()" id="modal-sound-btn">Audio: ON</button>
+    </div>
+
+    <div style="padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+      <span style="font-size: 0.82rem; color: var(--text-muted);">Reset Elo rating back to 1200:</span>
+      <button class="btn-control" style="color: var(--neon-coral); border-color: rgba(255,59,92,0.4);" onclick="resetEloRating()">Reset ELO</button>
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard Shortcuts Modal -->
+<div class="modal-overlay" id="modal-hotkeys">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal('modal-hotkeys')">&times;</button>
+    <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 14px;">Tactician Hotkeys</h3>
+    <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; color: var(--text-secondary);">
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">1 - 9</kbd></td>
+        <td style="padding: 10px 0;">Place mark on 3x3 battle grid</td>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">R</kbd></td>
+        <td style="padding: 10px 0;">Instant round restart / New match</td>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">M</kbd></td>
+        <td style="padding: 10px 0;">Mute / Unmute sound synthesizer</td>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">B</kbd></td>
+        <td style="padding: 10px 0;">Toggle Blitz speed-chess timer</td>
+      </tr>
+      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">P</kbd></td>
+        <td style="padding: 10px 0;">Open Player Profile &amp; Stats</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 0;"><kbd style="background:#141c2a; border:1px solid #2d3b55; padding:2px 8px; border-radius:4px; color:#fff;">Esc</kbd></td>
+        <td style="padding: 10px 0;">Close any open dialog or modal</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
 <!-- Round Result Popup Modal -->
 <div class="modal-overlay" id="modal-result">
   <div class="modal-box" style="text-align: center;">
@@ -2461,7 +2768,6 @@ function toggleFaq(btn) {
   const icon = btn.querySelector('.faq-toggle-icon');
   const isOpen = content.classList.contains('open');
 
-  // Close all other items
   document.querySelectorAll('.faq-answer-content').forEach(c => c.classList.remove('open'));
   document.querySelectorAll('.faq-toggle-icon').forEach(i => i.innerText = '+');
 
@@ -2469,6 +2775,25 @@ function toggleFaq(btn) {
     content.classList.add('open');
     icon.innerText = '−';
   }
+}
+
+// ====================================================
+// MOBILE HAPTIC VIBRATIONS ENGINE
+// ====================================================
+const Haptics = {
+  enabled: true,
+  vibrate: function(pattern) {
+    if (this.enabled && 'vibrate' in navigator) {
+      try { navigator.vibrate(pattern); } catch(e) {}
+    }
+  }
+};
+
+function toggleHaptics() {
+  Haptics.enabled = !Haptics.enabled;
+  const btn = document.getElementById('setting-haptics-btn');
+  if (btn) btn.innerText = Haptics.enabled ? 'Haptics: ENABLED' : 'Haptics: DISABLED';
+  showToast(Haptics.enabled ? 'Haptic Vibrations ON' : 'Haptics OFF');
 }
 
 // ====================================================
@@ -2519,8 +2844,8 @@ const SoundFX = (() => {
     } else if (type === 'fade') {
       osc.type = 'sawtooth';
       osc.frequency.setValueAtTime(280, t);
-      osc.frequency.exponentialRampToValueAtTime(100, t + 0.18);
-      gain.gain.setValueAtTime(0.12, t);
+      osc.frequency.exponentialRampToValueAtTime(90, t + 0.18);
+      gain.gain.setValueAtTime(0.14, t);
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
       osc.start(t);
       osc.stop(t + 0.2);
@@ -2547,14 +2872,23 @@ const SoundFX = (() => {
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
       osc.start(t);
       osc.stop(t + 0.25);
+    } else if (type === 'tick') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, t);
+      gain.gain.setValueAtTime(0.08, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+      osc.start(t);
+      osc.stop(t + 0.04);
     }
   }
 
   function toggle() {
     muted = !muted;
     const btn = document.getElementById('audio-toggle-btn');
+    const modalBtn = document.getElementById('modal-sound-btn');
     const dockIcon = document.getElementById('dock-sound-icon');
     if (btn) btn.innerText = muted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+    if (modalBtn) modalBtn.innerText = muted ? 'Audio: OFF' : 'Audio: ON';
     if (dockIcon) dockIcon.innerText = muted ? '🔇' : '🔊';
     showToast(muted ? 'Sound Muted' : 'Sound Enabled');
     return muted;
@@ -2620,7 +2954,7 @@ const Confetti = (() => {
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.38; // gravity
+      p.vy += 0.38;
       p.vx *= 0.98;
       p.rotation += p.vr;
       p.alpha -= 0.012;
@@ -2648,14 +2982,23 @@ const Confetti = (() => {
 })();
 
 // ====================================================
-// PROFILE & CAREER STATS (Local Storage)
+// PROFILE, ELO RATING & CAREER STATS
 // ====================================================
 let userProfile = {
   name: 'Tactician',
   avatar: '⚡',
   wins: 0,
-  matches: 0
+  matches: 0,
+  elo: 1200
 };
+
+function getEloTier(elo) {
+  if (elo >= 1800) return 'Grandmaster 👑';
+  if (elo >= 1600) return 'Diamond 💎';
+  if (elo >= 1400) return 'Master 🥇';
+  if (elo >= 1200) return 'Tactician 🥈';
+  return 'Recruit 🥉';
+}
 
 function loadUserProfile() {
   try {
@@ -2664,6 +3007,7 @@ function loadUserProfile() {
       userProfile = Object.assign(userProfile, JSON.parse(saved));
     }
   } catch(e) {}
+  if (!userProfile.elo) userProfile.elo = 1200;
   updateProfileUI();
 }
 
@@ -2697,18 +3041,35 @@ function selectAvatar(emoji) {
   if (disp) disp.innerText = emoji;
 }
 
+function resetEloRating() {
+  userProfile.elo = 1200;
+  try {
+    localStorage.setItem('xo_arena_profile', JSON.stringify(userProfile));
+  } catch(e) {}
+  updateProfileUI();
+  showToast('Elo Reset to 1200 (Tactician)');
+  closeModal('modal-settings');
+}
+
 function updateProfileUI() {
   const navAvatar = document.getElementById('nav-user-avatar');
   const navName = document.getElementById('nav-user-name');
+  const navElo = document.getElementById('nav-elo-pill');
   const pXName = document.getElementById('player-x-name');
   const pXAvatar = document.getElementById('player-x-avatar');
+  const pXElo = document.getElementById('player-x-elo');
   const modalAvatar = document.getElementById('modal-profile-avatar');
   const loginName = document.getElementById('login-name');
   
+  const eloVal = userProfile.elo || 1200;
+  const tierName = getEloTier(eloVal);
+
   if (navAvatar) navAvatar.innerText = userProfile.avatar;
   if (navName) navName.innerText = userProfile.name;
+  if (navElo) navElo.innerText = eloVal + ' ELO • ' + tierName;
   if (pXName) pXName.innerText = userProfile.name;
   if (pXAvatar) pXAvatar.innerText = userProfile.avatar;
+  if (pXElo) pXElo.innerText = eloVal + ' ELO (' + tierName + ')';
   if (modalAvatar) modalAvatar.innerText = userProfile.avatar;
   if (loginName) loginName.value = userProfile.name;
 
@@ -2721,6 +3082,9 @@ function updateProfileUI() {
     const rate = userProfile.matches > 0 ? Math.round((userProfile.wins / userProfile.matches) * 100) : 0;
     rEl.innerText = rate + '%';
   }
+
+  const oracleLabelX = document.getElementById('oracle-label-x');
+  if (oracleLabelX) oracleLabelX.innerText = userProfile.name;
 }
 
 function openProfileModal() {
@@ -2730,7 +3094,14 @@ function openProfileModal() {
 
 function recordMatchResult(isWin) {
   userProfile.matches++;
-  if (isWin) userProfile.wins++;
+  if (isWin) {
+    userProfile.wins++;
+    const delta = (currentMode === 'ai' && aiDifficulty === 'master') ? 28 : 20;
+    userProfile.elo = Math.min(2600, (userProfile.elo || 1200) + delta);
+    showToast('🏆 VICTORY! +' + delta + ' ELO (' + userProfile.elo + ')');
+  } else {
+    userProfile.elo = Math.max(800, (userProfile.elo || 1200) - 14);
+  }
   try {
     localStorage.setItem('xo_arena_profile', JSON.stringify(userProfile));
   } catch(e) {}
@@ -2738,26 +3109,106 @@ function recordMatchResult(isWin) {
 }
 
 // ====================================================
-// CORE GAME LOGIC & DYNAMIC INFINITY MATRIX
+// CORE GAME LOGIC & DYNAMIC INFINITY MATRIX™
 // ====================================================
 const WINNING_COMBOS = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
-  [0, 4, 8], [2, 4, 6]             // Diagonals
+  [0, 1, 2], [3, 4, 5], [6, 7, 8],
+  [0, 3, 6], [1, 4, 7], [2, 5, 8],
+  [0, 4, 8], [2, 4, 6]
 ];
 
+const COORD_NAMES = ['A1', 'B1', 'C1', 'A2', 'B2', 'C2', 'A3', 'B3', 'C3'];
+
 let board = Array(9).fill(null);
-let turn = 'X'; // 'X' always starts
+let turn = 'X';
 let isGameOver = false;
-let currentMode = 'infinity'; // 'infinity', 'classic', 'ai', 'online'
-let aiDifficulty = 'master';  // 'easy', 'medium', 'master'
+let currentMode = 'infinity';
+let aiDifficulty = 'master';
 
 // Infinity Mode Decay Queues
-let movesX = []; // Array of indices occupied by X, FIFO
-let movesO = []; // Array of indices occupied by O, FIFO
+let movesX = [];
+let movesO = [];
 
 let scoreX = 0;
 let scoreO = 0;
+let moveHistory = [];
+
+// Blitz Mode Engine
+let blitzDuration = 0; // 0 = off, 5 = 5s, 10 = 10s
+let blitzRemaining = 0;
+let blitzTimerId = null;
+
+function toggleBlitzMode() {
+  if (blitzDuration === 0) setBlitzDuration(5);
+  else if (blitzDuration === 5) setBlitzDuration(10);
+  else setBlitzDuration(0);
+}
+
+function setBlitzDuration(sec) {
+  blitzDuration = sec;
+  blitzRemaining = sec;
+  const container = document.getElementById('blitz-timer-container');
+  const btn = document.getElementById('blitz-toggle-btn');
+  ['off', '5', '10'].forEach(s => {
+    const b = document.getElementById('blitz-opt-' + s);
+    if (b) b.classList.remove('active');
+  });
+  const activeOpt = document.getElementById(sec === 0 ? 'blitz-opt-off' : 'blitz-opt-' + sec);
+  if (activeOpt) activeOpt.classList.add('active');
+
+  if (sec > 0) {
+    if (container) container.style.display = 'block';
+    if (btn) btn.innerText = '⚡ Blitz: ' + sec + 's';
+    startBlitzTimer();
+    showToast('Blitz Timer: ' + sec + 's Speed Chess Active!');
+  } else {
+    if (container) container.style.display = 'none';
+    if (btn) btn.innerText = '⚡ Blitz: OFF';
+    if (blitzTimerId) clearInterval(blitzTimerId);
+    showToast('Blitz Mode Disabled');
+  }
+}
+
+function startBlitzTimer() {
+  if (blitzTimerId) clearInterval(blitzTimerId);
+  if (blitzDuration === 0 || isGameOver) return;
+  blitzRemaining = blitzDuration;
+  updateBlitzBar();
+
+  blitzTimerId = setInterval(() => {
+    if (isGameOver) { clearInterval(blitzTimerId); return; }
+    blitzRemaining -= 0.1;
+    if (blitzRemaining <= 0) {
+      clearInterval(blitzTimerId);
+      handleBlitzTimeout();
+    } else {
+      updateBlitzBar();
+      if (blitzRemaining <= 2.1 && Math.abs(blitzRemaining - Math.round(blitzRemaining)) < 0.05) {
+        SoundFX.play('tick');
+      }
+    }
+  }, 100);
+}
+
+function updateBlitzBar() {
+  const bar = document.getElementById('blitz-timer-bar');
+  if (!bar) return;
+  const pct = Math.max(0, (blitzRemaining / blitzDuration) * 100);
+  bar.style.width = pct + '%';
+  if (pct > 50) bar.style.backgroundColor = 'var(--neon-lime)';
+  else if (pct > 25) bar.style.backgroundColor = '#ffcc00';
+  else bar.style.backgroundColor = 'var(--neon-coral)';
+}
+
+function handleBlitzTimeout() {
+  if (isGameOver) return;
+  showToast('⏰ Move timer expired for Player ' + turn + '!');
+  Haptics.vibrate([100, 50, 100]);
+  const empty = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
+  if (empty.length > 0) {
+    makeMove(empty[Math.floor(Math.random() * empty.length)]);
+  }
+}
 
 function switchMode(mode) {
   currentMode = mode;
@@ -2772,16 +3223,21 @@ function switchMode(mode) {
 
   const pOName = document.getElementById('player-o-name');
   const pOAvatar = document.getElementById('player-o-avatar');
+  const oracleLabelO = document.getElementById('oracle-label-o');
+
   if (mode === 'ai') {
     if (pOName) pOName.innerText = 'Minimax AI';
     if (pOAvatar) pOAvatar.innerText = '🤖';
+    if (oracleLabelO) oracleLabelO.innerText = 'Minimax AI';
   } else if (mode === 'online') {
     if (pOName) pOName.innerText = 'Online Rival';
     if (pOAvatar) pOAvatar.innerText = '🌐';
+    if (oracleLabelO) oracleLabelO.innerText = 'Online Rival';
     initMqttClient();
   } else {
     if (pOName) pOName.innerText = 'Player O';
     if (pOAvatar) pOAvatar.innerText = '👥';
+    if (oracleLabelO) oracleLabelO.innerText = 'Player O';
   }
 
   resetBoard();
@@ -2822,6 +3278,7 @@ function makeMove(index) {
     return;
   }
 
+  handleCellLeave();
   executeMove(index, turn);
 
   if (currentMode === 'online' && onlineClient && onlineRoomCode) {
@@ -2829,29 +3286,34 @@ function makeMove(index) {
   }
 
   if (!isGameOver && currentMode === 'ai' && turn === 'O') {
-    setTimeout(makeAIMove, 380);
+    setTimeout(makeAIMove, 360);
   }
 }
 
 function executeMove(index, player) {
-  // Sound
   SoundFX.play(player === 'X' ? 'move_x' : 'move_o');
+  Haptics.vibrate([16]);
 
-  // Dynamic Infinity Matrix Decay Check
+  let fadedIdx = null;
+
+  // The 3-Mark Dynamic Infinity Matrix™ Decay Check
   if (currentMode === 'infinity' || currentMode === 'ai') {
     const queue = (player === 'X') ? movesX : movesO;
 
     if (queue.length === 3) {
-      // 4th move arrives: oldest mark must vanish
-      const oldestIdx = queue.shift();
-      board[oldestIdx] = null;
+      fadedIdx = queue.shift();
+      board[fadedIdx] = null;
       SoundFX.play('fade');
+      Haptics.vibrate([35, 40, 20]);
     }
     queue.push(index);
   }
 
   board[index] = player;
+  addMoveToTape(index, player, fadedIdx);
+  evaluateMoveQuality(index, player);
   renderBoard();
+  updateOracleGauge();
 
   // Check Win
   const winCombo = checkWin(board, player);
@@ -2869,11 +3331,153 @@ function executeMove(index, player) {
   // Switch Turn
   turn = (turn === 'X') ? 'O' : 'X';
   updateTurnIndicator();
+  if (blitzDuration > 0) startBlitzTimer();
+}
+
+function evaluateMoveQuality(index, player) {
+  const opponent = player === 'X' ? 'O' : 'X';
+  if (checkWin(board, player)) {
+    spawnMoveBadge(index, '✨ BRILLIANT', 'brilliant');
+    return;
+  }
+  board[index] = opponent;
+  const blocked = checkWin(board, opponent);
+  board[index] = player;
+  if (blocked) {
+    spawnMoveBadge(index, '🔥 GREAT BLOCK', 'great');
+  }
+}
+
+function spawnMoveBadge(cellIndex, text, type) {
+  const cell = document.querySelectorAll('.grid-cell')[cellIndex];
+  if (!cell) return;
+  const badge = document.createElement('div');
+  badge.className = 'move-eval-badge ' + type;
+  badge.innerText = text;
+  cell.appendChild(badge);
+  setTimeout(() => badge.remove(), 1800);
+}
+
+// AI Tactical Oracle (Real-Time Win-Probability Calculation)
+function updateOracleGauge() {
+  let xChance = 50;
+  let oChance = 50;
+  if (isGameOver) {
+    if (checkWin(board, 'X')) { xChance = 100; oChance = 0; }
+    else if (checkWin(board, 'O')) { xChance = 0; oChance = 100; }
+    else { xChance = 50; oChance = 50; }
+  } else {
+    let xScore = 0;
+    let oScore = 0;
+    if (board[4] === 'X') xScore += 3;
+    if (board[4] === 'O') oScore += 3;
+    [0, 2, 6, 8].forEach(c => {
+      if (board[c] === 'X') xScore += 1.5;
+      if (board[c] === 'O') oScore += 1.5;
+    });
+    for (let combo of WINNING_COMBOS) {
+      const marks = combo.map(i => board[i]);
+      const numX = marks.filter(m => m === 'X').length;
+      const numO = marks.filter(m => m === 'O').length;
+      if (numX === 2 && numO === 0) xScore += 6;
+      if (numO === 2 && numX === 0) oScore += 6;
+      if (numX === 1 && numO === 0) xScore += 1.5;
+      if (numO === 1 && numX === 0) oScore += 1.5;
+    }
+    const total = xScore + oScore + 10;
+    xChance = Math.min(95, Math.max(5, Math.round(((xScore + 5) / total) * 100)));
+    oChance = 100 - xChance;
+  }
+  const vx = document.getElementById('oracle-val-x');
+  const vo = document.getElementById('oracle-val-o');
+  const bx = document.getElementById('oracle-bar-fill-x');
+  if (vx) vx.innerText = xChance + '%';
+  if (vo) vo.innerText = oChance + '%';
+  if (bx) bx.style.width = xChance + '%';
+}
+
+// Temporal Foresight (Decay Ghost Preview & Danger Warning)
+function handleCellHover(idx) {
+  if (isGameOver || board[idx] !== null) return;
+  const activePlayer = turn;
+  const cell = document.querySelectorAll('.grid-cell')[idx];
+  if (cell) cell.classList.add(activePlayer === 'X' ? 'ghost-x' : 'ghost-o');
+
+  if (currentMode === 'infinity' || currentMode === 'ai') {
+    const queue = activePlayer === 'X' ? movesX : movesO;
+    if (queue.length === 3) {
+      const oldestIdx = queue[0];
+      const oldestCell = document.querySelectorAll('.grid-cell')[oldestIdx];
+
+      board[oldestIdx] = null;
+      const opponent = activePlayer === 'X' ? 'O' : 'X';
+      let criticalRisk = false;
+      for (let i = 0; i < 9; i++) {
+        if (board[i] === null && i !== idx) {
+          board[i] = opponent;
+          if (checkWin(board, opponent)) { criticalRisk = true; }
+          board[i] = null;
+        }
+      }
+      board[oldestIdx] = activePlayer;
+
+      if (oldestCell) {
+        if (criticalRisk) {
+          oldestCell.classList.add('critical-danger-fade');
+          const hint = document.getElementById('temporal-foresight-hint');
+          if (hint) {
+            hint.innerText = '🚨 CRITICAL RISK: Fading ' + COORD_NAMES[oldestIdx] + ' exposes Loss!';
+            hint.style.color = '#ff3b5c';
+          }
+        } else {
+          const hint = document.getElementById('temporal-foresight-hint');
+          if (hint) {
+            hint.innerText = '⚠️ Moving here vaporizes ' + COORD_NAMES[oldestIdx];
+            hint.style.color = '#ffcc00';
+          }
+        }
+      }
+    }
+  }
+}
+
+function handleCellLeave() {
+  document.querySelectorAll('.grid-cell').forEach(c => {
+    c.classList.remove('ghost-x', 'ghost-o', 'critical-danger-fade');
+  });
+  const hint = document.getElementById('temporal-foresight-hint');
+  if (hint) {
+    hint.innerText = '● Temporal Foresight Active';
+    hint.style.color = 'var(--neon-lime)';
+  }
+}
+
+// Tactical Move Tape Recorder
+function addMoveToTape(idx, player, fadedIdx) {
+  const coord = COORD_NAMES[idx] || ('#' + idx);
+  const moveNum = moveHistory.length + 1;
+  let note = coord;
+  if (fadedIdx !== null && fadedIdx !== undefined) {
+    note += ' (Vaporized ' + COORD_NAMES[fadedIdx] + ')';
+  }
+  moveHistory.push({ moveNum, player, note });
+
+  const tape = document.getElementById('history-chips-row');
+  if (!tape) return;
+  if (moveHistory.length === 1) tape.innerHTML = '';
+
+  const chip = document.createElement('div');
+  chip.className = 'history-chip ' + (player === 'X' ? 'chip-x' : 'chip-o');
+  chip.innerHTML = '#' + moveNum + ' ' + player + ': ' + note;
+  tape.appendChild(chip);
+  tape.scrollLeft = tape.scrollWidth;
 }
 
 function handleWin(player, combo) {
   isGameOver = true;
+  if (blitzTimerId) clearInterval(blitzTimerId);
   SoundFX.play('win');
+  Haptics.vibrate([40, 50, 80, 60, 140]);
   Confetti.fire();
 
   if (player === 'X') {
@@ -2889,7 +3493,7 @@ function handleWin(player, combo) {
   const msg = document.getElementById('result-message');
   const emoji = document.getElementById('result-emoji');
   if (title) title.innerText = (player === 'X' ? userProfile.name : 'Player O') + ' WINS!';
-  if (msg) msg.innerText = 'Three in a row achieved! Dominant tactical victory.';
+  if (msg) msg.innerText = 'Three in a row conquered! Master tactician dominance.';
   if (emoji) emoji.innerText = '🏆';
 
   setTimeout(() => openModal('modal-result'), 650);
@@ -2897,7 +3501,9 @@ function handleWin(player, combo) {
 
 function handleTie() {
   isGameOver = true;
+  if (blitzTimerId) clearInterval(blitzTimerId);
   SoundFX.play('tie');
+  Haptics.vibrate([80, 80]);
   recordMatchResult(false);
 
   const title = document.getElementById('result-title');
@@ -2914,10 +3520,18 @@ function resetBoard() {
   board = Array(9).fill(null);
   movesX = [];
   movesO = [];
+  moveHistory = [];
   isGameOver = false;
   turn = 'X';
+  if (blitzTimerId) clearInterval(blitzTimerId);
+
+  const tape = document.getElementById('history-chips-row');
+  if (tape) tape.innerHTML = '<span style="font-size: 0.75rem; color: var(--text-muted);">Match starting... Place first mark.</span>';
+
   renderBoard();
   updateTurnIndicator();
+  updateOracleGauge();
+  if (blitzDuration > 0) startBlitzTimer();
 }
 
 function updateScores() {
@@ -2953,7 +3567,7 @@ function renderBoard() {
       cell.classList.add('occupied');
       cell.innerHTML = '<span class="text-cyan font-display">X</span>';
       if (idx === oldestX) {
-        cell.innerHTML += '<div class="fading-ring cyan" title="Your oldest piece will fade on 4th move!"></div>';
+        cell.innerHTML += '<div class="fading-ring cyan" title="Your oldest mark will vanish on 4th move!"></div>';
       }
     } else if (val === 'O') {
       cell.classList.add('occupied');
@@ -2968,7 +3582,7 @@ function renderBoard() {
 }
 
 // ====================================================
-// MINIMAX AI ENGINE (Mathematically Unbeatable)
+// MINIMAX AI ENGINE (Mathematically Optimal)
 // ====================================================
 function makeAIMove() {
   if (isGameOver) return;
@@ -2978,7 +3592,6 @@ function makeAIMove() {
     const emptyCells = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
     bestMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
   } else if (aiDifficulty === 'medium') {
-    // 60% optimal Minimax, 40% random
     if (Math.random() < 0.6) {
       bestMove = getBestMinimaxMove();
     } else {
@@ -2986,7 +3599,6 @@ function makeAIMove() {
       bestMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
     }
   } else {
-    // Master Minimax
     bestMove = getBestMinimaxMove();
   }
 
@@ -2996,7 +3608,6 @@ function makeAIMove() {
 }
 
 function getBestMinimaxMove() {
-  // 1. Immediate Win Check
   for (let i = 0; i < 9; i++) {
     if (board[i] === null) {
       board[i] = 'O';
@@ -3008,7 +3619,6 @@ function getBestMinimaxMove() {
     }
   }
 
-  // 2. Immediate Block Check
   for (let i = 0; i < 9; i++) {
     if (board[i] === null) {
       board[i] = 'X';
@@ -3020,16 +3630,13 @@ function getBestMinimaxMove() {
     }
   }
 
-  // 3. Center Preference
   if (board[4] === null) return 4;
 
-  // 4. Corners Preference
   const corners = [0, 2, 6, 8].filter(c => board[c] === null);
   if (corners.length > 0) {
     return corners[Math.floor(Math.random() * corners.length)];
   }
 
-  // 5. Fallback remaining
   const rem = board.map((v, i) => v === null ? i : null).filter(v => v !== null);
   return rem[0];
 }
@@ -3121,7 +3728,6 @@ function joinOnlineRoom() {
   const topic = 'xo_arena_room_' + code;
   if (onlineClient && onlineClient.isConnected()) {
     onlineClient.subscribe(topic);
-    // Send joined notification
     const msg = new Paho.MQTT.Message(JSON.stringify({ type: 'join', sender: userProfile.name }));
     msg.destinationName = topic;
     onlineClient.send(msg);
@@ -3197,10 +3803,9 @@ function submitSupportForm() {
 }
 
 // ====================================================
-// KEYBOARD SHORTCUTS & ACCESSIBILITY (1-9, R, Esc, M)
+// KEYBOARD SHORTCUTS (1-9, R, Esc, M, B, P, ?)
 // ====================================================
 window.addEventListener('keydown', (e) => {
-  // Keys 1-9 for grid
   const keyNum = parseInt(e.key);
   if (!isNaN(keyNum) && keyNum >= 1 && keyNum <= 9) {
     makeMove(keyNum - 1);
@@ -3209,13 +3814,19 @@ window.addEventListener('keydown', (e) => {
     showToast('Round Reset');
   } else if (e.key === 'm' || e.key === 'M') {
     toggleMute();
+  } else if (e.key === 'b' || e.key === 'B') {
+    toggleBlitzMode();
+  } else if (e.key === 'p' || e.key === 'P') {
+    openProfileModal();
+  } else if (e.key === '?' || e.key === 'h' || e.key === 'H') {
+    openModal('modal-hotkeys');
   } else if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
   }
 });
 
 // ====================================================
-// PWA INSTALLATION LOGIC (Chrome & Safari)
+// PWA INSTALLATION LOGIC
 // ====================================================
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -3230,8 +3841,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadUserProfile();
   Confetti.init();
   renderBoard();
+  updateOracleGauge();
 
-  // Check URL room param (?room=ABC123)
   const urlParams = new URLSearchParams(window.location.search);
   const roomParam = urlParams.get('room');
   if (roomParam) {
