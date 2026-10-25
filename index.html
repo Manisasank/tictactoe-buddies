@@ -47,120 +47,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Syne:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <!-- Paho MQTT WebSockets Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js">
-// ====================================================
-// 4-PAGE ROUTING & VIEW CONTROLLER
-// ====================================================
-function navigateToPage(pageId, updateHash = true) {
-  const validPages = ['home', 'arena', 'modes', 'profile'];
-  if (!validPages.includes(pageId)) pageId = 'home';
-
-  validPages.forEach(p => {
-    const el = document.getElementById('page-' + p);
-    if (el) {
-      if (p === pageId) el.classList.add('active');
-      else el.classList.remove('active');
-    }
-    const dockBtn = document.getElementById('dock-btn-' + p);
-    if (dockBtn) {
-      if (p === pageId) dockBtn.classList.add('active');
-      else dockBtn.classList.remove('active');
-    }
-    const topLink = document.getElementById('top-nav-' + p);
-    if (topLink) {
-      if (p === pageId) topLink.classList.add('active');
-      else topLink.classList.remove('active');
-    }
-  });
-
-  if (pageId === 'profile') {
-    updateProfileUI();
-  }
-
-  if (updateHash && window.location.hash !== '#' + pageId) {
-    if (history.pushState) {
-      history.pushState(null, null, '#' + pageId);
-    } else {
-      window.location.hash = '#' + pageId;
-    }
-  }
-
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  try {
-    if (typeof SoundFX !== 'undefined' && SoundFX && SoundFX.play) {
-      SoundFX.play('click');
-    }
-  } catch(e) {}
-}
-
-window.addEventListener('hashchange', () => {
-  const hash = window.location.hash.replace('#', '').toLowerCase();
-  if (['home', 'arena', 'modes', 'profile'].includes(hash)) {
-    navigateToPage(hash, false);
-  }
-});
-
-function saveProfileFromPage() {
-  const inp = document.getElementById('profile-input-name');
-  if (inp && inp.value.trim()) {
-    userProfile.name = inp.value.trim().substring(0, 16);
-    saveUserProfile();
-    updateProfileUI();
-    showToast('Tactician handle updated to ' + userProfile.name);
-  }
-}
-
-function selectSoundPack(pack) {
-  ['synth', 'asmr', 'retro'].forEach(p => {
-    const b = document.getElementById('sound-pack-' + p);
-    if (b) b.classList.remove('active');
-  });
-  const cur = document.getElementById('sound-pack-' + pack);
-  if (cur) cur.classList.add('active');
-  showToast('Sound pack: ' + pack.toUpperCase());
-  if (SoundFX && SoundFX.play) SoundFX.play('click');
-}
-
-function selectSkin(skin) {
-  ['neon', 'mono', 'retro', 'gold'].forEach(s => {
-    const b = document.getElementById('skin-' + s);
-    if (b) b.classList.remove('active');
-  });
-  const cur = document.getElementById('skin-' + skin);
-  if (cur) cur.classList.add('active');
-  
-  const root = document.documentElement;
-  if (skin === 'mono') {
-    root.style.setProperty('--neon-cyan', '#ffffff');
-    root.style.setProperty('--neon-coral', '#888888');
-  } else if (skin === 'retro') {
-    root.style.setProperty('--neon-cyan', '#00ff66');
-    root.style.setProperty('--neon-coral', '#ff9900');
-  } else if (skin === 'gold') {
-    root.style.setProperty('--neon-cyan', '#ffd700');
-    root.style.setProperty('--neon-coral', '#b388ff');
-  } else {
-    root.style.setProperty('--neon-cyan', '#00f0ff');
-    root.style.setProperty('--neon-coral', '#ff2d55');
-  }
-  showToast('Mark skin: ' + skin.toUpperCase());
-}
-
-function launchDailyPuzzle() {
-  currentMode = 'infinity';
-  switchMode('infinity');
-  resetBoard();
-  board = ['X', null, null, 'O', 'X', 'O', null, null, null];
-  turn = 'X';
-  isGameOver = false;
-  playerMarks = { X: [0, 4], O: [3, 5] };
-  renderBoard();
-  navigateToPage('arena');
-  showToast('Daily Tactical Puzzle Loaded! Find winning move for Player X.');
-}
-
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
 
 <!-- Comprehensive Schema.org Structured Data (JSON-LD) -->
 <script type="application/ld+json">
@@ -3357,12 +3244,24 @@ const SoundFX = (() => {
 
   function toggle() {
     muted = !muted;
+    const icon = muted ? '🔇' : '🔊';
+    const text = muted ? 'OFF' : 'ON';
+
     const btn = document.getElementById('audio-toggle-btn');
+    if (btn) btn.innerText = icon + ' Sound: ' + text;
+
+    const headerIcon = document.getElementById('header-sound-icon');
+    if (headerIcon) headerIcon.innerText = icon;
+
+    const profileSoundBtn = document.getElementById('profile-sound-toggle-btn');
+    if (profileSoundBtn) profileSoundBtn.innerText = muted ? '🔇 Sound Muted' : '🔊 Sound Enabled';
+
     const modalBtn = document.getElementById('modal-sound-btn');
-    const dockIcon = document.getElementById('dock-sound-icon');
-    if (btn) btn.innerText = muted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
     if (modalBtn) modalBtn.innerText = muted ? 'Audio: OFF' : 'Audio: ON';
-    if (dockIcon) dockIcon.innerText = muted ? '🔇' : '🔊';
+
+    const dockIcon = document.getElementById('dock-sound-icon');
+    if (dockIcon) dockIcon.innerText = icon;
+
     showToast(muted ? 'Sound Muted' : 'Sound Enabled');
     return muted;
   }
@@ -4306,6 +4205,130 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = e;
 });
 
+
+// ====================================================
+// 4-PAGE ROUTING & VIEW CONTROLLER
+// ====================================================
+function navigateToPage(pageId, updateHash = true) {
+  const validPages = ['home', 'arena', 'modes', 'profile'];
+  if (!validPages.includes(pageId)) pageId = 'home';
+
+  validPages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) {
+      if (p === pageId) {
+        el.classList.add('active');
+        el.style.display = 'block';
+      } else {
+        el.classList.remove('active');
+        el.style.display = 'none';
+      }
+    }
+    const dockBtn = document.getElementById('dock-btn-' + p);
+    if (dockBtn) {
+      if (p === pageId) dockBtn.classList.add('active');
+      else dockBtn.classList.remove('active');
+    }
+    const topLink = document.getElementById('top-nav-' + p);
+    if (topLink) {
+      if (p === pageId) topLink.classList.add('active');
+      else topLink.classList.remove('active');
+    }
+  });
+
+  if (pageId === 'arena') {
+    renderBoard();
+    updateOracleGauge();
+  }
+
+  if (pageId === 'profile') {
+    updateProfileUI();
+  }
+
+  if (updateHash && window.location.hash !== '#' + pageId) {
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, null, '#' + pageId);
+    } else {
+      window.location.hash = '#' + pageId;
+    }
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  try {
+    if (typeof SoundFX !== 'undefined' && SoundFX && SoundFX.play) {
+      SoundFX.play('click');
+    }
+  } catch(e) {}
+}
+
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+  if (['home', 'arena', 'modes', 'profile'].includes(hash)) {
+    navigateToPage(hash, false);
+  }
+});
+
+function saveProfileFromPage() {
+  const inp = document.getElementById('profile-input-name');
+  if (inp && inp.value.trim()) {
+    userProfile.name = inp.value.trim().substring(0, 16);
+    saveUserProfile();
+    updateProfileUI();
+    showToast('Tactician handle updated to ' + userProfile.name);
+  }
+}
+
+function selectSoundPack(pack) {
+  ['synth', 'asmr', 'retro'].forEach(p => {
+    const b = document.getElementById('sound-pack-' + p);
+    if (b) b.classList.remove('active');
+  });
+  const cur = document.getElementById('sound-pack-' + pack);
+  if (cur) cur.classList.add('active');
+  showToast('Sound pack: ' + pack.toUpperCase());
+  if (SoundFX && SoundFX.play) SoundFX.play('click');
+}
+
+function selectSkin(skin) {
+  ['neon', 'mono', 'retro', 'gold'].forEach(s => {
+    const b = document.getElementById('skin-' + s);
+    if (b) b.classList.remove('active');
+  });
+  const cur = document.getElementById('skin-' + skin);
+  if (cur) cur.classList.add('active');
+  
+  const root = document.documentElement;
+  if (skin === 'mono') {
+    root.style.setProperty('--neon-cyan', '#ffffff');
+    root.style.setProperty('--neon-coral', '#888888');
+  } else if (skin === 'retro') {
+    root.style.setProperty('--neon-cyan', '#00ff66');
+    root.style.setProperty('--neon-coral', '#ff9900');
+  } else if (skin === 'gold') {
+    root.style.setProperty('--neon-cyan', '#ffd700');
+    root.style.setProperty('--neon-coral', '#b388ff');
+  } else {
+    root.style.setProperty('--neon-cyan', '#00f0ff');
+    root.style.setProperty('--neon-coral', '#ff2d55');
+  }
+  showToast('Mark skin: ' + skin.toUpperCase());
+}
+
+function launchDailyPuzzle() {
+  currentMode = 'infinity';
+  switchMode('infinity');
+  resetBoard();
+  board = ['X', null, null, 'O', 'X', 'O', null, null, null];
+  turn = 'X';
+  isGameOver = false;
+  movesX = [0, 4];
+  movesO = [3, 5];
+  renderBoard();
+  navigateToPage('arena');
+  showToast('Daily Tactical Puzzle Loaded! Find the winning move for Player X.');
+}
+
 // ====================================================
 // INITIALIZATION ON DOM READY
 // ====================================================
@@ -4314,6 +4337,15 @@ document.addEventListener('DOMContentLoaded', () => {
   Confetti.init();
   renderBoard();
   updateOracleGauge();
+  updateProfileUI();
+
+  // Initial Route Dispatch
+  const initialHash = window.location.hash.replace('#', '').toLowerCase();
+  if (['home', 'arena', 'modes', 'profile'].includes(initialHash)) {
+    navigateToPage(initialHash, false);
+  } else {
+    navigateToPage('home', false);
+  }
 
   const urlParams = new URLSearchParams(window.location.search);
   const roomParam = urlParams.get('room');
