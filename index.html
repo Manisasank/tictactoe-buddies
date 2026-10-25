@@ -47,7 +47,120 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Syne:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <!-- Paho MQTT WebSockets Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js">
+// ====================================================
+// 4-PAGE ROUTING & VIEW CONTROLLER
+// ====================================================
+function navigateToPage(pageId, updateHash = true) {
+  const validPages = ['home', 'arena', 'modes', 'profile'];
+  if (!validPages.includes(pageId)) pageId = 'home';
+
+  validPages.forEach(p => {
+    const el = document.getElementById('page-' + p);
+    if (el) {
+      if (p === pageId) el.classList.add('active');
+      else el.classList.remove('active');
+    }
+    const dockBtn = document.getElementById('dock-btn-' + p);
+    if (dockBtn) {
+      if (p === pageId) dockBtn.classList.add('active');
+      else dockBtn.classList.remove('active');
+    }
+    const topLink = document.getElementById('top-nav-' + p);
+    if (topLink) {
+      if (p === pageId) topLink.classList.add('active');
+      else topLink.classList.remove('active');
+    }
+  });
+
+  if (pageId === 'profile') {
+    updateProfileUI();
+  }
+
+  if (updateHash && window.location.hash !== '#' + pageId) {
+    if (history.pushState) {
+      history.pushState(null, null, '#' + pageId);
+    } else {
+      window.location.hash = '#' + pageId;
+    }
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  try {
+    if (typeof SoundFX !== 'undefined' && SoundFX && SoundFX.play) {
+      SoundFX.play('click');
+    }
+  } catch(e) {}
+}
+
+window.addEventListener('hashchange', () => {
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+  if (['home', 'arena', 'modes', 'profile'].includes(hash)) {
+    navigateToPage(hash, false);
+  }
+});
+
+function saveProfileFromPage() {
+  const inp = document.getElementById('profile-input-name');
+  if (inp && inp.value.trim()) {
+    userProfile.name = inp.value.trim().substring(0, 16);
+    saveUserProfile();
+    updateProfileUI();
+    showToast('Tactician handle updated to ' + userProfile.name);
+  }
+}
+
+function selectSoundPack(pack) {
+  ['synth', 'asmr', 'retro'].forEach(p => {
+    const b = document.getElementById('sound-pack-' + p);
+    if (b) b.classList.remove('active');
+  });
+  const cur = document.getElementById('sound-pack-' + pack);
+  if (cur) cur.classList.add('active');
+  showToast('Sound pack: ' + pack.toUpperCase());
+  if (SoundFX && SoundFX.play) SoundFX.play('click');
+}
+
+function selectSkin(skin) {
+  ['neon', 'mono', 'retro', 'gold'].forEach(s => {
+    const b = document.getElementById('skin-' + s);
+    if (b) b.classList.remove('active');
+  });
+  const cur = document.getElementById('skin-' + skin);
+  if (cur) cur.classList.add('active');
+  
+  const root = document.documentElement;
+  if (skin === 'mono') {
+    root.style.setProperty('--neon-cyan', '#ffffff');
+    root.style.setProperty('--neon-coral', '#888888');
+  } else if (skin === 'retro') {
+    root.style.setProperty('--neon-cyan', '#00ff66');
+    root.style.setProperty('--neon-coral', '#ff9900');
+  } else if (skin === 'gold') {
+    root.style.setProperty('--neon-cyan', '#ffd700');
+    root.style.setProperty('--neon-coral', '#b388ff');
+  } else {
+    root.style.setProperty('--neon-cyan', '#00f0ff');
+    root.style.setProperty('--neon-coral', '#ff2d55');
+  }
+  showToast('Mark skin: ' + skin.toUpperCase());
+}
+
+function launchDailyPuzzle() {
+  currentMode = 'infinity';
+  switchMode('infinity');
+  resetBoard();
+  board = ['X', null, null, 'O', 'X', 'O', null, null, null];
+  turn = 'X';
+  isGameOver = false;
+  playerMarks = { X: [0, 4], O: [3, 5] };
+  renderBoard();
+  navigateToPage('arena');
+  showToast('Daily Tactical Puzzle Loaded! Find winning move for Player X.');
+}
+
+</script>
 
 <!-- Comprehensive Schema.org Structured Data (JSON-LD) -->
 <script type="application/ld+json">
@@ -1902,6 +2015,236 @@ body {
   }
 }
 
+
+/* ----------------------------------------------------
+   4-PAGE APPLICATION ARCHITECTURE & THEMES
+   ---------------------------------------------------- */
+.page-view {
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-bottom: 110px; /* Clearance for floating capsule dock */
+}
+
+.page-view.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-header-banner {
+  text-align: center;
+  padding: 40px 20px 24px;
+}
+
+.page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon-lime);
+  background: rgba(204, 255, 0, 0.08);
+  border: 1px solid rgba(204, 255, 0, 0.25);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #fff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.btn-header-sound {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-header-sound:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.top-nav-link.active {
+  color: var(--neon-lime);
+  border-bottom: 2px solid var(--neon-lime);
+}
+
+.quick-modes-card {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(16, 21, 34, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 8px 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.puzzle-section-box {
+  background: rgba(16, 21, 34, 0.85);
+  border: 1px solid rgba(204, 255, 0, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 24px 30px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
+
+.puzzle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.profile-page-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  margin-top: 10px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .profile-page-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-card-glass {
+  background: rgba(16, 21, 34, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.4);
+}
+
+.profile-avatar-display {
+  font-size: 4rem;
+  text-align: center;
+  margin: 10px 0 16px;
+  filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.4));
+}
+
+.profile-avatar-selector-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-avatar-choice {
+  font-size: 1.3rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-full);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-avatar-choice:hover {
+  background: rgba(0, 240, 255, 0.2);
+  border-color: var(--neon-cyan);
+  transform: scale(1.15);
+}
+
+.profile-rank-badge-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(204, 255, 0, 0.2);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.stats-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+}
+
+.stat-metric-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.skin-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.btn-skin-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+  color: #fff;
+}
+.btn-skin-card:hover, .btn-skin-card.active {
+  border-color: var(--neon-lime);
+  background: rgba(204, 255, 0, 0.08);
+  box-shadow: 0 0 14px rgba(204, 255, 0, 0.2);
+}
+.skin-preview {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+  letter-spacing: 6px;
+}
+.neon-preview { color: #00f0ff; text-shadow: 0 0 8px #00f0ff; }
+.mono-preview { color: #ffffff; }
+.retro-preview { color: #00ff66; text-shadow: 0 0 8px #00ff66; }
+.gold-preview { color: #ffd700; text-shadow: 0 0 8px #ffd700; }
+.skin-name { font-size: 0.75rem; font-weight: 700; }
+
 </style>
 </head>
 <body>
@@ -1909,24 +2252,30 @@ body {
 <!-- HEADER / NAVBAR -->
 <header class="site-header">
   <div class="header-inner">
-    <a href="#" class="brand-link" aria-label="XO Arena Home">
+    <a href="javascript:void(0)" onclick="navigateToPage('home')" class="brand-link" aria-label="XO Arena Home">
       <div class="brand-badge">⚡</div>
       <span class="brand-text">XO ARENA</span>
     </a>
 
     <nav aria-label="Main Navigation">
       <ul class="header-nav-links">
-        <li><a href="#modes" class="top-nav-link">MODE GUIDE</a></li>
-        <li><a href="#why-infinity" class="top-nav-link">HOW TO PLAY</a></li>
-        <li><a href="https://github.com/Manisasank" target="_blank" rel="noopener noreferrer" class="top-nav-link">OPEN SOURCE</a></li>
+        <li><a href="javascript:void(0)" onclick="navigateToPage('home')" class="top-nav-link active" id="top-nav-home">HOME</a></li>
+        <li><a href="javascript:void(0)" onclick="navigateToPage('arena')" class="top-nav-link" id="top-nav-arena">ARENA</a></li>
+        <li><a href="javascript:void(0)" onclick="navigateToPage('modes')" class="top-nav-link" id="top-nav-modes">MODE GUIDE</a></li>
+        <li><a href="javascript:void(0)" onclick="navigateToPage('profile')" class="top-nav-link" id="top-nav-profile">PROFILE</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
-      <button class="btn-header-play" onclick="scrollToElement('arena-section')">
+      <button class="btn-header-sound" id="header-sound-btn" onclick="toggleMute()" title="Mute/Unmute Audio (Key M)">
+        <span id="header-sound-icon">🔊</span>
+      </button>
+
+      <button class="btn-header-play" onclick="navigateToPage('arena')">
         PLAY NOW <span class="arrow">›</span>
       </button>
-      <div class="user-profile-chip" onclick="openProfileModal()" title="View or edit your profile">
+
+      <div class="user-profile-chip" onclick="navigateToPage('profile')" title="View or edit your profile">
         <span class="user-chip-avatar" id="nav-user-avatar">👤</span>
         <span id="nav-user-name">Guest</span>
         <span class="elo-rank-pill" id="nav-elo-pill">1200 ELO</span>
@@ -2468,51 +2817,27 @@ body {
   </div>
 </footer>
 
-<!-- FLOATING GLASS CAPSULE DOCK -->
+<!-- FLOATING GLASS CAPSULE DOCK (4 PAGES) -->
 <div class="capsule-dock-wrapper">
   <nav class="capsule-dock" aria-label="Quick Navigation Dock">
-    <button class="dock-item active" onclick="scrollToElement('hero')">
+    <button class="dock-item active" id="dock-btn-home" onclick="navigateToPage('home')">
       <span class="dock-item-icon">🏠</span>
       <span>Home</span>
     </button>
-    <button class="dock-item" onclick="scrollToElement('arena-section')">
+    <button class="dock-item" id="dock-btn-arena" onclick="navigateToPage('arena')">
       <span class="dock-item-icon">⚔️</span>
       <span>Arena</span>
     </button>
-    <button class="dock-item" onclick="scrollToElement('modes')">
+    <button class="dock-item" id="dock-btn-modes" onclick="navigateToPage('modes')">
       <span class="dock-item-icon">🎮</span>
       <span>Modes</span>
     </button>
-    <button class="dock-item" onclick="toggleMute()">
-      <span class="dock-item-icon" id="dock-sound-icon">🔊</span>
-      <span>Sound</span>
-    </button>
-    <button class="dock-item" onclick="openProfileModal()">
+    <button class="dock-item" id="dock-btn-profile" onclick="navigateToPage('profile')">
       <span class="dock-item-icon">👤</span>
       <span>Profile</span>
     </button>
   </nav>
 </div>
-
-<!-- ================= MODALS ================= -->
-
-<!-- Profile / Multi-Account Modal -->
-<div class="modal-overlay" id="modal-profile">
-  <div class="modal-box">
-    <button class="modal-close-btn" onclick="closeModal('modal-profile')">&times;</button>
-    <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 20px;">Player Profile &amp; Account</h3>
-    
-    <div style="text-align: center; margin-bottom: 20px;">
-      <div id="modal-profile-avatar" style="font-size: 3rem; margin-bottom: 8px;">👤</div>
-      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
-        <button class="btn-control" onclick="selectAvatar('👤')">👤</button>
-        <button class="btn-control" onclick="selectAvatar('⚡')">⚡</button>
-        <button class="btn-control" onclick="selectAvatar('🥷')">🥷</button>
-        <button class="btn-control" onclick="selectAvatar('🤖')">🤖</button>
-        <button class="btn-control" onclick="selectAvatar('👑')">👑</button>
-        <button class="btn-control" onclick="selectAvatar('🐉')">🐉</button>
-      </div>
-    </div>
 
     <div style="margin-bottom: 16px;">
       <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">Tactician Handle:</label>
@@ -3073,8 +3398,7 @@ function updateProfileUI() {
 }
 
 function openProfileModal() {
-  updateProfileUI();
-  openModal('modal-profile');
+  navigateToPage('profile');
 }
 
 function recordMatchResult(isWin) {
@@ -3231,7 +3555,7 @@ function switchMode(mode) {
 
 function selectGameMode(mode) {
   switchMode(mode);
-  scrollToElement('arena-section');
+  navigateToPage('arena');
 }
 
 function setAIDifficulty(level) {
