@@ -2285,8 +2285,9 @@ body {
 </header>
 
 <main>
-  <!-- HERO SECTION (from Video frame_00000.jpg) -->
-  <section class="hero-section" id="hero">
+  <!-- ================= PAGE 1: HOME ================= -->
+  <div id="page-home" class="page-view active" role="region" aria-label="Home Overview">
+<section class="hero-section" id="hero">
     <div class="container hero-grid-layout">
       <div class="hero-content">
         <div class="hero-meta-strip">
@@ -2311,7 +2312,7 @@ body {
         </p>
 
         <div class="hero-actions">
-          <button class="btn-hero-primary" onclick="scrollToElement('arena-section')">
+          <button class="btn-hero-primary" onclick="navigateToPage('arena')">
             ENTER THE ARENA <span class="arrow">›</span>
           </button>
           <a href="javascript:void(0)" class="btn-hero-secondary" onclick="openShareModal()">
@@ -2343,61 +2344,7 @@ body {
     </div>
   </section>
 
-  <!-- "FOUR WAYS TO PLAY" SECTION (from Video frame_00046.jpg) -->
-  <section class="section-four-ways" id="modes">
-    <div class="container">
-      <div class="section-divider-title">
-        <div class="rule"></div>
-        <h2>FOUR WAYS TO PLAY</h2>
-        <div class="rule"></div>
-      </div>
-
-      <div class="modes-grid">
-        <!-- Infinity Mode Card -->
-        <div class="mode-card" onclick="selectGameMode('infinity')">
-          <div class="mode-card-icon text-cyan">∞</div>
-          <div class="mode-card-content">
-            <h3 class="mode-card-title text-cyan">INFINITY</h3>
-            <p class="mode-card-desc">Your oldest mark leaves when you place a fourth. Keep the board moving.</p>
-            <span class="mode-pill mode-pill-cyan">🔥 For Strategic No-Draw Battles</span>
-          </div>
-        </div>
-
-        <!-- VS AI Card -->
-        <div class="mode-card" onclick="selectGameMode('ai')">
-          <div class="mode-card-icon text-coral">◎</div>
-          <div class="mode-card-content">
-            <h3 class="mode-card-title text-coral">VS AI</h3>
-            <p class="mode-card-desc">Choose Easy, Medium, or Master, then see how long you last.</p>
-            <span class="mode-pill mode-pill-coral">🤖 For Solo Practice</span>
-          </div>
-        </div>
-
-        <!-- Local Card -->
-        <div class="mode-card" onclick="selectGameMode('local')">
-          <div class="mode-card-icon text-cyan">⚯</div>
-          <div class="mode-card-content">
-            <h3 class="mode-card-title text-cyan">LOCAL</h3>
-            <p class="mode-card-desc">Pass the device and settle it face to face, wherever you are.</p>
-            <span class="mode-pill mode-pill-cyan">👥 Pass &amp; Play Mode</span>
-          </div>
-        </div>
-
-        <!-- Online Card -->
-        <div class="mode-card" onclick="selectGameMode('online')">
-          <div class="mode-card-icon text-coral">⦿</div>
-          <div class="mode-card-content">
-            <h3 class="mode-card-title text-coral">ONLINE</h3>
-            <p class="mode-card-desc">Create a room code, share it, and meet a friend on the grid.</p>
-            <span class="mode-pill mode-pill-coral">🌐 WebSocket Multiplayer</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- "WHY INFINITY MODE? / THE BOARD NEVER STANDS STILL" SECTION (from Video frame_00092.jpg) -->
-  <section class="section-why-infinity" id="why-infinity">
+<section class="section-why-infinity" id="why-infinity">
     <div class="container">
       <div class="why-infinity-layout">
         <div class="why-content">
@@ -2492,8 +2439,7 @@ body {
     </div>
   </section>
 
-  <!-- HIGH-VOLTAGE FULL-WIDTH NEON LIME BANNER (from Video frame_00184.jpg) -->
-  <section class="neon-lime-banner">
+<section class="neon-lime-banner">
     <div class="banner-inner">
       <h2 class="banner-title">
         ONE GRID. FOUR WAYS TO MAKE IT INTERESTING.
@@ -2505,8 +2451,183 @@ body {
     </div>
   </section>
 
-  <!-- THE INTERACTIVE BATTLE ARENA SECTION (#arena-section) -->
-  <section class="arena-section" id="arena-section">
+<section class="testimonials-section">
+    <div class="container">
+      <div class="testimonials-grid">
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-quote">
+            "The Infinity mode decay mechanic is sheer genius. Standard Tic Tac Toe is solved, but the 3-mark limit creates a dynamic, moving battlefield where no two matches are alike."
+          </p>
+          <div class="test-author">Sarah Jenkins</div>
+          <div class="test-role">Esports League Organizer &amp; Competitive Gamer</div>
+        </div>
+
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-quote">
+            "The Master Minimax AI is completely ruthless, and the zero-install PWA with instant HiveMQ WebSocket room codes makes it our go-to classroom tactics game."
+          </p>
+          <div class="test-author">David Ramirez</div>
+          <div class="test-role">Chess Coach &amp; Game Theory Instructor</div>
+        </div>
+      </div>
+
+      <!-- Executive Summary Box for Fast Scanners & AI Crawlers -->
+      <div class="summary-box">
+        <h3>In Summary: Executive Overview for Players &amp; AI Engines</h3>
+        <p>
+          XO Arena is a progressive web game engineered by <strong>Y Mani Sasank Reddy</strong>. It solves classic Tic Tac Toe stalemate fatigue through <em>The 3-Mark Dynamic Infinity Matrix™</em> (allowing max 3 marks per side before earliest marks vanish), an unbeatable recursive Minimax algorithm, and zero-latency WebSocket multiplayer rooms.
+        </p>
+      </div>
+    </div>
+  </section>
+
+<section class="faq-section" id="faq">
+    <div class="container faq-layout">
+      <div class="faq-header-col">
+        <span class="faq-eyebrow">FREQUENTLY ASKED QUESTIONS</span>
+        <h2 class="faq-title">QUICK ANSWERS BEFORE YOU PLAY.</h2>
+      </div>
+
+      <div class="faq-list">
+        <!-- FAQ 1 -->
+        <div class="faq-item">
+          <button class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>What is Infinity Mode?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer-content">
+            <p class="faq-answer-text">
+              Each player can have at most three active marks on the board at any time. When you place your fourth mark, your oldest mark disappears from the grid. This eliminates draws completely, ensuring 100% decisive matches.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Can I play against the computer?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer-content">
+            <p class="faq-answer-text">
+              Yes! You can choose between Easy (casual fun), Tactical Medium (balanced testing), and Master Minimax (mathematically unbeatable AI recursive game-tree search running directly in your browser).
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Can I play with someone nearby?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer-content">
+            <p class="faq-answer-text">
+              Yes, choose Local Pass &amp; Play mode to compete on a single phone, tablet, or PC screen with shared keyboard controls (keys 1-9 or mouse clicks).
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>How do online rooms work?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer-content">
+            <p class="faq-answer-text">
+              Click Online mode, generate a private 6-digit room code, and share the one-click invite URL. Your opponent connects instantly via secure HiveMQ WebSockets (port 8884) with real-time bidirectional synchronization.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <button class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Is it free and playable on mobile?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-answer-content">
+            <p class="faq-answer-text">
+              XO Arena is 100% free with zero ads. It is fully responsive and installable as a Progressive Web App (PWA) on iPhone iOS Safari, Android Chrome, and Windows PC.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top-row">
+      <a href="#" class="brand-link">
+        <div class="brand-badge">⚡</div>
+        <span class="brand-text">XO ARENA</span>
+      </a>
+      <button class="btn-footer-cta" onclick="navigateToPage('arena')">
+        ENTER THE ARENA <span class="arrow">›</span>
+      </button>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>EXPLORE</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="navigateToPage('modes')">Game modes</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateToPage('home'); scrollToElement('why-infinity');">How to play</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-about')">About XO Arena</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CONNECT</h4>
+        <ul>
+          <li><a href="https://github.com/Manisasank" target="_blank" rel="noopener noreferrer">Project repository</a></li>
+          <li><a href="javascript:void(0)" onclick="openProfileModal()">Creator profile</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-support')">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>DETAILS</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="alert('Privacy Policy: XO Arena stores zero tracking cookies and never sells your data.')">Privacy</a></li>
+          <li><a href="javascript:void(0)" onclick="alert('Terms of Service: Free fair-play esports browser game for players worldwide.')">Terms</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>COMMUNITY</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-story')">Build story</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-ios-install')">Install App</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-row">
+      <div>
+        &copy; 2026 XO Arena. Engineered by <strong>Y Mani Sasank Reddy</strong>.
+      </div>
+      
+    </div>
+  </div>
+</footer>
+  </div>
+
+  <!-- ================= PAGE 2: ARENA ================= -->
+  <div id="page-arena" class="page-view" role="region" aria-label="Battle Arena">
+    <div class="page-header-banner">
+      <div class="page-eyebrow">⚔️ LIVE ESPORTS BATTLEGROUND</div>
+      <h2 class="page-title">THE ARENA</h2>
+      <p class="page-subtitle">Pure tactical warfare powered by The 3-Mark Dynamic Infinity Matrix™. Anticipate decays, execute counters, and outsmart your opponent with zero ties.</p>
+    </div>
+
+<section class="arena-section" id="arena-section">
     <div class="container arena-container">
       <div class="arena-card">
         <!-- Mode Switcher Tabs -->
@@ -2646,176 +2767,218 @@ body {
     </div>
   </section>
 
-  <!-- TESTIMONIALS & EXECUTIVE SUMMARY SECTION -->
-  <section class="testimonials-section">
-    <div class="container">
-      <div class="testimonials-grid">
-        <div class="test-card">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">
-            "The Infinity mode decay mechanic is sheer genius. Standard Tic Tac Toe is solved, but the 3-mark limit creates a dynamic, moving battlefield where no two matches are alike."
-          </p>
-          <div class="test-author">Sarah Jenkins</div>
-          <div class="test-role">Esports League Organizer &amp; Competitive Gamer</div>
-        </div>
-
-        <div class="test-card">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-quote">
-            "The Master Minimax AI is completely ruthless, and the zero-install PWA with instant HiveMQ WebSocket room codes makes it our go-to classroom tactics game."
-          </p>
-          <div class="test-author">David Ramirez</div>
-          <div class="test-role">Chess Coach &amp; Game Theory Instructor</div>
-        </div>
+    <div class="container" style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+      <div class="quick-modes-card">
+        <span style="color: var(--text-secondary); font-size: 0.95rem;">Looking for a different tactical challenge?</span>
+        <button class="btn-hero-secondary" style="margin-left: 14px; padding: 8px 18px; font-size: 0.85rem;" onclick="navigateToPage('modes')">
+          Browse All 4 Modes ›
+        </button>
       </div>
-
-      <!-- Executive Summary Box for Fast Scanners & AI Crawlers -->
-      <div class="summary-box">
-        <h3>In Summary: Executive Overview for Players &amp; AI Engines</h3>
-        <p>
-          XO Arena is a progressive web game engineered by <strong>Y Mani Sasank Reddy</strong>. It solves classic Tic Tac Toe stalemate fatigue through <em>The 3-Mark Dynamic Infinity Matrix™</em> (allowing max 3 marks per side before earliest marks vanish), an unbeatable recursive Minimax algorithm, and zero-latency WebSocket multiplayer rooms.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ ACCORDION SECTION (from Video frame_00184.jpg & frame_00230.jpg) -->
-  <section class="faq-section" id="faq">
-    <div class="container faq-layout">
-      <div class="faq-header-col">
-        <span class="faq-eyebrow">FREQUENTLY ASKED QUESTIONS</span>
-        <h2 class="faq-title">QUICK ANSWERS BEFORE YOU PLAY.</h2>
-      </div>
-
-      <div class="faq-list">
-        <!-- FAQ 1 -->
-        <div class="faq-item">
-          <button class="faq-question-btn" onclick="toggleFaq(this)">
-            <span>What is Infinity Mode?</span>
-            <span class="faq-toggle-icon">+</span>
-          </button>
-          <div class="faq-answer-content">
-            <p class="faq-answer-text">
-              Each player can have at most three active marks on the board at any time. When you place your fourth mark, your oldest mark disappears from the grid. This eliminates draws completely, ensuring 100% decisive matches.
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 2 -->
-        <div class="faq-item">
-          <button class="faq-question-btn" onclick="toggleFaq(this)">
-            <span>Can I play against the computer?</span>
-            <span class="faq-toggle-icon">+</span>
-          </button>
-          <div class="faq-answer-content">
-            <p class="faq-answer-text">
-              Yes! You can choose between Easy (casual fun), Tactical Medium (balanced testing), and Master Minimax (mathematically unbeatable AI recursive game-tree search running directly in your browser).
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 3 -->
-        <div class="faq-item">
-          <button class="faq-question-btn" onclick="toggleFaq(this)">
-            <span>Can I play with someone nearby?</span>
-            <span class="faq-toggle-icon">+</span>
-          </button>
-          <div class="faq-answer-content">
-            <p class="faq-answer-text">
-              Yes, choose Local Pass &amp; Play mode to compete on a single phone, tablet, or PC screen with shared keyboard controls (keys 1-9 or mouse clicks).
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 4 -->
-        <div class="faq-item">
-          <button class="faq-question-btn" onclick="toggleFaq(this)">
-            <span>How do online rooms work?</span>
-            <span class="faq-toggle-icon">+</span>
-          </button>
-          <div class="faq-answer-content">
-            <p class="faq-answer-text">
-              Click Online mode, generate a private 6-digit room code, and share the one-click invite URL. Your opponent connects instantly via secure HiveMQ WebSockets (port 8884) with real-time bidirectional synchronization.
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 5 -->
-        <div class="faq-item">
-          <button class="faq-question-btn" onclick="toggleFaq(this)">
-            <span>Is it free and playable on mobile?</span>
-            <span class="faq-toggle-icon">+</span>
-          </button>
-          <div class="faq-answer-content">
-            <p class="faq-answer-text">
-              XO Arena is 100% free with zero ads. It is fully responsive and installable as a Progressive Web App (PWA) on iPhone iOS Safari, Android Chrome, and Windows PC.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- ESPORTS FOOTER (from Video frame_00276.jpg) -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top-row">
-      <a href="#" class="brand-link">
-        <div class="brand-badge">⚡</div>
-        <span class="brand-text">XO ARENA</span>
-      </a>
-      <button class="btn-footer-cta" onclick="scrollToElement('arena-section')">
-        ENTER THE ARENA <span class="arrow">›</span>
-      </button>
-    </div>
-
-    <div class="footer-divider"></div>
-
-    <div class="footer-grid">
-      <div class="footer-col">
-        <h4>EXPLORE</h4>
-        <ul>
-          <li><a href="#modes">Game modes</a></li>
-          <li><a href="#why-infinity">How to play</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-about')">About XO Arena</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>CONNECT</h4>
-        <ul>
-          <li><a href="https://github.com/Manisasank" target="_blank" rel="noopener noreferrer">Project repository</a></li>
-          <li><a href="javascript:void(0)" onclick="openProfileModal()">Creator profile</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-support')">Support</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>DETAILS</h4>
-        <ul>
-          <li><a href="javascript:void(0)" onclick="alert('Privacy Policy: XO Arena stores zero tracking cookies and never sells your data.')">Privacy</a></li>
-          <li><a href="javascript:void(0)" onclick="alert('Terms of Service: Free fair-play esports browser game for players worldwide.')">Terms</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>COMMUNITY</h4>
-        <ul>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-story')">Build story</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-ios-install')">Install App</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom-row">
-      <div>
-        &copy; 2026 XO Arena. Engineered by <strong>Y Mani Sasank Reddy</strong>.
-      </div>
-      
     </div>
   </div>
-</footer>
+
+  <!-- ================= PAGE 3: MODES ================= -->
+  <div id="page-modes" class="page-view" role="region" aria-label="Game Modes Hub">
+    <div class="page-header-banner">
+      <div class="page-eyebrow">🎮 BATTLEGROUND SELECTOR</div>
+      <h2 class="page-title">CHOOSE YOUR BATTLE</h2>
+      <p class="page-subtitle">Challenge the recursive Minimax AI, master the no-draw Infinity matrix, or duel a friend via zero-latency online rooms.</p>
+    </div>
+
+<section class="section-four-ways" id="modes">
+    <div class="container">
+      <div class="section-divider-title">
+        <div class="rule"></div>
+        <h2>FOUR WAYS TO PLAY</h2>
+        <div class="rule"></div>
+      </div>
+
+      <div class="modes-grid">
+        <!-- Infinity Mode Card -->
+        <div class="mode-card" onclick="selectGameMode('infinity')">
+          <div class="mode-card-icon text-cyan">∞</div>
+          <div class="mode-card-content">
+            <h3 class="mode-card-title text-cyan">INFINITY</h3>
+            <p class="mode-card-desc">Your oldest mark leaves when you place a fourth. Keep the board moving.</p>
+            <span class="mode-pill mode-pill-cyan">🔥 For Strategic No-Draw Battles</span>
+          </div>
+        </div>
+
+        <!-- VS AI Card -->
+        <div class="mode-card" onclick="selectGameMode('ai')">
+          <div class="mode-card-icon text-coral">◎</div>
+          <div class="mode-card-content">
+            <h3 class="mode-card-title text-coral">VS AI</h3>
+            <p class="mode-card-desc">Choose Easy, Medium, or Master, then see how long you last.</p>
+            <span class="mode-pill mode-pill-coral">🤖 For Solo Practice</span>
+          </div>
+        </div>
+
+        <!-- Local Card -->
+        <div class="mode-card" onclick="selectGameMode('local')">
+          <div class="mode-card-icon text-cyan">⚯</div>
+          <div class="mode-card-content">
+            <h3 class="mode-card-title text-cyan">LOCAL</h3>
+            <p class="mode-card-desc">Pass the device and settle it face to face, wherever you are.</p>
+            <span class="mode-pill mode-pill-cyan">👥 Pass &amp; Play Mode</span>
+          </div>
+        </div>
+
+        <!-- Online Card -->
+        <div class="mode-card" onclick="selectGameMode('online')">
+          <div class="mode-card-icon text-coral">⦿</div>
+          <div class="mode-card-content">
+            <h3 class="mode-card-title text-coral">ONLINE</h3>
+            <p class="mode-card-desc">Create a room code, share it, and meet a friend on the grid.</p>
+            <span class="mode-pill mode-pill-coral">🌐 WebSocket Multiplayer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Daily Tactical Puzzle Section -->
+    <div class="container" style="margin-top: 40px; margin-bottom: 40px;">
+      <div class="puzzle-section-box">
+        <div class="puzzle-header">
+          <div>
+            <span class="mode-pill mode-pill-lime" style="margin-bottom: 8px; display: inline-block;">DAILY TACTICAL PUZZLE</span>
+            <h3 class="font-display" style="font-size: 1.5rem; color: #fff; margin-bottom: 6px;">Mate in 2: The Decisive Finish</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Player X has 2 marks placed. Cell A1 is expiring next. Find the single winning placement before Player O blocks your diagonal!</p>
+          </div>
+          <button class="btn-hero-primary" style="padding: 12px 24px; font-size: 0.92rem;" onclick="launchDailyPuzzle()">
+            SOLVE PUZZLE IN ARENA ›
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4: PROFILE ================= -->
+  <div id="page-profile" class="page-view" role="region" aria-label="Player Profile & Settings">
+    <div class="page-header-banner">
+      <div class="page-eyebrow">👤 TACTICIAN COMMAND CENTER</div>
+      <h2 class="page-title">PLAYER PROFILE &amp; SETTINGS</h2>
+      <p class="page-subtitle">Track your competitive rating, customize your avatar, select audio synthesizer packs, and configure cosmetics.</p>
+    </div>
+
+    <div class="container profile-page-layout">
+      <!-- Left Column: Identity & Tier -->
+      <div class="profile-card-glass">
+        <div class="profile-avatar-display" id="profile-page-avatar">👤</div>
+        <div class="profile-avatar-selector-row">
+          <button class="btn-avatar-choice" onclick="selectAvatar('👤')">👤</button>
+          <button class="btn-avatar-choice" onclick="selectAvatar('⚡')">⚡</button>
+          <button class="btn-avatar-choice" onclick="selectAvatar('🥷')">🥷</button>
+          <button class="btn-avatar-choice" onclick="selectAvatar('🤖')">🤖</button>
+          <button class="btn-avatar-choice" onclick="selectAvatar('👑')">👑</button>
+          <button class="btn-avatar-choice" onclick="selectAvatar('🐉')">🐉</button>
+        </div>
+
+        <div style="margin-top: 24px; width: 100%;">
+          <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700;">Tactician Handle:</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="profile-input-name" class="room-input" style="flex: 1;" placeholder="Enter username" />
+            <button class="btn-control" onclick="saveProfileFromPage()">Save</button>
+          </div>
+        </div>
+
+        <div class="profile-rank-badge-box">
+          <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Competitive Tier</div>
+          <div class="font-display text-lime" style="font-size: 1.4rem; margin: 4px 0;" id="profile-tier-name">⚡ Cyber Tactician</div>
+          <div style="font-size: 0.95rem; color: #fff; font-weight: 700;" id="profile-elo-display">1200 ELO</div>
+        </div>
+
+        <div style="margin-top: 20px; width: 100%; display: flex; gap: 10px; flex-direction: column;">
+          <button class="btn-hero-primary" style="width: 100%; padding: 12px; font-size: 0.95rem;" onclick="navigateToPage('arena')">
+            ⚔️ ENTER ARENA TO BATTLE
+          </button>
+          <button class="btn-control" style="width: 100%; padding: 10px;" onclick="instantGuestPlay()">
+            ⚡ Instant Guest Play
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Stats, Themes, Sound, PWA -->
+      <div class="profile-details-column">
+        <!-- Career Statistics Grid -->
+        <div class="profile-card-glass">
+          <h3 class="font-display" style="font-size: 1.25rem; color: #fff; margin-bottom: 16px;">🏆 Competitive Career Stats</h3>
+          <div class="stats-metric-grid">
+            <div class="stat-metric-card">
+              <div class="stat-number text-cyan" id="page-stat-matches">0</div>
+              <div class="stat-label">Matches Played</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-number text-lime" id="page-stat-wins">0</div>
+              <div class="stat-label">Victories</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-number text-coral" id="page-stat-winrate">0%</div>
+              <div class="stat-label">Win Rate</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-number text-lime" id="page-stat-streak">0🔥</div>
+              <div class="stat-label">Win Streak</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio Synthesizer Studio -->
+        <div class="profile-card-glass" style="margin-top: 20px;">
+          <h3 class="font-display" style="font-size: 1.25rem; color: #fff; margin-bottom: 16px;">🔊 Web Audio Synthesizer Studio</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+            <button class="btn-control active" id="sound-pack-synth" onclick="selectSoundPack('synth')">🎹 Sci-Fi Synth</button>
+            <button class="btn-control" id="sound-pack-asmr" onclick="selectSoundPack('asmr')">🪵 Soft ASMR</button>
+            <button class="btn-control" id="sound-pack-retro" onclick="selectSoundPack('retro')">🕹️ Retro 8-Bit</button>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <button class="btn-control" id="profile-sound-toggle-btn" onclick="toggleMute()">
+              🔊 Sound Enabled
+            </button>
+            <button class="btn-control" id="profile-haptics-btn" onclick="toggleHaptics()">
+              📳 Haptics: ON
+            </button>
+          </div>
+        </div>
+
+        <!-- Mark Cosmetic Skins -->
+        <div class="profile-card-glass" style="margin-top: 20px;">
+          <h3 class="font-display" style="font-size: 1.25rem; color: #fff; margin-bottom: 16px;">✨ Cosmetic Mark Skins</h3>
+          <div class="skin-selector-grid">
+            <button class="btn-skin-card active" id="skin-neon" onclick="selectSkin('neon')">
+              <div class="skin-preview neon-preview">X O</div>
+              <div class="skin-name">Cyber Neon</div>
+            </button>
+            <button class="btn-skin-card" id="skin-mono" onclick="selectSkin('mono')">
+              <div class="skin-preview mono-preview">X O</div>
+              <div class="skin-name">Monochrome</div>
+            </button>
+            <button class="btn-skin-card" id="skin-retro" onclick="selectSkin('retro')">
+              <div class="skin-preview retro-preview">X O</div>
+              <div class="skin-name">8-Bit Arcade</div>
+            </button>
+            <button class="btn-skin-card" id="skin-gold" onclick="selectSkin('gold')">
+              <div class="skin-preview gold-preview">X O</div>
+              <div class="skin-name">Golden Royal</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Multi-Device App Installation -->
+        <div class="profile-card-glass" style="margin-top: 20px;">
+          <h3 class="font-display" style="font-size: 1.25rem; color: #fff; margin-bottom: 8px;">📱 Install Progressive Web App</h3>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 14px;">Install XO Arena on your PC, Android, or iOS device for 100% offline play with zero app store downloads.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-control" onclick="installPWA()">💻 Install on PC / Android</button>
+            <button class="btn-control" onclick="openModal('modal-ios-install')">🍏 iOS Safari Guide</button>
+            <button class="btn-control text-coral" onclick="resetEloRating()">Reset All Stats</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
 <!-- FLOATING GLASS CAPSULE DOCK (4 PAGES) -->
 <div class="capsule-dock-wrapper">
