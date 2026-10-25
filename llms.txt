@@ -1,8 +1,8 @@
-# XO Arena - Algorithmic Tic Tac Toe & Infinity Mode
+# XO Arena - Algorithmic Tic Tac Toe & The 3-Mark Dynamic Infinity Matrix™
 > Created and engineered by Y Mani Sasank Reddy
 
 ## Overview
-XO Arena is an esports-grade, responsive web game application and Progressive Web App (PWA) available on PC, Android, and iOS. It modernizes the classic game of Tic Tac Toe by eliminating draw fatigue through the proprietary Dynamic Infinity MatrixT (3-mark decaying mechanic), mathematically optimal Minimax AI, and zero-configuration WebSocket multiplayer.
+XO Arena is an esports-grade, responsive web game application and Progressive Web App (PWA) available on PC, Android, and iOS. It modernizes the classic game of Tic Tac Toe by eliminating draw fatigue through the proprietary Dynamic Infinity Matrix™ (3-mark decaying mechanic), mathematically optimal Minimax AI, and peer-to-peer WebRTC multiplayer.
 
 ## Core Mechanics & Modes
 1. **Dynamic Infinity Matrix™ (Decay Engine):**
@@ -10,20 +10,21 @@ XO Arena is an esports-grade, responsive web game application and Progressive We
    - When placing a 4th mark, the player's oldest mark pulses with a warning alert and is removed from the board.
    - Eliminates boring stalemates (100% decisive matches).
 2. **Single Player vs Minimax AI:**
-   - Easy: Casual warm-up mode.
-   - Tactical Medium: Mixes smart positional play with human-like slips.
-   - Master Minimax: Mathematically optimal recursive game-tree search ensuring zero lost games for the AI.
-3. **Multiplayer Online (WebSocket Paho MQTT):**
+   - Novice: Casual warm-up mode.
+   - Tactician: Mixes smart positional play with human-like slips.
+   - Grandmaster Minimax: Mathematically optimal recursive game-tree search with cycle detection ensuring zero lost games for the AI.
+3. **Multiplayer Online (WebRTC PeerJS):**
    - Instant 6-digit room codes.
    - Direct invite URL parameters (?room=ABC123).
-   - Real-time peer-to-peer gameplay via secure HiveMQ WebSockets (port 8884).
+   - Canvas-rendered QR code for mobile-to-desktop pairing.
+   - Real-time peer-to-peer gameplay via WebRTC.
 4. **Local Pass & Play:**
    - 2 players on a single shared screen or keyboard.
 
 ## Technical Specifications
-- **Architecture:** Zero-dependency vanilla JavaScript, Web Audio API sound synthesizer, HTML5 Canvas confetti.
-- **Visual Aesthetic:** Cyberpunk Neon Esports Dark Mode with slanted display headers ('Syne', sans-serif italic), neon lime (#ccff00), glowing electric cyan (#00f0ff), and neon coral (#ff3b5c).
+- **Architecture:** Vite + TypeScript modular architecture, Web Audio API sound synthesizer, HTML5 Canvas confetti.
+- **Visual Aesthetic:** Cyberpunk Neon Esports Dark Mode with slanted display headers ('Syne', sans-serif italic), neon lime (#ccff00), glowing electric cyan (#00f0ff), and neon coral (#ff2d55).
 - **Navigation:** Floating Glassmorphic Capsule Dock with frosted backdrop-filter blur.
 - **Platform Support:** Desktop PC (keyboard hotkeys 1-9, R, Esc, M), Android PWA, iOS PWA.
 - **Author:** Y Mani Sasank Reddy (AI & Software Engineer). GitHub: https://github.com/Manisasank
-- **Live URL:** https://deft-custard-e144d4.netlify.app/
+- **Live URL:** https://manisasank.github.io/tictactoe-buddies/

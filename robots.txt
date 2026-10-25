@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://deft-custard-e144d4.netlify.app/sitemap.xml
+Sitemap: https://manisasank.github.io/tictactoe-buddies/sitemap.xml

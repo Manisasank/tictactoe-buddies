@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://manisasank.github.io/tictactoe-buddies/sitemap.xml

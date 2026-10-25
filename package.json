@@ -1,0 +1,30 @@
+{
+  "name": "xo-arena-tictactoe",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Esports-grade algorithmic Tic Tac Toe with 3-Mark Infinity Matrix decay, Minimax AI, and WebRTC multiplayer",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "node test_senior_suite.cjs"
+  },
+  "keywords": [
+    "tic-tac-toe",
+    "esports",
+    "webrtc",
+    "minimax",
+    "pwa",
+    "web-audio"
+  ],
+  "author": "Y Mani Sasank Reddy <https://github.com/Manisasank>",
+  "license": "MIT",
+  "dependencies": {
+    "peerjs": "^1.5.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "vite": "^5.4.2"
+  }
+}
