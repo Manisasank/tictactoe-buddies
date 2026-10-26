@@ -2446,64 +2446,7 @@ body {
     </div>
   </section>
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="footer-top-row">
-      <a href="#" class="brand-link">
-        <div class="brand-badge">⚡</div>
-        <span class="brand-text">XO ARENA</span>
-      </a>
-      <button class="btn-footer-cta" onclick="navigateToPage('arena')">
-        ENTER THE ARENA <span class="arrow">›</span>
-      </button>
-    </div>
 
-    <div class="footer-divider"></div>
-
-    <div class="footer-grid">
-      <div class="footer-col">
-        <h4>EXPLORE</h4>
-        <ul>
-          <li><a href="javascript:void(0)" onclick="navigateToPage('modes')">Game modes</a></li>
-          <li><a href="javascript:void(0)" onclick="navigateToPage('home'); scrollToElement('why-infinity');">How to play</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-about')">About XO Arena</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>CONNECT</h4>
-        <ul>
-          <li><a href="https://github.com/Manisasank" target="_blank" rel="noopener noreferrer">Project repository</a></li>
-          <li><a href="javascript:void(0)" onclick="openProfileModal()">Creator profile</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-support')">Support</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>DETAILS</h4>
-        <ul>
-          <li><a href="javascript:void(0)" onclick="alert('Privacy Policy: XO Arena stores zero tracking cookies and never sells your data.')">Privacy</a></li>
-          <li><a href="javascript:void(0)" onclick="alert('Terms of Service: Free fair-play esports browser game for players worldwide.')">Terms</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>COMMUNITY</h4>
-        <ul>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-story')">Build story</a></li>
-          <li><a href="javascript:void(0)" onclick="openModal('modal-ios-install')">Install App</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom-row">
-      <div>
-        &copy; 2026 XO Arena. Engineered by <strong>Y Mani Sasank Reddy</strong>.
-      </div>
-      
-    </div>
-  </div>
-</footer>
   </div>
 
   <!-- ================= PAGE 2: ARENA ================= -->
@@ -2763,10 +2706,15 @@ body {
         </div>
 
         <div style="margin-top: 24px; width: 100%;">
-          <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700;">Tactician Handle:</label>
-          <div style="display: flex; gap: 8px;">
-            <input type="text" id="profile-input-name" class="room-input" style="flex: 1;" placeholder="Enter username" />
-            <button class="btn-control" onclick="saveProfileFromPage()">Save</button>
+          <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 700;">Tactician Handle:</label>
+          <input type="text" id="login-name" class="room-input" style="width: 100%; margin-bottom: 12px;" placeholder="Enter username"/>
+
+          <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; font-weight: 700;">Passcode (optional):</label>
+          <input type="password" id="login-pass" class="room-input" style="width: 100%; margin-bottom: 14px;" placeholder="••••••••"/>
+
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <button class="btn-hero-primary" style="flex: 1; padding: 10px;" onclick="saveUserProfile()">Save Profile</button>
+            <button class="btn-control" style="flex: 1; padding: 10px;" onclick="instantGuestPlay()">⚡ Instant Guest Play</button>
           </div>
         </div>
 
@@ -2776,12 +2724,22 @@ body {
           <div style="font-size: 0.95rem; color: #fff; font-weight: 700;" id="profile-elo-display">1200 ELO</div>
         </div>
 
-        <div style="margin-top: 20px; width: 100%; display: flex; gap: 10px; flex-direction: column;">
+        <!-- Career Summary Mini-Card -->
+        <div style="background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px; font-size: 0.85rem; color: var(--text-secondary); margin-top: 16px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Career Wins:</span><strong id="career-wins" class="text-lime">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span>Career Matches:</span><strong id="career-matches" style="color: #fff;">0</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span>Win Rate:</span><strong id="career-winrate" class="text-cyan">0%</strong>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; width: 100%;">
           <button class="btn-hero-primary" style="width: 100%; padding: 12px; font-size: 0.95rem;" onclick="navigateToPage('arena')">
             ⚔️ ENTER ARENA TO BATTLE
-          </button>
-          <button class="btn-control" style="width: 100%; padding: 10px;" onclick="instantGuestPlay()">
-            ⚡ Instant Guest Play
           </button>
         </div>
       </div>
@@ -2864,6 +2822,65 @@ body {
         </div>
       </div>
     </div>
+  
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top-row">
+      <a href="#" class="brand-link">
+        <div class="brand-badge">⚡</div>
+        <span class="brand-text">XO ARENA</span>
+      </a>
+      <button class="btn-footer-cta" onclick="navigateToPage('arena')">
+        ENTER THE ARENA <span class="arrow">›</span>
+      </button>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>EXPLORE</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="navigateToPage('modes')">Game modes</a></li>
+          <li><a href="javascript:void(0)" onclick="navigateToPage('home'); scrollToElement('why-infinity');">How to play</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-about')">About XO Arena</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CONNECT</h4>
+        <ul>
+          <li><a href="https://github.com/Manisasank" target="_blank" rel="noopener noreferrer">Project repository</a></li>
+          <li><a href="javascript:void(0)" onclick="openProfileModal()">Creator profile</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-support')">Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>DETAILS</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="alert('Privacy Policy: XO Arena stores zero tracking cookies and never sells your data.')">Privacy</a></li>
+          <li><a href="javascript:void(0)" onclick="alert('Terms of Service: Free fair-play esports browser game for players worldwide.')">Terms</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>COMMUNITY</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-story')">Build story</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('modal-ios-install')">Install App</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-row">
+      <div>
+        &copy; 2026 XO Arena. Engineered by <strong>Y Mani Sasank Reddy</strong>.
+      </div>
+      
+    </div>
+  </div>
+</footer>
   </div>
 </main>
 
@@ -2889,34 +2906,7 @@ body {
   </nav>
 </div>
 
-    <div style="margin-bottom: 16px;">
-      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">Tactician Handle:</label>
-      <input type="text" id="login-name" class="room-input" style="width: 100%;" placeholder="Enter username"/>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px;">Passcode (optional):</label>
-      <input type="password" id="login-pass" class="room-input" style="width: 100%;" placeholder="••••••••"/>
-    </div>
-
-    <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-      <button class="btn-hero-primary" style="flex: 1; padding: 10px;" onclick="saveUserProfile()">Save Profile</button>
-      <button class="btn-control" style="flex: 1;" onclick="instantGuestPlay()">⚡ Instant Guest Play</button>
-    </div>
-
-    <div style="background: #0d121c; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px; font-size: 0.85rem; color: var(--text-secondary);">
-      <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-        <span>Career Wins:</span><strong id="career-wins" class="text-lime">0</strong>
-      </div>
-      <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-        <span>Career Matches:</span><strong id="career-matches" style="color: #fff;">0</strong>
-      </div>
-      <div style="display: flex; justify-content: space-between;">
-        <span>Win Rate:</span><strong id="career-winrate" class="text-cyan">0%</strong>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ================= MODALS ================= -->
 
 <!-- About Creator Modal -->
 <div class="modal-overlay" id="modal-about">
