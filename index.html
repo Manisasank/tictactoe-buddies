@@ -2289,6 +2289,12 @@ body {
   border-color: var(--neon-cyan);
   transform: scale(1.15);
 }
+.btn-avatar-choice.active {
+  background: rgba(0, 240, 255, 0.25) !important;
+  border-color: var(--neon-cyan) !important;
+  box-shadow: 0 0 16px var(--neon-cyan-glow) !important;
+  transform: scale(1.15);
+}
 
 .profile-rank-badge-box {
   background: rgba(0, 0, 0, 0.35);
@@ -3628,8 +3634,20 @@ function instantGuestPlay() {
 
 function selectAvatar(emoji) {
   userProfile.avatar = emoji;
-  const disp = document.getElementById('modal-profile-avatar');
-  if (disp) disp.innerText = emoji;
+  const pageAvatar = document.getElementById('profile-page-avatar');
+  if (pageAvatar) pageAvatar.innerText = emoji;
+  const modalAvatar = document.getElementById('modal-profile-avatar');
+  if (modalAvatar) modalAvatar.innerText = emoji;
+  
+  document.querySelectorAll('.btn-avatar-choice').forEach(b => {
+    b.classList.toggle('active', b.innerText.trim() === emoji);
+  });
+  
+  try {
+    localStorage.setItem('xo_arena_profile', JSON.stringify(userProfile));
+  } catch(e) {}
+  updateProfileUI();
+  showToast('Avatar selected: ' + emoji);
 }
 
 function resetAllStats() {
@@ -3658,6 +3676,7 @@ function updateProfileUI() {
   const pXAvatar = document.getElementById('player-x-avatar');
   const pXElo = document.getElementById('player-x-elo');
   const modalAvatar = document.getElementById('modal-profile-avatar');
+  const profilePageAvatar = document.getElementById('profile-page-avatar');
   const loginName = document.getElementById('login-name');
   
   const eloVal = userProfile.elo || 1200;
@@ -3670,7 +3689,12 @@ function updateProfileUI() {
   if (pXAvatar) pXAvatar.innerText = userProfile.avatar;
   if (pXElo) pXElo.innerText = eloVal + ' ELO (' + tierName + ')';
   if (modalAvatar) modalAvatar.innerText = userProfile.avatar;
+  if (profilePageAvatar) profilePageAvatar.innerText = userProfile.avatar;
   if (loginName) loginName.value = userProfile.name;
+
+  document.querySelectorAll('.btn-avatar-choice').forEach(b => {
+    b.classList.toggle('active', b.innerText.trim() === userProfile.avatar);
+  });
 
   const wEl = document.getElementById('career-wins');
   const mEl = document.getElementById('career-matches');
