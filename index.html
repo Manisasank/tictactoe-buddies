@@ -2817,7 +2817,7 @@ body {
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
             <button class="btn-control" onclick="installPWA()">💻 Install on PC / Android</button>
             <button class="btn-control" onclick="openModal('modal-ios-install')">🍏 iOS Safari Guide</button>
-            <button class="btn-control text-coral" onclick="resetEloRating()">Reset All Stats</button>
+            <button class="btn-control text-coral" onclick="resetAllStats()">Reset All Stats</button>
           </div>
         </div>
       </div>
@@ -3403,14 +3403,22 @@ function selectAvatar(emoji) {
   if (disp) disp.innerText = emoji;
 }
 
+function resetAllStats() {
+  if (confirm('Are you sure you want to reset all career wins, matches, and your Elo rating back to defaults?')) {
+    userProfile.elo = 1200;
+    userProfile.wins = 0;
+    userProfile.matches = 0;
+    try {
+      localStorage.setItem('xo_arena_profile', JSON.stringify(userProfile));
+    } catch(e) {}
+    updateProfileUI();
+    showToast('✨ All career stats and Elo reset to 0 (1200 Elo)');
+    closeModal('modal-settings');
+  }
+}
+
 function resetEloRating() {
-  userProfile.elo = 1200;
-  try {
-    localStorage.setItem('xo_arena_profile', JSON.stringify(userProfile));
-  } catch(e) {}
-  updateProfileUI();
-  showToast('Elo Reset to 1200 (Tactician)');
-  closeModal('modal-settings');
+  resetAllStats();
 }
 
 function updateProfileUI() {
@@ -4193,6 +4201,33 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
+});
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        showToast('🚀 Installing XO Arena to your device...');
+      } else {
+        showToast('PWA install dismissed.');
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone) {
+      showToast('✅ XO Arena is already installed on this device!');
+    } else {
+      showToast('💡 To install: Click the install icon (⊕ or 💻) in your browser address bar or Menu > Install App');
+    }
+  }
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.classList && e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('active');
+  }
 });
 
 
