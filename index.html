@@ -1931,203 +1931,275 @@ body {
 }
 
 @media (max-width: 600px) {
-  /* Header mobile optimization */
+  /* Header mobile clean styling */
   .site-header {
-    padding: 8px 12px;
+    padding: 8px 12px !important;
   }
   .brand-text {
-    font-size: 0.95rem;
+    font-size: 0.92rem !important;
     letter-spacing: 0.5px;
   }
   .brand-badge {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.85rem !important;
   }
   .header-actions {
-    gap: 8px;
+    gap: 8px !important;
+    margin-left: auto !important;
   }
   .btn-header-sound {
-    width: 34px;
-    height: 34px;
-    font-size: 0.9rem;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0.85rem !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
   }
   .btn-header-play {
     display: none !important;
   }
   .user-profile-chip {
-    padding: 4px 6px;
-    font-size: 0.75rem;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    display: inline-flex !important;
+  }
+  .user-chip-avatar {
+    font-size: 0.9rem !important;
   }
   #nav-user-name, #nav-elo-pill {
-    display: none;
+    display: none !important;
   }
 
-  /* Page headers on mobile */
+  /* REMOVE CLUMSY BANNER ON ARENA SO BOARD IS IMMEDIATELY IN VIEW */
+  #page-arena .page-header-banner {
+    display: none !important;
+  }
+
+  /* Page headers on other pages */
   .page-header-banner {
-    padding: 12px 14px 4px;
+    padding: 12px 14px 4px !important;
   }
   .page-eyebrow {
-    font-size: 0.65rem;
-    padding: 2px 10px;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    font-size: 0.65rem !important;
+    padding: 2px 10px !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 4px !important;
   }
   .page-title {
     font-size: 1.55rem !important;
-    margin-bottom: 4px;
-    letter-spacing: 1px;
-  }
-  #page-arena .page-subtitle {
-    display: none !important;
+    margin-bottom: 4px !important;
+    letter-spacing: 1px !important;
   }
   .page-subtitle {
-    font-size: 0.82rem;
-    line-height: 1.45;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
   }
 
-  /* Arena Card & Controls */
+  /* Arena Card & Layout */
   .arena-section {
-    padding: 4px 0 24px;
+    padding: 0 0 16px !important;
   }
   .container.arena-container {
-    padding: 0 10px;
+    padding: 0 8px !important;
   }
   .arena-card {
-    padding: 14px 10px;
-    border-radius: 16px;
+    padding: 12px 8px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box !important;
   }
+
+  /* Mode tabs: clean 4-column row without clutter */
   .mode-tabs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-    padding: 4px;
-    margin-bottom: 12px;
-    overflow-x: visible;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    padding: 4px !important;
+    margin-bottom: 8px !important;
+    overflow: hidden !important;
   }
   .mode-tab-btn {
-    padding: 7px 2px;
-    font-size: 0.66rem;
-    font-weight: 700;
-    text-align: center;
-    border-radius: 999px;
-    white-space: nowrap;
-    letter-spacing: 0px;
+    padding: 6px 1px !important;
+    font-size: 0.64rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+    letter-spacing: 0 !important;
   }
+
+  /* AI Tactical Oracle: clean 1-line layout, zero text collisions */
   .oracle-container {
-    margin-bottom: 10px;
-    padding: 6px 10px;
+    margin-bottom: 8px !important;
+    padding: 6px 8px !important;
   }
   .oracle-header {
-    font-size: 0.66rem;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    margin-bottom: 4px !important;
   }
+  .oracle-header span:nth-child(2) {
+    font-size: 0.58rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+    padding: 1px 6px !important;
+    background: rgba(204, 255, 0, 0.08) !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(204, 255, 0, 0.2) !important;
+  }
+  .oracle-bar-track {
+    height: 5px !important;
+  }
+
+  /* Arena Scoreboard: strict bounded columns, NO right-edge overflow */
   .arena-scoreboard {
-    gap: 6px;
-    margin-bottom: 12px;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    gap: 6px !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   .player-card {
-    padding: 8px 8px;
-    gap: 6px;
+    min-width: 0 !important;
+    padding: 6px 6px !important;
+    gap: 5px !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
   }
-  .player-avatar-badge {
-    width: 26px;
-    height: 26px;
-    font-size: 0.95rem;
+  .player-details {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    flex: 1 !important;
   }
   .player-name-line {
-    font-size: 0.78rem;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
   }
   .player-mark-count {
-    font-size: 0.66rem;
+    font-size: 0.62rem !important;
+    white-space: nowrap !important;
+    color: var(--text-muted) !important;
+  }
+  #player-x-elo, #player-o-elo {
+    display: none !important;
   }
   .player-score {
-    font-size: 1.25rem;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    flex-shrink: 0 !important;
+  }
+  .player-avatar-badge {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
   }
   .score-vs {
-    font-size: 0.75rem;
+    font-size: 0.7rem !important;
+    padding: 0 1px !important;
+    flex-shrink: 0 !important;
   }
+
+  /* 3x3 Battle Grid: Perfectly sized to NEVER get blocked by bottom dock */
   .game-grid-container {
-    max-width: min(320px, 86vw);
-    margin: 0 auto 10px auto;
+    max-width: min(270px, 72vw) !important;
+    margin: 0 auto 8px auto !important;
   }
   .grid-cell {
-    border-radius: 12px;
-    font-size: 2.3rem;
+    border-radius: 10px !important;
+    font-size: 2.1rem !important;
   }
   .history-tape-container {
-    padding: 8px 10px;
-    margin-top: 10px;
+    padding: 6px 8px !important;
+    margin-top: 8px !important;
   }
   .history-tape-header {
-    font-size: 0.7rem;
+    font-size: 0.68rem !important;
   }
   .arena-controls {
-    gap: 6px;
-    margin-top: 10px;
-    flex-wrap: wrap;
+    gap: 6px !important;
+    margin-top: 8px !important;
+    flex-wrap: wrap !important;
   }
   .btn-control {
-    padding: 7px 10px;
-    font-size: 0.75rem;
+    padding: 6px 10px !important;
+    font-size: 0.72rem !important;
   }
 
   /* Home hero section on mobile */
   .hero-title {
-    font-size: clamp(1.85rem, 8vw, 2.35rem);
-    line-height: 1.15;
+    font-size: clamp(1.85rem, 8vw, 2.35rem) !important;
+    line-height: 1.15 !important;
   }
   .hero-subtitle {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
   }
   .hero-meta-strip {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
   }
   .hero-actions {
-    flex-direction: column;
-    width: 100%;
-    gap: 10px;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
   }
   .btn-hero-primary, .btn-hero-secondary {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
   }
   .cyan-rule-container {
-    margin: 14px 0;
+    margin: 14px 0 !important;
   }
 
-  /* Capsule dock mobile optimization */
+  /* Capsule dock mobile optimization: never overlap game */
   .capsule-dock-wrapper {
-    bottom: 12px;
-    width: auto;
-    max-width: 95vw;
+    bottom: 10px !important;
+    width: auto !important;
+    max-width: 95vw !important;
   }
   .capsule-dock {
-    padding: 6px 10px;
-    gap: 4px;
+    padding: 6px 10px !important;
+    gap: 4px !important;
   }
   .dock-btn {
-    padding: 6px 10px;
-    font-size: 0.7rem;
-    gap: 3px;
+    padding: 6px 10px !important;
+    font-size: 0.7rem !important;
+    gap: 3px !important;
   }
   .dock-btn .dock-icon {
-    font-size: 1.05rem;
+    font-size: 1.05rem !important;
   }
   .page-view {
-    padding-bottom: 84px;
+    padding-bottom: 95px !important;
   }
 
   /* Other mobile adjustments */
   .footer-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
   .proof-counters-row {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
   }
 }
 
