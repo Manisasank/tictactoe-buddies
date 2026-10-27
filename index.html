@@ -258,6 +258,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   max-width: 1240px;
   margin: 0 auto;
 }
@@ -296,8 +297,11 @@ body {
 .header-nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: clamp(14px, 1.8vw, 24px);
   list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
 }
 
 .top-nav-link {
@@ -319,7 +323,9 @@ body {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .btn-header-play {
@@ -1860,6 +1866,26 @@ body {
 }
 
 /* Responsive Breakpoints */
+@media (max-width: 1060px) {
+  .header-nav-links {
+    gap: 12px;
+  }
+  .btn-header-play {
+    padding: 7px 14px;
+    font-size: 0.82rem;
+  }
+  .user-profile-chip {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 960px) {
+  .header-nav-links {
+    display: none !important;
+  }
+}
+
 @media (max-width: 900px) {
   .hero-grid-layout, .why-infinity-layout, .faq-layout {
     grid-template-columns: 1fr;
@@ -2357,10 +2383,6 @@ body {
     </nav>
 
     <div class="header-actions">
-      <button class="btn-header-sound" id="header-sound-btn" onclick="toggleMute()" title="Mute/Unmute Audio (Key M)">
-        <span id="header-sound-icon">🔊</span>
-      </button>
-
       <button class="btn-header-play" onclick="navigateToPage('arena')">
         PLAY NOW <span class="arrow">›</span>
       </button>
@@ -2370,6 +2392,10 @@ body {
         <span id="nav-user-name">Guest</span>
         <span class="elo-rank-pill" id="nav-elo-pill">1200 ELO</span>
       </div>
+
+      <button class="btn-header-sound" id="header-sound-btn" onclick="toggleMute()" title="Mute/Unmute Audio (Key M)">
+        <span id="header-sound-icon">🔊</span>
+      </button>
     </div>
   </div>
 </header>
