@@ -103,5 +103,5 @@ python -m http.server 8000
 
 ## 👨‍💻 Author
 
-**Y Mani Shasank**  
+**Y Mani Sasank**  
 - GitHub: [@Manisasank](https://github.com/Manisasank)
