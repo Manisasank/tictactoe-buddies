@@ -1948,12 +1948,24 @@ body {
     gap: 8px !important;
     margin-left: auto !important;
   }
-  .btn-header-sound {
+  .btn-header-sound, .btn-header-rules {
     width: 32px !important;
     height: 32px !important;
     font-size: 0.85rem !important;
     padding: 0 !important;
     border-radius: 50% !important;
+    justify-content: center !important;
+    align-items: center !important;
+    display: inline-flex !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  .btn-header-rules .rules-label {
+    display: none !important;
+  }
+  .btn-header-rules .rules-icon {
+    font-size: 0.85rem !important;
+    line-height: 1 !important;
   }
   .btn-header-play {
     display: none !important;
@@ -2279,6 +2291,34 @@ body {
   color: var(--neon-cyan);
 }
 
+.btn-header-rules {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-header-rules:hover {
+  background: rgba(0, 240, 255, 0.15);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+  transform: translateY(-1px);
+}
+.btn-header-rules .rules-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .top-nav-link.active {
   color: var(--neon-lime);
   border-bottom: 2px solid var(--neon-lime);
@@ -2463,6 +2503,11 @@ body {
     <div class="header-actions">
       <button class="btn-header-play" onclick="navigateToPage('arena')">
         PLAY NOW <span class="arrow">›</span>
+      </button>
+
+      <button class="btn-header-rules" id="header-rules-btn" onclick="openModal('modal-rules')" title="Rules &amp; Regulations (Press ?)" aria-label="Game Rules &amp; Regulations">
+        <span class="rules-icon">📜</span>
+        <span class="rules-label">RULES</span>
       </button>
 
       <div class="user-profile-chip" onclick="navigateToPage('profile')" title="View or edit your profile">
@@ -3265,23 +3310,58 @@ body {
   </div>
 </div>
 
-<!-- Rules Modal -->
+<!-- Rules & Regulations Modal -->
 <div class="modal-overlay" id="modal-rules">
-  <div class="modal-box">
-    <button class="modal-close-btn" onclick="closeModal('modal-rules')">&times;</button>
-    <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 14px;">How Rules Work</h3>
-    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-      1. <strong>3-Mark Active Cap:</strong> Each player may have at most 3 marks on the grid.
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-rules')" aria-label="Close Rules Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">📜</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0; letter-spacing: 0.04em;">ARENA RULES &amp; REGULATIONS</h3>
+    </div>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.4;">
+      Official competitive guidelines for Infinity Tic-Tac-Toe, speed timers, bot regulations &amp; matchmaking.
     </p>
-    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-      2. <strong>First-In First-Out Decay:</strong> When you place your 4th piece, your 1st piece instantly clears.
-    </p>
-    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 10px;">
-      3. <strong>Fading Indicator:</strong> The piece about to vanish is clearly highlighted with a glowing dashed warning ring.
-    </p>
-    <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;">
-      4. <strong>Victory:</strong> Align 3 consecutive marks in any row, column, or diagonal to win!
-    </p>
+
+    <!-- Rule 1: The Infinity Rule -->
+    <div style="background: rgba(0, 240, 255, 0.06); border: 1px solid rgba(0, 240, 255, 0.22); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 12px;">
+      <div style="color: var(--neon-cyan); font-weight: 800; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+        ⚡ 1. The Dynamic Infinity Rule (FIFO)
+      </div>
+      <ul style="margin: 0; padding-left: 18px; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+        <li><strong>3-Mark Active Cap:</strong> Each player is restricted to a maximum of 3 marks on the grid.</li>
+        <li><strong>First-In First-Out Decay:</strong> Placing your 4th mark instantly clears your oldest (1st) piece.</li>
+        <li><strong>Vanish Warning Ring:</strong> The expiring piece pulses with an orange/coral dashed warning halo.</li>
+        <li><strong>Zero Draws:</strong> Continuous cycling guarantees no stalemates. Connect 3 to win!</li>
+      </ul>
+    </div>
+
+    <!-- Rule 2: Speed Timer & Blitz Regulations -->
+    <div style="background: rgba(204, 255, 0, 0.06); border: 1px solid rgba(204, 255, 0, 0.22); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 12px;">
+      <div style="color: var(--neon-lime); font-weight: 800; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+        ⏱️ 2. Match Regulations &amp; Blitz Clock
+      </div>
+      <ul style="margin: 0; padding-left: 18px; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+        <li><strong>Turn Succession:</strong> Tactician X moves first; turns alternate sequentially.</li>
+        <li><strong>Blitz Speed Timer:</strong> Optional 5s speed or 10s standard countdown timer per turn.</li>
+        <li><strong>Timeout Penalty:</strong> Failing to place a mark before the timer expires forfeits your turn.</li>
+      </ul>
+    </div>
+
+    <!-- Rule 3: AI & Competitive Elo -->
+    <div style="background: rgba(255, 59, 92, 0.06); border: 1px solid rgba(255, 59, 92, 0.22); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 16px;">
+      <div style="color: var(--neon-coral); font-weight: 800; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px;">
+        🤖 3. AI Fair Play &amp; Elo System
+      </div>
+      <ul style="margin: 0; padding-left: 18px; font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+        <li><strong>AI Tiers:</strong> Easy (Trainee bot), Medium (Sentinel), Hard (Unbeatable Minimax).</li>
+        <li><strong>Starting Elo:</strong> All players begin at 1200 Elo. Win streaks boost your tier ranking.</li>
+        <li><strong>Fair Play:</strong> Quitting or disconnecting during an active online match registers as a loss.</li>
+      </ul>
+    </div>
+
+    <button class="btn-hero-primary" style="width: 100%; justify-content: center; padding: 11px; font-size: 0.95rem;" onclick="closeModal('modal-rules'); navigateToPage('arena');">
+      ENTER ARENA &amp; PLAY NOW ⚡
+    </button>
   </div>
 </div>
 
@@ -4508,6 +4588,9 @@ window.addEventListener('keydown', (e) => {
     showToast('Round Reset');
   } else if (e.key === 'm' || e.key === 'M') {
     toggleMute();
+  } else if (e.key === '?' || e.key === '/') {
+    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) return;
+    openModal('modal-rules');
   } else if (e.key === 'b' || e.key === 'B') {
     toggleBlitzMode();
   } else if (e.key === 'p' || e.key === 'P') {
