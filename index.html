@@ -41,10 +41,10 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="apple-touch-icon" href="icon-192.svg"/>
 
-<!-- Google Fonts (Syne, Rajdhani, Inter) -->
+<!-- Google Fonts (Chakra Petch, JetBrains Mono, Space Grotesk, Orbitron, Outfit, Plus Jakarta Sans, Inter) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&family=Syne:ital,wght@0,700;0,800;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,500;0,600;0,700;1,700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Orbitron:wght@600;700;800&family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
 <!-- Paho MQTT WebSockets Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
@@ -169,9 +169,9 @@
   --text-primary: #ffffff;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Rajdhani', monospace, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Chakra Petch', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Rajdhani', monospace;
+  --font-body: 'JetBrains Mono', -apple-system, BlinkMacSystemFont, monospace, sans-serif;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
@@ -219,13 +219,37 @@ body {
   border: 0;
 }
 
-/* Typography Utilities */
+/* Typography Themes & Utilities */
+[data-font-theme="cyber"] {
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-font-theme="scifi"] {
+  --font-display: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Rajdhani', monospace;
+  --font-body: 'Rajdhani', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-font-theme="clean"] {
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-font-theme="tactical"] {
+  --font-display: 'Chakra Petch', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Rajdhani', monospace;
+  --font-body: 'JetBrains Mono', -apple-system, BlinkMacSystemFont, monospace, sans-serif;
+}
+
 .font-display {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.02em;
 }
 
 .text-lime { color: var(--neon-lime); }
@@ -3287,7 +3311,7 @@ body {
     </p>
     <ul style="padding-left: 20px; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">
       <li>Esports Cyberpunk Dark Theme matching video reference</li>
-      <li>Slanted display headers with bold italic Syne typography</li>
+      <li>Tactical esports display headers with bold Chakra Petch &amp; JetBrains Mono typography</li>
       <li>Full WebSockets online multiplayer via HiveMQ</li>
       <li>Unbeatable Minimax AI with zero loss rate</li>
       <li>Web Audio API dynamic synthesizer sound FX</li>
@@ -3386,6 +3410,16 @@ body {
   <div class="modal-box">
     <button class="modal-close-btn" onclick="closeModal('modal-settings')">&times;</button>
     <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 20px;">Arena Settings</h3>
+
+    <div style="margin-bottom: 18px;">
+      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Typography Engine:</label>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button class="btn-control active" id="font-opt-tactical" onclick="setFontTheme('tactical')">⚡ Tactical (Chakra)</button>
+        <button class="btn-control" id="font-opt-cyber" onclick="setFontTheme('cyber')">🌐 Cyber (Grotesk)</button>
+        <button class="btn-control" id="font-opt-scifi" onclick="setFontTheme('scifi')">🚀 Sci-Fi (Orbitron)</button>
+        <button class="btn-control" id="font-opt-clean" onclick="setFontTheme('clean')">💎 Minimal (Outfit)</button>
+      </div>
+    </div>
 
     <div style="margin-bottom: 18px;">
       <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Blitz Speed-Chess Timer:</label>
@@ -3916,6 +3950,19 @@ function toggleBlitzMode() {
   if (blitzDuration === 0) setBlitzDuration(5);
   else if (blitzDuration === 5) setBlitzDuration(10);
   else setBlitzDuration(0);
+}
+
+function setFontTheme(theme) {
+  if (!['tactical', 'cyber', 'scifi', 'clean'].includes(theme)) theme = 'tactical';
+  document.documentElement.setAttribute('data-font-theme', theme);
+  try { localStorage.setItem('xo_font_theme', theme); } catch(e){}
+  ['tactical', 'cyber', 'scifi', 'clean'].forEach(t => {
+    const btn = document.getElementById('font-opt-' + t);
+    if (btn) {
+      if (t === theme) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
 }
 
 function setBlitzDuration(sec) {
@@ -4766,6 +4813,10 @@ function launchDailyPuzzle() {
 // INITIALIZATION ON DOM READY
 // ====================================================
 document.addEventListener('DOMContentLoaded', () => {
+  const savedFontTheme = (function(){
+    try { return localStorage.getItem('xo_font_theme') || 'tactical'; } catch(e){ return 'tactical'; }
+  })();
+  setFontTheme(savedFontTheme);
   loadUserProfile();
   Confetti.init();
   renderBoard();
