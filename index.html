@@ -3658,6 +3658,317 @@ body {
   </div>
 </div>
 
+<!-- ==================================================== -->
+<!-- LEGAL & COMPLIANCE MODALS (GDPR / CCPA / COPPA / FTC) -->
+<!-- ==================================================== -->
+
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="modal-privacy">
+  <div class="modal-box" style="max-width: 580px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-privacy')" aria-label="Close Privacy Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">🔒</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">PRIVACY POLICY &amp; DATA PROTECTION</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-cyan); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      GDPR (EU/UK) • CCPA (California) • COPPA Compliant • Last Updated: 2026-11-01
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; max-height: 60vh; overflow-y: auto; padding-right: 6px;">
+      <h4 style="color: #fff; margin: 12px 0 6px;">1. Data Controller &amp; Contact</h4>
+      <p>XO Arena is operated by <strong>XO Arena Gaming Laboratories</strong>. Data Protection Contact: <strong>Y Mani Sasank Reddy</strong> (<a href="mailto:manisasankreddy@gmail.com" style="color: var(--neon-lime);">manisasankreddy@gmail.com</a>), Hyderabad, India.</p>
+
+      <h4 style="color: #fff; margin: 12px 0 6px;">2. Strict Data Minimization (GDPR Art. 5)</h4>
+      <p>We believe in absolute data minimization. You do NOT need to create an account, provide an email address, or input personal details to play. We collect zero tracking cookies, zero marketing beacons, and zero cross-device fingerprinting.</p>
+
+      <h4 style="color: #fff; margin: 12px 0 6px;">3. Complete LocalStorage Audit</h4>
+      <p>All gameplay records are saved strictly on your local device via browser <code>localStorage</code>:</p>
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; margin: 8px 0; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle);">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--neon-lime); text-align: left;">
+            <th style="padding: 6px 8px;">Key</th>
+            <th style="padding: 6px 8px;">Purpose</th>
+            <th style="padding: 6px 8px;">Storage Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 6px 8px; font-family: var(--font-mono);">xo_arena_stats</td>
+            <td style="padding: 6px 8px;">Wins, losses, draws, and Elo rating</td>
+            <td style="padding: 6px 8px;">Client Device Only</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 6px 8px; font-family: var(--font-mono);">xo_user_profile</td>
+            <td style="padding: 6px 8px;">Chosen alias and avatar emoji</td>
+            <td style="padding: 6px 8px;">Client Device Only</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 6px 8px; font-family: var(--font-mono);">xo_font_theme</td>
+            <td style="padding: 6px 8px;">Active typography engine preference</td>
+            <td style="padding: 6px 8px;">Client Device Only</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px 8px; font-family: var(--font-mono);">xo_cookie_consent</td>
+            <td style="padding: 6px 8px;">Consent banner state</td>
+            <td style="padding: 6px 8px;">Client Device Only</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h4 style="color: #fff; margin: 12px 0 6px;" id="privacy-kids">4. Children's Privacy (COPPA &amp; GDPR Art. 8)</h4>
+      <p>XO Arena is family-friendly. We do not knowingly collect personal information from children under 13 (or under 16 in the European Union). Online multiplayer matches use random 4-character room codes with ephemeral WebSockets coordinates and no user-to-user text chat.</p>
+
+      <h4 style="color: #fff; margin: 12px 0 6px;">5. Third-Party Infrastructure Audit</h4>
+      <p>• <strong>HiveMQ Public Broker:</strong> Used exclusively for real-time WebSocket packet transmission between matched rooms. No player messages or IPs are logged.<br/>
+      • <strong>Google Fonts CDN:</strong> Used to load open-source typography. No tracking cookies are set.<br/>
+      • <strong>GitHub Pages:</strong> Static hosting infrastructure provided by GitHub, Inc.</p>
+
+      <h4 style="color: #fff; margin: 12px 0 6px;">6. Your Rights &amp; Data Deletion (GDPR Art. 17)</h4>
+      <p>Under GDPR and CCPA, you retain full rights to access, port, or erase your data at any time. You can instantly purge all device data using our one-click deletion tool below.</p>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; gap: 8px;">
+      <button class="btn-hero-primary" style="flex: 1; padding: 9px; font-size: 0.85rem; justify-content: center; background: var(--neon-coral); border-color: var(--neon-coral);" onclick="clearAllUserData()">
+        Purge Device Data (GDPR Art. 17) 🗑️
+      </button>
+      <button class="btn-control" style="padding: 9px 16px; font-size: 0.85rem;" onclick="closeModal('modal-privacy')">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Terms of Service Modal -->
+<div class="modal-overlay" id="modal-terms">
+  <div class="modal-box" style="max-width: 560px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-terms')" aria-label="Close Terms Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">📜</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">TERMS OF SERVICE &amp; FAIR PLAY</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-lime); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      Fair Play Code • Open Source License • Last Updated: 2026-11-01
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; max-height: 60vh; overflow-y: auto; padding-right: 6px;">
+      <h4 style="color: #fff; margin: 10px 0 4px;">1. Acceptance of Terms</h4>
+      <p>By accessing or playing XO Arena, you agree to be bound by these Terms. If you do not agree, you may refrain from using the application. Players under 16 must have consent from a parent or legal guardian.</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">2. Fair Play &amp; Competitive Conduct</h4>
+      <p>XO Arena is built on sportsmanship. Players agree not to exploit WebSockets protocols, deploy automated tampering bots in human online lobbies, or harass opponents through custom handle names.</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">3. Intellectual Property &amp; Open Source</h4>
+      <p>The XO Arena core codebase is released as open source under the <strong>MIT License</strong>. Trademarks, branding, and custom logos remain the property of XO Arena Gaming Laboratories.</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">4. 100% Free Forever Guarantee</h4>
+      <p>XO Arena does not charge any monetary fees. All game modes, AI difficulty levels, themes, and sound packs are free to all players with no hidden fees, subscriptions, or pay-to-win mechanics.</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">5. Warranty Disclaimer &amp; Liability</h4>
+      <p>The service is provided on an "as-is" and "as-available" basis without warranties of uninterrupted availability. The operators shall not be liable for any indirect or incidental damages.</p>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); text-align: right;">
+      <button class="btn-hero-primary" style="padding: 8px 20px; font-size: 0.88rem;" onclick="closeModal('modal-terms')">
+        I Understand &amp; Agree
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Refund Policy & Fee Transparency Modal -->
+<div class="modal-overlay" id="modal-refund">
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-refund')" aria-label="Close Refund Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">💳</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">REFUND POLICY &amp; FEE TRANSPARENCY</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-lime); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      100% Free-to-Play • Zero Microtransactions • Zero Hidden Costs
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+      <div style="background: rgba(204,255,0,0.06); border: 1px solid rgba(204,255,0,0.25); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 12px;">
+        <strong style="color: var(--neon-lime); display: block; margin-bottom: 4px;">🛡️ 100% FREE ACCESS GUARANTEE</strong>
+        XO Arena does not charge any money whatsoever. There are:
+        <ul style="margin: 6px 0 0 16px; padding: 0;">
+          <li>Zero in-app purchases or paywalls</li>
+          <li>Zero recurring subscriptions</li>
+          <li>Zero hidden fees or transaction surcharges</li>
+          <li>Zero paid loot boxes or pay-to-win items</li>
+        </ul>
+      </div>
+
+      <h4 style="color: #fff; margin: 12px 0 4px;">Refund Terms:</h4>
+      <p>Because XO Arena is completely free and collects no payments, monetary refund requests are not applicable to the browser game.</p>
+      <p>If physical tournament passes or official esports merchandise are introduced in the future, a statutory <strong>14-day full refund guarantee</strong> will apply from the date of purchase.</p>
+
+      <div style="margin-top: 12px; font-size: 0.8rem; color: var(--text-muted);">
+        Questions regarding our free billing policy? Contact: <a href="mailto:manisasankreddy@gmail.com" style="color: var(--neon-cyan);">manisasankreddy@gmail.com</a>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); text-align: right;">
+      <button class="btn-control" style="padding: 8px 18px;" onclick="closeModal('modal-refund')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie & Storage Policy Modal -->
+<div class="modal-overlay" id="modal-cookie">
+  <div class="modal-box" style="max-width: 540px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-cookie')" aria-label="Close Cookie Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">🍪</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">COOKIE &amp; LOCAL STORAGE POLICY</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-cyan); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      Essential Storage Only • Zero Ad Trackers
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+      <p>We do not use tracking cookies or advertising pixels. We use standard browser <code>localStorage</code> strictly for functional gameplay features:</p>
+
+      <ul style="padding-left: 18px; margin: 10px 0;">
+        <li><strong>xo_arena_stats:</strong> Keeps score of your offline/online match tallies and calculates Elo rating locally.</li>
+        <li><strong>xo_user_profile:</strong> Stores your chosen nickname and avatar emoji so you do not have to retype it.</li>
+        <li><strong>xo_sound_muted:</strong> Remembers your audio synthesizer mute preference.</li>
+        <li><strong>xo_font_theme:</strong> Remembers your selected typography engine (Tactical, Cyber, Sci-Fi, Clean).</li>
+        <li><strong>xo_cookie_consent:</strong> Remembers whether you have acknowledged this notice.</li>
+      </ul>
+
+      <h4 style="color: #fff; margin: 12px 0 4px;">Managing Your Storage:</h4>
+      <p>You can clear your local storage at any time via your browser settings or directly through our one-click deletion option.</p>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); display: flex; gap: 8px; justify-content: flex-end;">
+      <button class="btn-control" style="color: var(--neon-coral); border-color: rgba(255,59,92,0.4);" onclick="clearAllUserData()">Clear All Storage Now</button>
+      <button class="btn-hero-primary" style="padding: 8px 18px;" onclick="closeModal('modal-cookie')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Data Deletion Request Modal (GDPR Article 17) -->
+<div class="modal-overlay" id="modal-data-deletion">
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-data-deletion')" aria-label="Close Deletion Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">🗑️</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">DATA DELETION REQUEST (GDPR ART. 17)</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-coral); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      Right to Erasure • Complete Privacy Control
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+      <p>Under GDPR Article 17 and global privacy laws, you possess the full right to have your data erased permanently.</p>
+
+      <div style="background: rgba(255,59,92,0.06); border: 1px solid rgba(255,59,92,0.25); border-radius: var(--radius-md); padding: 12px 14px; margin: 12px 0;">
+        <strong style="color: var(--neon-coral); display: block; margin-bottom: 4px;">Option 1: Instant In-Browser Purge</strong>
+        Click below to immediately wipe all stats, Elo ratings, custom handles, avatars, audio preferences, and cached keys from this device.
+      </div>
+
+      <button class="btn-hero-primary" style="width: 100%; justify-content: center; background: var(--neon-coral); border-color: var(--neon-coral); margin-bottom: 14px; padding: 10px;" onclick="clearAllUserData()">
+        PURGE ALL MY DATA FROM THIS DEVICE NOW 🗑️
+      </button>
+
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 12px 14px;">
+        <strong style="color: #fff; display: block; margin-bottom: 4px;">Option 2: Formal Erasure Verification</strong>
+        XO Arena does not maintain a centralized user database or store personal IP addresses. To request written verification from our Data Protection Lead, email:
+        <a href="mailto:manisasankreddy@gmail.com?subject=GDPR%20Data%20Deletion%20Request&body=Please%20verify%20that%20no%20server-side%20identifiable%20records%20exist%20for%20my%20session." style="color: var(--neon-cyan); display: block; margin-top: 6px; font-weight: 700;">
+          manisasankreddy@gmail.com (Subject: GDPR Data Deletion Request)
+        </a>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); text-align: right;">
+      <button class="btn-control" style="padding: 8px 18px;" onclick="closeModal('modal-data-deletion')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Asset & Stock Image Licenses Modal -->
+<div class="modal-overlay" id="modal-license">
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-license')" aria-label="Close License Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">🎨</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">ASSET LICENSES &amp; STOCK CREDITS</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-lime); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      Open Source Assets • Clean IP Ownership
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+      <h4 style="color: #fff; margin: 10px 0 4px;">1. Vector Graphics &amp; Icons</h4>
+      <p>All game marks, badges, and interface illustrations are custom-crafted SVG vector graphics licensed under <strong>Creative Commons Zero (CC0)</strong> and the <strong>MIT License</strong>.</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">2. Typography Licenses</h4>
+      <p>Fonts utilized across the application are licensed under the <strong>SIL Open Font License (OFL 1.1)</strong> via Google Fonts:<br/>
+      • <em>Chakra Petch</em> by Cadson Demak<br/>
+      • <em>JetBrains Mono</em> by JetBrains<br/>
+      • <em>Orbitron</em> by Matt McInerney<br/>
+      • <em>Outfit</em> by Rodrigo Fuenzalida<br/>
+      • <em>Space Grotesk</em> by Florian Karsten<br/>
+      • <em>Inter</em> by Rasmus Andersson</p>
+
+      <h4 style="color: #fff; margin: 10px 0 4px;">3. Audio Synthesizer Engine</h4>
+      <p>All in-game sound effects are generated procedurally in real-time via the native <strong>HTML5 Web Audio API</strong>. No copyrighted audio samples or commercial sound libraries are used.</p>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); text-align: right;">
+      <button class="btn-control" style="padding: 8px 18px;" onclick="closeModal('modal-license')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Business Details Modal -->
+<div class="modal-overlay" id="modal-business">
+  <div class="modal-box" style="max-width: 520px;">
+    <button class="modal-close-btn" onclick="closeModal('modal-business')" aria-label="Close Business Modal">&times;</button>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 1.5rem;">🏢</span>
+      <h3 class="font-display" style="font-size: 1.35rem; color: #fff; margin: 0;">BUSINESS &amp; LEGAL ENTITY DETAILS</h3>
+    </div>
+    <div style="font-size: 0.78rem; color: var(--neon-cyan); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
+      Official Publisher &amp; Developer Identity
+    </div>
+
+    <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 10px 0;">
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 8px 4px; color: var(--text-muted); width: 35%;">Operating Entity:</td>
+          <td style="padding: 8px 4px; color: #fff; font-weight: 700;">XO Arena Gaming Laboratories</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 8px 4px; color: var(--text-muted);">Founder &amp; Lead:</td>
+          <td style="padding: 8px 4px; color: #fff; font-weight: 700;">Y Mani Sasank Reddy</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 8px 4px; color: var(--text-muted);">Registered City:</td>
+          <td style="padding: 8px 4px; color: #fff;">Hyderabad, Telangana, India</td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 8px 4px; color: var(--text-muted);">Official Contact:</td>
+          <td style="padding: 8px 4px;"><a href="mailto:manisasankreddy@gmail.com" style="color: var(--neon-lime);">manisasankreddy@gmail.com</a></td>
+        </tr>
+        <tr style="border-bottom: 1px solid var(--border-subtle);">
+          <td style="padding: 8px 4px; color: var(--text-muted);">Open-Source Repo:</td>
+          <td style="padding: 8px 4px;"><a href="https://github.com/Manisasank/tictactoe-buddies" target="_blank" rel="noopener noreferrer" style="color: var(--neon-cyan);">github.com/Manisasank/tictactoe-buddies</a></td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 4px; color: var(--text-muted);">Hosting Platform:</td>
+          <td style="padding: 8px 4px; color: #fff;">GitHub Pages (San Francisco, CA)</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); text-align: right;">
+      <button class="btn-control" style="padding: 8px 18px;" onclick="closeModal('modal-business')">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Keyboard Shortcuts Modal -->
 <div class="modal-overlay" id="modal-hotkeys">
   <div class="modal-box">
