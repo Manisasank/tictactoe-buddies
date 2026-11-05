@@ -675,8 +675,7 @@ body {
 [data-theme="sunset"] .mode-card,
 [data-theme="sunset"] .feature-card,
 [data-theme="sunset"] .summary-box,
-[data-theme="sunset"] .test-card,
-[data-theme="sunset"] .faq-item {
+[data-theme="sunset"] .test-card {
   background: #FFE4C7 !important;
   border: 1.5px solid #FFA94D !important;
   box-shadow: 0 10px 28px rgba(31, 29, 43, 0.06), 0 2px 6px rgba(255, 122, 0, 0.04) !important;
@@ -728,6 +727,105 @@ body {
 [data-theme="sunset"] .fading-ring.coral {
   border-color: #1F1D2B;
   box-shadow: 0 0 12px rgba(31, 29, 43, 0.5);
+}
+
+
+/* TESTIMONIALS HIGH-CONTRAST READABILITY */
+[data-theme="sunset"] .test-card {
+  background: #FFE4C7 !important;
+  border: 1.5px solid #FFA94D !important;
+  border-radius: 16px !important;
+  padding: 24px !important;
+  box-shadow: 0 8px 24px rgba(31, 29, 43, 0.06), 0 2px 6px rgba(255, 122, 0, 0.04) !important;
+}
+[data-theme="sunset"] .test-quote {
+  color: #1F1D2B !important;
+  font-size: 0.98rem !important;
+  line-height: 1.55 !important;
+  font-weight: 500 !important;
+  margin-bottom: 14px !important;
+}
+[data-theme="sunset"] .test-author {
+  color: #1F1D2B !important;
+  font-weight: 800 !important;
+  font-size: 1.05rem !important;
+}
+[data-theme="sunset"] .test-role {
+  color: #6b6479 !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+}
+[data-theme="sunset"] .test-stars {
+  color: #FF7A00 !important;
+  font-size: 1.15rem !important;
+}
+[data-theme="sunset"] .test-card span {
+  color: #FF7A00 !important;
+  font-weight: 800 !important;
+}
+
+/* FAQ ELEGANT ROUNDED ACCORDION CARDS */
+[data-theme="sunset"] .faq-item {
+  background: #FFE4C7 !important;
+  border: 1.5px solid #FFA94D !important;
+  border-radius: 14px !important;
+  margin-bottom: 12px !important;
+  padding: 0 20px !important;
+  box-shadow: 0 4px 14px rgba(31, 29, 43, 0.04) !important;
+  transition: all 0.2s ease !important;
+}
+[data-theme="sunset"] .faq-item:hover {
+  border-color: #FF7A00 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 122, 0, 0.12) !important;
+}
+[data-theme="sunset"] .faq-question-btn {
+  padding: 18px 0 !important;
+  color: #1F1D2B !important;
+  font-weight: 800 !important;
+  font-size: 1.08rem !important;
+  background: transparent !important;
+  border: none !important;
+}
+[data-theme="sunset"] .faq-question-btn:hover {
+  color: #FF7A00 !important;
+}
+[data-theme="sunset"] .faq-toggle-icon {
+  color: #FF7A00 !important;
+  font-weight: 800 !important;
+  font-size: 1.3rem !important;
+}
+[data-theme="sunset"] .faq-answer-text {
+  color: #4a455a !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  padding-bottom: 18px !important;
+}
+
+/* SUNSET DARK MODE TESTIMONIALS & FAQ */
+[data-theme="sunset-dark"] .test-quote {
+  color: #FFE4C7 !important;
+}
+[data-theme="sunset-dark"] .test-author {
+  color: #FFF8EF !important;
+}
+[data-theme="sunset-dark"] .test-role {
+  color: #a49eb5 !important;
+}
+[data-theme="sunset-dark"] .faq-item {
+  background: #282536 !important;
+  border: 1px solid #45405a !important;
+  border-radius: 14px !important;
+  margin-bottom: 12px !important;
+  padding: 0 20px !important;
+}
+[data-theme="sunset-dark"] .faq-question-btn {
+  color: #FFF8EF !important;
+  padding: 18px 0 !important;
+}
+[data-theme="sunset-dark"] .faq-answer-text {
+  color: #FFE4C7 !important;
+  padding-bottom: 18px !important;
 }
 
 /* Sunset Dark / Noir Theme */
