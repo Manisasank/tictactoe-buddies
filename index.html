@@ -348,6 +348,291 @@ body {
   color: var(--text-secondary);
 }
 
+/* ====================================================
+   PREMIUM COLOR PALETTE ENGINE
+   Reference Palette (@uiuxaadi):
+   Primary:    #1F1D2B (Dark Navy/Charcoal)
+   Accent:     #FF7A00 (Warm Radiant Orange)
+   Secondary:  #FFA94D (Soft Amber)
+   Surface:    #FFE4C7 (Peach Cream)
+   Background: #FFF8EF (Warm Ivory)
+   ==================================================== */
+[data-theme="sunset"] {
+  --bg-dark: #FFF8EF;
+  --bg-surface: #FFE4C7;
+  --bg-surface-elevated: #faebd7;
+  --bg-card: #FFE4C7;
+  --border-subtle: #FFA94D;
+  --border-bright: #FF7A00;
+  --neon-lime: #FF7A00;
+  --neon-lime-hover: #e06c00;
+  --neon-lime-glow: rgba(255, 122, 0, 0.4);
+  --neon-cyan: #FF7A00;
+  --neon-cyan-glow: rgba(255, 122, 0, 0.4);
+  --neon-coral: #1F1D2B;
+  --neon-coral-glow: rgba(31, 29, 43, 0.35);
+  --text-primary: #1F1D2B;
+  --text-secondary: #4a455a;
+  --text-muted: #6b6479;
+}
+
+[data-theme="sunset"] body {
+  background-color: #FFF8EF;
+  color: #1F1D2B;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 122, 0, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(255, 169, 77, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(255, 228, 199, 0.45) 0%, transparent 50%);
+}
+
+[data-theme="sunset"] .site-header {
+  background: rgba(255, 248, 239, 0.94);
+  border-bottom: 1px solid rgba(255, 169, 77, 0.35);
+}
+
+[data-theme="sunset"] .brand-link {
+  color: #1F1D2B;
+}
+
+[data-theme="sunset"] .brand-badge {
+  background: #1F1D2B;
+  color: #FF7A00;
+}
+
+[data-theme="sunset"] .brand-text,
+[data-theme="sunset"] .hero-title,
+[data-theme="sunset"] .page-title,
+[data-theme="sunset"] .section-divider-title h2,
+[data-theme="sunset"] .mode-card-title,
+[data-theme="sunset"] .summary-box h3,
+[data-theme="sunset"] .faq-title,
+[data-theme="sunset"] .faq-question-btn,
+[data-theme="sunset"] .player-name,
+[data-theme="sunset"] .stat-card .stat-label,
+[data-theme="sunset"] .footer-col h4 {
+  color: #1F1D2B !important;
+}
+
+[data-theme="sunset"] .hero-desc,
+[data-theme="sunset"] .page-subtitle,
+[data-theme="sunset"] .mode-card-desc,
+[data-theme="sunset"] .summary-box p,
+[data-theme="sunset"] .faq-answer-content p,
+[data-theme="sunset"] .footer-col ul li a,
+[data-theme="sunset"] .footer-copy,
+[data-theme="sunset"] .footer-bottom-row {
+  color: #4a455a !important;
+}
+
+[data-theme="sunset"] .top-nav-link {
+  color: #6b6479;
+}
+[data-theme="sunset"] .top-nav-link:hover,
+[data-theme="sunset"] .top-nav-link.active {
+  color: #FF7A00;
+  border-bottom-color: #FF7A00;
+}
+
+[data-theme="sunset"] .grid-cell {
+  background: #FFF8EF;
+  border: 1.5px solid rgba(255, 169, 77, 0.5);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.05);
+}
+[data-theme="sunset"] .grid-cell:hover:not(.occupied) {
+  background: rgba(255, 228, 199, 0.7);
+  border-color: #FF7A00;
+}
+[data-theme="sunset"] .grid-cell.occupied span.text-cyan {
+  color: #FF7A00 !important;
+  text-shadow: 0 0 16px rgba(255, 122, 0, 0.4);
+}
+[data-theme="sunset"] .grid-cell.occupied span.text-coral {
+  color: #1F1D2B !important;
+  text-shadow: 0 0 14px rgba(31, 29, 43, 0.25);
+}
+
+[data-theme="sunset"] .game-board-container {
+  background: #FFE4C7;
+  border: 2px solid #FFA94D;
+  box-shadow: 0 16px 40px rgba(31, 29, 43, 0.08);
+}
+
+[data-theme="sunset"] .capsule-dock {
+  background: rgba(255, 248, 239, 0.94);
+  border: 1px solid rgba(255, 169, 77, 0.45);
+  box-shadow: 0 12px 36px rgba(31, 29, 43, 0.12);
+}
+[data-theme="sunset"] .dock-item {
+  color: #6b6479;
+}
+[data-theme="sunset"] .dock-item.active {
+  color: #FF7A00;
+  background: rgba(255, 122, 0, 0.12);
+}
+
+[data-theme="sunset"] .btn-hero-primary,
+[data-theme="sunset"] .btn-footer-cta {
+  background: #FF7A00;
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(255, 122, 0, 0.4);
+}
+[data-theme="sunset"] .btn-hero-primary:hover,
+[data-theme="sunset"] .btn-footer-cta:hover {
+  background: #e06c00;
+  color: #ffffff;
+}
+
+[data-theme="sunset"] .btn-control,
+[data-theme="sunset"] .btn-header-play,
+[data-theme="sunset"] .btn-header-rules,
+[data-theme="sunset"] .btn-header-theme,
+[data-theme="sunset"] .btn-header-sound,
+[data-theme="sunset"] .user-profile-chip {
+  background: #FFE4C7 !important;
+  border-color: #FFA94D !important;
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .btn-header-play:hover,
+[data-theme="sunset"] .btn-header-rules:hover,
+[data-theme="sunset"] .btn-header-theme:hover,
+[data-theme="sunset"] .btn-header-sound:hover,
+[data-theme="sunset"] .user-profile-chip:hover {
+  background: #FF7A00 !important;
+  color: #ffffff !important;
+  border-color: #FF7A00 !important;
+}
+
+[data-theme="sunset"] .mode-tab-btn {
+  background: #FFE4C7;
+  border: 1px solid #FFA94D;
+  color: #1F1D2B;
+}
+[data-theme="sunset"] .mode-tab-btn.active {
+  background: #FF7A00;
+  color: #ffffff;
+  border-color: #FF7A00;
+  box-shadow: 0 0 16px rgba(255, 122, 0, 0.35);
+}
+
+[data-theme="sunset"] .scoreboard-container,
+[data-theme="sunset"] .tactical-oracle,
+[data-theme="sunset"] .profile-card,
+[data-theme="sunset"] .mode-card,
+[data-theme="sunset"] .feature-card,
+[data-theme="sunset"] .summary-box,
+[data-theme="sunset"] .test-card,
+[data-theme="sunset"] .faq-item {
+  background: #FFE4C7 !important;
+  border-color: #FFA94D !important;
+  box-shadow: 0 8px 24px rgba(31, 29, 43, 0.05);
+}
+
+[data-theme="sunset"] .scoreboard-player-box {
+  background: #FFF8EF;
+  border: 1px solid rgba(255, 169, 77, 0.45);
+}
+
+[data-theme="sunset"] .modal-box {
+  background: #FFF8EF;
+  border: 2px solid #FFA94D;
+  color: #1F1D2B;
+  box-shadow: 0 24px 60px rgba(31, 29, 43, 0.25);
+}
+[data-theme="sunset"] .modal-box h3,
+[data-theme="sunset"] .modal-box h4 {
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .modal-box p,
+[data-theme="sunset"] .modal-box ul,
+[data-theme="sunset"] .modal-box ol {
+  color: #4a455a !important;
+}
+
+[data-theme="sunset"] .cookie-banner {
+  background: rgba(255, 248, 239, 0.98);
+  border: 2px solid #FF7A00;
+  color: #1F1D2B;
+  box-shadow: 0 16px 48px rgba(31, 29, 43, 0.15);
+}
+[data-theme="sunset"] .cookie-banner-title {
+  color: #1F1D2B;
+}
+[data-theme="sunset"] .cookie-banner-text {
+  color: #4a455a;
+}
+
+[data-theme="sunset"] .fading-ring.cyan {
+  border-color: #FF7A00;
+  box-shadow: 0 0 12px rgba(255, 122, 0, 0.6);
+}
+[data-theme="sunset"] .fading-ring.coral {
+  border-color: #1F1D2B;
+  box-shadow: 0 0 12px rgba(31, 29, 43, 0.5);
+}
+
+/* Sunset Dark / Noir Theme */
+[data-theme="sunset-dark"] {
+  --bg-dark: #1F1D2B;
+  --bg-surface: #282536;
+  --bg-surface-elevated: #322f42;
+  --bg-card: #282536;
+  --border-subtle: #45405a;
+  --border-bright: #FF7A00;
+  --neon-lime: #FF7A00;
+  --neon-lime-hover: #FFA94D;
+  --neon-lime-glow: rgba(255, 122, 0, 0.5);
+  --neon-cyan: #FF7A00;
+  --neon-cyan-glow: rgba(255, 122, 0, 0.4);
+  --neon-coral: #FFA94D;
+  --neon-coral-glow: rgba(255, 169, 77, 0.4);
+  --text-primary: #FFF8EF;
+  --text-secondary: #FFE4C7;
+  --text-muted: #a49eb5;
+}
+
+[data-theme="sunset-dark"] body {
+  background-color: #1F1D2B;
+  color: #FFF8EF;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 122, 0, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(255, 169, 77, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 80%, rgba(255, 122, 0, 0.06) 0%, transparent 50%);
+}
+
+[data-theme="sunset-dark"] .site-header {
+  background: rgba(31, 29, 43, 0.92);
+  border-bottom: 1px solid rgba(255, 169, 77, 0.25);
+}
+
+[data-theme="sunset-dark"] .grid-cell {
+  background: #171520;
+  border: 1px solid #45405a;
+}
+[data-theme="sunset-dark"] .grid-cell:hover:not(.occupied) {
+  background: #252233;
+  border-color: #FF7A00;
+}
+[data-theme="sunset-dark"] .grid-cell.occupied span.text-cyan {
+  color: #FF7A00 !important;
+}
+[data-theme="sunset-dark"] .grid-cell.occupied span.text-coral {
+  color: #FFA94D !important;
+}
+
+[data-theme="sunset-dark"] .game-board-container {
+  background: #282536;
+  border: 2px solid #FF7A00;
+}
+
+[data-theme="sunset-dark"] .capsule-dock {
+  background: rgba(31, 29, 43, 0.92);
+  border: 1px solid rgba(255, 169, 77, 0.35);
+}
+[data-theme="sunset-dark"] .dock-item.active {
+  color: #FF7A00;
+  background: rgba(255, 122, 0, 0.15);
+}
+
 /* Typography Themes & Utilities */
 [data-font-theme="cyber"] {
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -2101,7 +2386,7 @@ body {
     gap: 8px !important;
     margin-left: auto !important;
   }
-  .btn-header-sound, .btn-header-rules {
+  .btn-header-sound, .btn-header-rules, .btn-header-theme {
     width: 32px !important;
     height: 32px !important;
     font-size: 0.85rem !important;
@@ -2113,10 +2398,10 @@ body {
     background: rgba(255, 255, 255, 0.06) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
   }
-  .btn-header-rules .rules-label {
+  .btn-header-rules .rules-label, .btn-header-theme .theme-label {
     display: none !important;
   }
-  .btn-header-rules .rules-icon {
+  .btn-header-rules .rules-icon, .btn-header-theme #header-theme-icon {
     font-size: 0.85rem !important;
     line-height: 1 !important;
   }
@@ -2472,6 +2757,34 @@ body {
   line-height: 1;
 }
 
+.btn-header-theme {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-header-theme:hover {
+  background: rgba(255, 122, 0, 0.15);
+  border-color: #FF7A00;
+  color: #FF7A00;
+  box-shadow: 0 0 14px rgba(255, 122, 0, 0.25);
+  transform: translateY(-1px);
+}
+.btn-header-theme #header-theme-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .top-nav-link.active {
   color: var(--neon-lime);
   border-bottom: 2px solid var(--neon-lime);
@@ -2661,6 +2974,11 @@ body {
       <button class="btn-header-rules" id="header-rules-btn" onclick="openModal('modal-rules')" title="Rules &amp; Regulations (Press ?)" aria-label="Game Rules &amp; Regulations">
         <span class="rules-icon">📜</span>
         <span class="rules-label">RULES</span>
+      </button>
+
+      <button class="btn-header-theme" id="header-theme-btn" onclick="cycleTheme()" title="Switch Color Palette (Sunset Warm / Noir / Cyber)" aria-label="Switch Color Palette">
+        <span id="header-theme-icon">🌅</span>
+        <span class="theme-label" id="header-theme-label">SUNSET</span>
       </button>
 
       <div class="user-profile-chip" onclick="navigateToPage('profile')" title="View or edit your profile">
@@ -3323,6 +3641,10 @@ body {
               <div class="skin-preview gold-preview">X O</div>
               <div class="skin-name">Golden Royal</div>
             </button>
+            <button class="btn-skin-card" id="skin-sunset" onclick="selectSkin('sunset')">
+              <div class="skin-preview sunset-preview" style="color:#FF7A00;">X <span style="color:#1F1D2B;">O</span></div>
+              <div class="skin-name">Sunset Amber</div>
+            </button>
           </div>
         </div>
 
@@ -3621,6 +3943,15 @@ body {
   <div class="modal-box">
     <button class="modal-close-btn" onclick="closeModal('modal-settings')">&times;</button>
     <h3 class="font-display" style="font-size: 1.4rem; color: #fff; margin-bottom: 20px;">Arena Settings</h3>
+
+    <div style="margin-bottom: 18px;">
+      <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Color Theme Palette:</label>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+        <button class="btn-control active" id="theme-opt-sunset" onclick="setColorTheme('sunset')">🌅 Sunset Warm</button>
+        <button class="btn-control" id="theme-opt-sunset-dark" onclick="setColorTheme('sunset-dark')">🌑 Sunset Noir</button>
+        <button class="btn-control" id="theme-opt-cyber" onclick="setColorTheme('cyber')">⚡ Cyber Neon</button>
+      </div>
+    </div>
 
     <div style="margin-bottom: 18px;">
       <label style="display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px;">Typography Engine:</label>
@@ -5397,7 +5728,71 @@ function selectSoundPack(pack) {
   if (SoundFX && SoundFX.play) SoundFX.play('click');
 }
 
+let currentColorTheme = 'sunset';
+
+function setColorTheme(theme) {
+  if (!['sunset', 'sunset-dark', 'cyber'].includes(theme)) theme = 'sunset';
+  currentColorTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('xo_color_theme', theme); } catch(e){}
+
+  const icon = document.getElementById('header-theme-icon');
+  const label = document.getElementById('header-theme-label');
+  if (theme === 'sunset') {
+    if (icon) icon.innerText = '🌅';
+    if (label) label.innerText = 'SUNSET';
+  } else if (theme === 'sunset-dark') {
+    if (icon) icon.innerText = '🌑';
+    if (label) label.innerText = 'NOIR';
+  } else {
+    if (icon) icon.innerText = '⚡';
+    if (label) label.innerText = 'CYBER';
+  }
+
+  ['sunset', 'sunset-dark', 'cyber'].forEach(t => {
+    const btn = document.getElementById('theme-opt-' + t);
+    if (btn) {
+      if (t === theme) btn.classList.add('active');
+      else btn.classList.remove('active');
+    }
+  });
+
+  if (typeof renderBoard === 'function') renderBoard();
+}
+
+function cycleTheme() {
+  const themes = ['sunset', 'sunset-dark', 'cyber'];
+  const nextIdx = (themes.indexOf(currentColorTheme) + 1) % themes.length;
+  setColorTheme(themes[nextIdx]);
+  showToast(themes[nextIdx] === 'sunset' ? '🌅 Sunset Warm Theme' : themes[nextIdx] === 'sunset-dark' ? '🌑 Sunset Noir Theme' : '⚡ Cyber Neon Theme');
+}
+
 function selectSkin(skin) {
+  ['neon', 'mono', 'retro', 'gold', 'sunset'].forEach(s => {
+    const b = document.getElementById('skin-' + s);
+    if (b) b.classList.remove('active');
+  });
+  const cur = document.getElementById('skin-' + skin);
+  if (cur) cur.classList.add('active');
+  
+  const root = document.documentElement;
+  if (skin === 'sunset') {
+    setColorTheme('sunset');
+  } else if (skin === 'mono') {
+    root.style.setProperty('--neon-cyan', '#ffffff');
+    root.style.setProperty('--neon-coral', '#888888');
+  } else if (skin === 'retro') {
+    root.style.setProperty('--neon-cyan', '#00ff66');
+    root.style.setProperty('--neon-coral', '#ff9900');
+  } else if (skin === 'gold') {
+    root.style.setProperty('--neon-cyan', '#ffd700');
+    root.style.setProperty('--neon-coral', '#ff9900');
+  } else {
+    root.style.removeProperty('--neon-cyan');
+    root.style.removeProperty('--neon-coral');
+  }
+}
+function _oldSelectSkin(skin) {
   ['neon', 'mono', 'retro', 'gold'].forEach(s => {
     const b = document.getElementById('skin-' + s);
     if (b) b.classList.remove('active');
@@ -5444,6 +5839,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try { return localStorage.getItem('xo_font_theme') || 'tactical'; } catch(e){ return 'tactical'; }
   })();
   setFontTheme(savedFontTheme);
+  const savedColorTheme = (function(){
+    try { return localStorage.getItem('xo_color_theme') || 'sunset'; } catch(e){ return 'sunset'; }
+  })();
+  setColorTheme(savedColorTheme);
   loadUserProfile();
   checkCookieConsent();
 
