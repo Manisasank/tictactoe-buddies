@@ -360,7 +360,7 @@ body {
 [data-theme="sunset"] {
   --bg-dark: #FFF8EF;
   --bg-surface: #FFE4C7;
-  --bg-surface-elevated: #faebd7;
+  --bg-surface-elevated: #FFF1E0;
   --bg-card: #FFE4C7;
   --border-subtle: #FFA94D;
   --border-bright: #FF7A00;
@@ -379,15 +379,19 @@ body {
 [data-theme="sunset"] body {
   background-color: #FFF8EF;
   color: #1F1D2B;
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(255, 122, 0, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 30%, rgba(255, 169, 77, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(255, 228, 199, 0.45) 0%, transparent 50%);
+  background: 
+    radial-gradient(circle at 92% 8%, rgba(255, 122, 0, 0.22) 0%, transparent 48%),
+    radial-gradient(circle at 8% 92%, rgba(255, 169, 77, 0.28) 0%, transparent 52%),
+    radial-gradient(circle at 50% 50%, rgba(255, 228, 199, 0.45) 0%, transparent 65%),
+    linear-gradient(155deg, #FFF8EF 0%, #FFF3E4 25%, #FFE4C7 62%, #FFD6A8 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
 [data-theme="sunset"] .site-header {
   background: rgba(255, 248, 239, 0.94);
-  border-bottom: 1px solid rgba(255, 169, 77, 0.35);
+  border-bottom: 1.5px solid rgba(255, 169, 77, 0.45);
+  backdrop-filter: blur(16px);
 }
 
 [data-theme="sunset"] .brand-link {
@@ -409,7 +413,8 @@ body {
 [data-theme="sunset"] .faq-question-btn,
 [data-theme="sunset"] .player-name,
 [data-theme="sunset"] .stat-card .stat-label,
-[data-theme="sunset"] .footer-col h4 {
+[data-theme="sunset"] .footer-col h4,
+[data-theme="sunset"] .why-title {
   color: #1F1D2B !important;
 }
 
@@ -420,7 +425,8 @@ body {
 [data-theme="sunset"] .faq-answer-content p,
 [data-theme="sunset"] .footer-col ul li a,
 [data-theme="sunset"] .footer-copy,
-[data-theme="sunset"] .footer-bottom-row {
+[data-theme="sunset"] .footer-bottom-row,
+[data-theme="sunset"] .why-desc {
   color: #4a455a !important;
 }
 
@@ -433,6 +439,141 @@ body {
   border-bottom-color: #FF7A00;
 }
 
+/* HERO LINES & HIGH-CONTRAST TEXT */
+[data-theme="sunset"] .hero-subtitle {
+  color: #1F1D2B !important;
+  font-weight: 600;
+}
+[data-theme="sunset"] .hero-subtitle .highlight-lime {
+  color: #FF7A00 !important;
+  font-weight: 800;
+}
+[data-theme="sunset"] .hero-subtitle .highlight-coral {
+  color: #1F1D2B !important;
+  font-weight: 800;
+  border-bottom: 2px solid #FF7A00;
+}
+[data-theme="sunset"] .hero-meta-strip .hero-audience {
+  color: #6b6479 !important;
+  font-weight: 600;
+}
+[data-theme="sunset"] .mission-pill {
+  background: linear-gradient(135deg, rgba(255, 122, 0, 0.12) 0%, rgba(255, 169, 77, 0.18) 100%) !important;
+  color: #FF7A00 !important;
+  border: 1px solid rgba(255, 122, 0, 0.35) !important;
+  font-weight: 700;
+}
+[data-theme="sunset"] .why-eyebrow {
+  color: #FF7A00 !important;
+  font-weight: 800;
+}
+[data-theme="sunset"] .why-link {
+  color: #FF7A00 !important;
+  font-weight: 700;
+}
+
+/* CRISP HORIZONTAL RULE LINES & DIVIDERS */
+[data-theme="sunset"] .cyan-rule-line {
+  background: linear-gradient(90deg, #FF7A00 0%, #FFA94D 80%, transparent 100%) !important;
+  box-shadow: 0 0 10px rgba(255, 122, 0, 0.45);
+  height: 2.5px;
+}
+[data-theme="sunset"] .cyan-rule-mark {
+  color: #FF7A00 !important;
+}
+
+[data-theme="sunset"] .section-divider-title .rule {
+  background: linear-gradient(90deg, transparent, #FFA94D 30%, #FF7A00 50%, #FFA94D 70%, transparent) !important;
+  height: 2px;
+  opacity: 0.9;
+}
+
+[data-theme="sunset"] .footer-divider {
+  background: rgba(31, 29, 43, 0.14) !important;
+  height: 1.5px;
+}
+
+[data-theme="sunset"] .section-why-infinity,
+[data-theme="sunset"] .section-four-ways,
+[data-theme="sunset"] .section-features,
+[data-theme="sunset"] .section-comparison,
+[data-theme="sunset"] .section-testimonials,
+[data-theme="sunset"] .section-faq {
+  border-top: 1.5px solid rgba(255, 169, 77, 0.4) !important;
+}
+
+/* COMPARISON TABLE LINES & BORDERS */
+[data-theme="sunset"] .comparison-table {
+  border: 1.5px solid #FFA94D !important;
+  border-radius: 12px;
+  overflow: hidden;
+}
+[data-theme="sunset"] .comparison-table th {
+  background: rgba(255, 122, 0, 0.12) !important;
+  color: #1F1D2B !important;
+  font-weight: 800;
+  border-bottom: 2px solid #FFA94D !important;
+}
+[data-theme="sunset"] .comparison-table td {
+  border-bottom: 1px solid rgba(255, 169, 77, 0.35) !important;
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .comparison-table tr:last-child td {
+  border-bottom: none !important;
+}
+[data-theme="sunset"] .comparison-table tr:hover td {
+  background: rgba(255, 228, 199, 0.5) !important;
+}
+
+/* SCOREBOARD & ARENA LINES */
+[data-theme="sunset"] .player-name-line {
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .player-meta-line {
+  color: #6b6479 !important;
+}
+[data-theme="sunset"] .player-score {
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .scoreboard-vs {
+  color: #FF7A00 !important;
+}
+[data-theme="sunset"] .scoreboard-turn-indicator {
+  color: #FF7A00 !important;
+}
+
+/* HERO RIGHT BOARD PREVIEW & CAPTION */
+[data-theme="sunset"] .hero-board-wrapper .hero-preview-board {
+  background: #FFE4C7 !important;
+  border: 2px solid #FFA94D !important;
+  box-shadow: 0 16px 40px rgba(31, 29, 43, 0.12) !important;
+}
+[data-theme="sunset"] .hero-preview-cell {
+  background: #FFF8EF !important;
+  border: 1.5px solid rgba(255, 169, 77, 0.5) !important;
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .hero-preview-cell.hero-mark-x {
+  color: #FF7A00 !important;
+  font-weight: 900;
+}
+[data-theme="sunset"] .hero-preview-cell.hero-mark-o {
+  color: #1F1D2B !important;
+  font-weight: 900;
+}
+[data-theme="sunset"] .hero-preview-cell.hero-mark-empty {
+  color: rgba(255, 169, 77, 0.6) !important;
+}
+[data-theme="sunset"] .hero-board-caption {
+  color: #6b6479 !important;
+  font-weight: 600;
+}
+[data-theme="sunset"] .hero-board-caption .caption-lime {
+  color: #FF7A00 !important;
+  font-weight: 800;
+}
+
+/* INTERACTIVE GAME BOARD CELLS */
 [data-theme="sunset"] .grid-cell {
   background: #FFF8EF;
   border: 1.5px solid rgba(255, 169, 77, 0.5);
@@ -459,7 +600,7 @@ body {
 
 [data-theme="sunset"] .capsule-dock {
   background: rgba(255, 248, 239, 0.94);
-  border: 1px solid rgba(255, 169, 77, 0.45);
+  border: 1.5px solid rgba(255, 169, 77, 0.45);
   box-shadow: 0 12px 36px rgba(31, 29, 43, 0.12);
 }
 [data-theme="sunset"] .dock-item {
@@ -470,16 +611,30 @@ body {
   background: rgba(255, 122, 0, 0.12);
 }
 
+/* GRADIENT BUTTONS & PILLS */
 [data-theme="sunset"] .btn-hero-primary,
 [data-theme="sunset"] .btn-footer-cta {
-  background: #FF7A00;
-  color: #ffffff;
-  box-shadow: 0 0 25px rgba(255, 122, 0, 0.4);
+  background: linear-gradient(135deg, #FF7A00 0%, #FFA94D 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(255, 122, 0, 0.35) !important;
+  border: none !important;
 }
 [data-theme="sunset"] .btn-hero-primary:hover,
 [data-theme="sunset"] .btn-footer-cta:hover {
-  background: #e06c00;
-  color: #ffffff;
+  background: linear-gradient(135deg, #e06c00 0%, #FF7A00 100%) !important;
+  box-shadow: 0 12px 30px rgba(255, 122, 0, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+[data-theme="sunset"] .btn-hero-secondary {
+  background: #FFE4C7 !important;
+  border: 1.5px solid #FFA94D !important;
+  color: #1F1D2B !important;
+}
+[data-theme="sunset"] .btn-hero-secondary:hover {
+  background: #FFA94D !important;
+  color: #ffffff !important;
+  border-color: #FF7A00 !important;
 }
 
 [data-theme="sunset"] .btn-control,
@@ -489,7 +644,7 @@ body {
 [data-theme="sunset"] .btn-header-sound,
 [data-theme="sunset"] .user-profile-chip {
   background: #FFE4C7 !important;
-  border-color: #FFA94D !important;
+  border: 1px solid #FFA94D !important;
   color: #1F1D2B !important;
 }
 [data-theme="sunset"] .btn-header-play:hover,
@@ -508,7 +663,7 @@ body {
   color: #1F1D2B;
 }
 [data-theme="sunset"] .mode-tab-btn.active {
-  background: #FF7A00;
+  background: linear-gradient(135deg, #FF7A00 0%, #FFA94D 100%);
   color: #ffffff;
   border-color: #FF7A00;
   box-shadow: 0 0 16px rgba(255, 122, 0, 0.35);
@@ -523,8 +678,8 @@ body {
 [data-theme="sunset"] .test-card,
 [data-theme="sunset"] .faq-item {
   background: #FFE4C7 !important;
-  border-color: #FFA94D !important;
-  box-shadow: 0 8px 24px rgba(31, 29, 43, 0.05);
+  border: 1.5px solid #FFA94D !important;
+  box-shadow: 0 10px 28px rgba(31, 29, 43, 0.06), 0 2px 6px rgba(255, 122, 0, 0.04) !important;
 }
 
 [data-theme="sunset"] .scoreboard-player-box {
@@ -559,6 +714,11 @@ body {
 }
 [data-theme="sunset"] .cookie-banner-text {
   color: #4a455a;
+}
+
+[data-theme="sunset"] .site-footer {
+  background: #FFF8EF !important;
+  border-top: 2px solid rgba(255, 169, 77, 0.45) !important;
 }
 
 [data-theme="sunset"] .fading-ring.cyan {
