@@ -1446,6 +1446,18 @@ body {
   border: 1px solid rgba(255, 59, 92, 0.3);
 }
 
+.mode-pill-lime {
+  background: rgba(204, 255, 0, 0.12);
+  color: var(--neon-lime);
+  border: 1px solid rgba(204, 255, 0, 0.3);
+}
+
+.puzzle-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
 /* ----------------------------------------------------
    "WHY INFINITY MODE? / THE BOARD NEVER STANDS STILL"
    (frame_00092.jpg)
@@ -3260,6 +3272,30 @@ body {
   color: #6b6479 !important;
 }
 
+[data-theme="sunset"] .puzzle-section-box {
+  background: #1F1D2B !important;
+  border: 1.5px solid rgba(255, 169, 77, 0.45) !important;
+  box-shadow: 0 16px 36px rgba(31, 29, 43, 0.22) !important;
+}
+
+[data-theme="sunset"] .puzzle-section-box .mode-pill-lime {
+  background: rgba(255, 122, 0, 0.22) !important;
+  color: #FFA94D !important;
+  border: 1px solid rgba(255, 169, 77, 0.55) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+}
+
+[data-theme="sunset"] .puzzle-section-box h3 {
+  color: #FFFFFF !important;
+}
+
+[data-theme="sunset"] .puzzle-desc,
+[data-theme="sunset"] .puzzle-section-box p {
+  color: #FFE4C7 !important;
+  opacity: 0.95 !important;
+}
+
 </style>
 </head>
 <body>
@@ -3824,7 +3860,7 @@ body {
           <div>
             <span class="mode-pill mode-pill-lime" style="margin-bottom: 8px; display: inline-block;">DAILY TACTICAL PUZZLE</span>
             <h3 class="font-display" style="font-size: 1.5rem; color: #fff; margin-bottom: 6px;">Mate in 2: The Decisive Finish</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Player X has 2 marks placed. Cell A1 is expiring next. Find the single winning placement before Player O blocks your diagonal!</p>
+            <p class="puzzle-desc">Player X has 2 marks placed. Cell A1 is expiring next. Find the single winning placement before Player O blocks your diagonal!</p>
           </div>
           <button class="btn-hero-primary" style="padding: 12px 24px; font-size: 0.92rem;" onclick="launchDailyPuzzle()">
             SOLVE PUZZLE IN ARENA ›
